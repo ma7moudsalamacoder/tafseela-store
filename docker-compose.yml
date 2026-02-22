@@ -1,0 +1,85 @@
+version: "3.8"
+
+# ─────────────────────────────────────────────
+#  Tafseela Store — Laravel v11.48.0
+#  Stack: Nginx + PHP-FPM 8.3 + MySQL 8.4 + Mailpit
+# ─────────────────────────────────────────────
+
+services:
+
+  # ── MySQL ──────────────────────────────────
+  db:
+    image: mysql:8.4
+    container_name: tafseela-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: tafseela
+      MYSQL_USER: tafseelauser
+      MYSQL_PASSWORD: tafseelapass
+    volumes:
+      - tafseela_db_data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+
+  # ── Mailpit ────────────────────────────────
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: tafseela-mailpit
+    restart: always
+    ports:
+      - "8025:8025"   # Web UI
+      - "1025:1025"   # SMTP
+
+  # ── PHP-FPM 8.3 ────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        UID: 501
+        GID: 1000
+    user: "501:1000"
+    container_name: tafseela-app
+    restart: always
+    depends_on:
+      - db
+      - mailpit
+    volumes:
+      - ./tafseela-laravel:/var/www/html/tafseela
+    environment:
+      APP_NAME: "Tafseela Store"
+      APP_ENV: local
+      APP_DEBUG: "true"
+
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: tafseela
+      DB_USERNAME: tafseelauser
+      DB_PASSWORD: tafseelapass
+
+      MAIL_MAILER: smtp
+      MAIL_HOST: mailpit
+      MAIL_PORT: 1025
+      MAIL_USERNAME: null
+      MAIL_PASSWORD: null
+      MAIL_ENCRYPTION: null
+      MAIL_FROM_ADDRESS: "noreply@tafseela.local"
+      MAIL_FROM_NAME: "Tafseela Store"
+
+  # ── Nginx ──────────────────────────────────
+  nginx:
+    image: nginx:stable-alpine
+    container_name: tafseela-nginx
+    restart: always
+    depends_on:
+      - app
+    ports:
+      - "8090:80"
+    volumes:
+      - ./tafseela-laravel:/var/www/html/tafseela:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+
+volumes:
+  tafseela_db_data:

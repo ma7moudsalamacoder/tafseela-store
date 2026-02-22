@@ -1,0 +1,9 @@
+{
+    "Core": true,
+    "Identity": true,
+    "Product": true,
+    "Cart": true,
+    "Payment": true,
+    "Support": true,
+    "Admin": true
+}
