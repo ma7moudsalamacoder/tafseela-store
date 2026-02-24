@@ -20,11 +20,15 @@ return new class extends Migration
                 ->constrained('orders')
                 ->cascadeOnDelete();
             $table->timestamps();
+
+            $table->index(['order_id', 'product']);
         });
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down(): void {}
+    public function down(): void {
+        Schema::dropIfExists('order_details');
+    }
 };

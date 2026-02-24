@@ -17,6 +17,8 @@ return new class extends Migration
             $table->unsignedInteger('total')->default(0);
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
+
+            $table->index('status');
         });
     }
 

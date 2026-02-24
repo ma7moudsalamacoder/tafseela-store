@@ -20,6 +20,9 @@ return new class extends Migration
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->timestamps();
+
+            $table->index(['item_id', 'start_date', 'end_date']);
+            $table->index(['managed_by', 'type']);
         });
 
         Schema::create('group_discounts_details', function (Blueprint $table): void {
@@ -27,6 +30,8 @@ return new class extends Migration
             $table->foreignId('item_id')->constrained('products')->cascadeOnDelete();
             $table->foreignId('group_discount_id')->constrained('group_discounts')->cascadeOnDelete();
             $table->timestamps();
+
+            $table->index(['item_id', 'group_discount_id']);
         });
     }
 
@@ -35,6 +40,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_discounts');
+        Schema::dropIfExists('group_discounts_details');
+        Schema::dropIfExists('group_discounts');
     }
 };

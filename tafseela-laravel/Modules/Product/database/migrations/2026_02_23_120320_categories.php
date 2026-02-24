@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('subcategory')->nullable();
             $table->string('cover_image')->nullable();
             $table->timestamps();
+
+            $table->index(['category', 'subcategory']);
         });
     }
 

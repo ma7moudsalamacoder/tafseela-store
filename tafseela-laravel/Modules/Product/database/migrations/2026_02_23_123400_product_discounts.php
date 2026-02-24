@@ -20,6 +20,9 @@ return new class extends Migration
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->timestamps();
+
+            $table->index(['item_id', 'start_date', 'end_date']);
+            $table->index(['managed_by', 'type']);
         });
     }
 

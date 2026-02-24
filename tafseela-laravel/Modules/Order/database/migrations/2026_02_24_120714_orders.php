@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')
                 ->constrained()
                 ->cascadeOnDelete();
+            $table->string('promo_code')->nullable();
             $table->enum('status', ['pending', 'paid', 'failed', 'cancelled'])->default('pending');
             $table->decimal('grand_total',10,2)->default(0);
             $table->decimal('discount',10,2)->default(0);
@@ -25,6 +26,10 @@ return new class extends Migration
                 ->on('promos')
                 ->nullOnDelete();
             $table->timestamps();
+
+            $table->index(['user_id', 'status']);
+            $table->index('promo_code');
+            $table->index('created_at');
         });
     }
 

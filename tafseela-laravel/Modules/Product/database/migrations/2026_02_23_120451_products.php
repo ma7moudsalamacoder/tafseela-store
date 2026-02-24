@@ -22,6 +22,11 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->enum('status', ['show', 'hide'])->default('show');
             $table->timestamps();
+
+            $table->index('name');
+            $table->index(['status', 'category_id']);
+            $table->index(['status', 'collection_id']);
+            $table->index('price');
         });
     }
 
