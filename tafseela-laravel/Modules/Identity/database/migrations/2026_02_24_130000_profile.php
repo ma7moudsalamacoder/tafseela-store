@@ -20,15 +20,21 @@ return new class extends Migration
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('phone', 30)->nullable();
-            $table->string('country')->nullable();
-            $table->string('city')->nullable();
+            $table->foreignId('country_id')
+                ->nullable()
+                ->constrained('countries')
+                ->nullOnDelete();
+            $table->foreignId('city_id')
+                ->nullable()
+                ->constrained('cities')
+                ->nullOnDelete();
             $table->date('date_of_birth')->nullable();
             $table->enum('gender', ['male', 'female'])->nullable();
             $table->text('bio')->nullable();
             $table->timestamps();
 
             $table->index('phone');
-            $table->index(['country', 'city']);
+            $table->index(['country_id', 'city_id']);
             $table->index('gender');
         });
     }

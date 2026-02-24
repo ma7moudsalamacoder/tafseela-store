@@ -20,8 +20,12 @@ return new class extends Migration
             $table->string('label')->nullable();
             $table->string('recipient_name');
             $table->string('recipient_phone', 30);
-            $table->string('country');
-            $table->string('city');
+            $table->foreignId('country_id')
+                ->constrained('countries')
+                ->cascadeOnDelete();
+            $table->foreignId('city_id')
+                ->constrained('cities')
+                ->cascadeOnDelete();
             $table->string('state')->nullable();
             $table->string('district')->nullable();
             $table->string('street')->nullable();
@@ -40,7 +44,7 @@ return new class extends Migration
 
             $table->index(['user_id', 'is_default']);
             $table->index(['user_id', 'type']);
-            $table->index(['country', 'city']);
+            $table->index(['country_id', 'city_id']);
             $table->index('postal_code');
             $table->index('recipient_phone');
         });
