@@ -1,0 +1,743 @@
+<?php
+
+namespace Modules\Core\Database\Seeders;
+
+
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
+
+class CountriesSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * Required migration addition before running:
+     * ---------------------------------------------------------------
+     *   $table->json('currency')->nullable()->after('flag');
+     * ---------------------------------------------------------------
+     *
+     * Column formats:
+     *   `country`  JSON  → {"en": "Egypt",         "ar": "مصر"}
+     *   `currency` JSON  → {
+     *                         "code":   "EGP",          // ISO 4217
+     *                         "symbol": "E£",           // universal ASCII-safe sign
+     *                         "en":     "Egyptian Pound",
+     *                         "ar":     "جنيه مصري"
+     *                      }
+     *   `flag`           → emoji flag (varchar 20)
+     *   `gmt_timezone`   → UTC offset string "+02:00"
+     */
+    public function run(): void
+    {
+        $now      = Carbon::now();
+        $countries = $this->getCountries();
+
+        foreach (array_chunk($countries, 50) as $chunk) {
+            $rows = array_map(fn (array $c): array => [
+                'country'          => json_encode($c['country'],  JSON_UNESCAPED_UNICODE),
+                'currency'         => json_encode($c['currency'], JSON_UNESCAPED_UNICODE),
+                'country_code'     => $c['country_code'],
+                'phone_code'       => $c['phone_code'],
+                'flag'             => $c['flag'],
+                'gmt_timezone'     => $c['gmt_timezone'],
+                'user_location'    => $c['user_location'],
+                'serving_location' => $c['serving_location'],
+                'created_at'       => $now,
+                'updated_at'       => $now,
+            ], $chunk);
+
+            DB::table('countries')->insert($rows);
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Data
+    // -------------------------------------------------------------------------
+
+    private function getCountries(): array
+    {
+        return [
+
+            // =================================================================
+            //  MIDDLE EAST & NORTH AFRICA
+            // =================================================================
+
+            [
+                'country'          => ['en' => 'Egypt',         'ar' => 'مصر'],
+                'currency'         => ['code' => 'EGP', 'symbol' => 'E£',  'en' => 'Egyptian Pound',          'ar' => 'جنيه مصري'],
+                'country_code'     => 'EG',
+                'phone_code'       => '+20',
+                'flag'             => '🇪🇬',
+                'gmt_timezone'     => '+02:00',
+                'user_location'    => true,
+                'serving_location' => true,
+            ],
+            [
+                'country'          => ['en' => 'Saudi Arabia',  'ar' => 'المملكة العربية السعودية'],
+                'currency'         => ['code' => 'SAR', 'symbol' => 'SR',   'en' => 'Saudi Riyal',             'ar' => 'ريال سعودي'],
+                'country_code'     => 'SA',
+                'phone_code'       => '+966',
+                'flag'             => '🇸🇦',
+                'gmt_timezone'     => '+03:00',
+                'user_location'    => true,
+                'serving_location' => true,
+            ],
+            [
+                'country'          => ['en' => 'United Arab Emirates', 'ar' => 'الإمارات العربية المتحدة'],
+                'currency'         => ['code' => 'AED', 'symbol' => 'AED',  'en' => 'UAE Dirham',              'ar' => 'درهم إماراتي'],
+                'country_code'     => 'AE',
+                'phone_code'       => '+971',
+                'flag'             => '🇦🇪',
+                'gmt_timezone'     => '+04:00',
+                'user_location'    => true,
+                'serving_location' => true,
+            ],
+            [
+                'country'          => ['en' => 'Kuwait',         'ar' => 'الكويت'],
+                'currency'         => ['code' => 'KWD', 'symbol' => 'KD',   'en' => 'Kuwaiti Dinar',           'ar' => 'دينار كويتي'],
+                'country_code'     => 'KW',
+                'phone_code'       => '+965',
+                'flag'             => '🇰🇼',
+                'gmt_timezone'     => '+03:00',
+                'user_location'    => true,
+                'serving_location' => true,
+            ],
+            [
+                'country'          => ['en' => 'Qatar',          'ar' => 'قطر'],
+                'currency'         => ['code' => 'QAR', 'symbol' => 'QR',   'en' => 'Qatari Riyal',            'ar' => 'ريال قطري'],
+                'country_code'     => 'QA',
+                'phone_code'       => '+974',
+                'flag'             => '🇶🇦',
+                'gmt_timezone'     => '+03:00',
+                'user_location'    => true,
+                'serving_location' => true,
+            ],
+            [
+                'country'          => ['en' => 'Bahrain',        'ar' => 'البحرين'],
+                'currency'         => ['code' => 'BHD', 'symbol' => 'BD',   'en' => 'Bahraini Dinar',          'ar' => 'دينار بحريني'],
+                'country_code'     => 'BH',
+                'phone_code'       => '+973',
+                'flag'             => '🇧🇭',
+                'gmt_timezone'     => '+03:00',
+                'user_location'    => true,
+                'serving_location' => true,
+            ],
+            [
+                'country'          => ['en' => 'Oman',           'ar' => 'عُمان'],
+                'currency'         => ['code' => 'OMR', 'symbol' => 'OR',   'en' => 'Omani Rial',              'ar' => 'ريال عُماني'],
+                'country_code'     => 'OM',
+                'phone_code'       => '+968',
+                'flag'             => '🇴🇲',
+                'gmt_timezone'     => '+04:00',
+                'user_location'    => true,
+                'serving_location' => true,
+            ],
+            [
+                'country'          => ['en' => 'Jordan',         'ar' => 'الأردن'],
+                'currency'         => ['code' => 'JOD', 'symbol' => 'JD',   'en' => 'Jordanian Dinar',         'ar' => 'دينار أردني'],
+                'country_code'     => 'JO',
+                'phone_code'       => '+962',
+                'flag'             => '🇯🇴',
+                'gmt_timezone'     => '+03:00',
+                'user_location'    => true,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Lebanon',        'ar' => 'لبنان'],
+                'currency'         => ['code' => 'LBP', 'symbol' => 'LL',   'en' => 'Lebanese Pound',          'ar' => 'ليرة لبنانية'],
+                'country_code'     => 'LB',
+                'phone_code'       => '+961',
+                'flag'             => '🇱🇧',
+                'gmt_timezone'     => '+03:00',
+                'user_location'    => true,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Iraq',           'ar' => 'العراق'],
+                'currency'         => ['code' => 'IQD', 'symbol' => 'ID',   'en' => 'Iraqi Dinar',             'ar' => 'دينار عراقي'],
+                'country_code'     => 'IQ',
+                'phone_code'       => '+964',
+                'flag'             => '🇮🇶',
+                'gmt_timezone'     => '+03:00',
+                'user_location'    => true,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Yemen',          'ar' => 'اليمن'],
+                'currency'         => ['code' => 'YER', 'symbol' => 'YR',   'en' => 'Yemeni Rial',             'ar' => 'ريال يمني'],
+                'country_code'     => 'YE',
+                'phone_code'       => '+967',
+                'flag'             => '🇾🇪',
+                'gmt_timezone'     => '+03:00',
+                'user_location'    => true,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Syria',          'ar' => 'سوريا'],
+                'currency'         => ['code' => 'SYP', 'symbol' => 'SP',   'en' => 'Syrian Pound',            'ar' => 'ليرة سورية'],
+                'country_code'     => 'SY',
+                'phone_code'       => '+963',
+                'flag'             => '🇸🇾',
+                'gmt_timezone'     => '+03:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Palestine',      'ar' => 'فلسطين'],
+                'currency'         => ['code' => 'ILS', 'symbol' => '₪',    'en' => 'Israeli New Shekel',      'ar' => 'شيكل إسرائيلي جديد'],
+                'country_code'     => 'PS',
+                'phone_code'       => '+970',
+                'flag'             => '🇵🇸',
+                'gmt_timezone'     => '+02:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Libya',          'ar' => 'ليبيا'],
+                'currency'         => ['code' => 'LYD', 'symbol' => 'LD',   'en' => 'Libyan Dinar',            'ar' => 'دينار ليبي'],
+                'country_code'     => 'LY',
+                'phone_code'       => '+218',
+                'flag'             => '🇱🇾',
+                'gmt_timezone'     => '+02:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Tunisia',        'ar' => 'تونس'],
+                'currency'         => ['code' => 'TND', 'symbol' => 'DT',   'en' => 'Tunisian Dinar',          'ar' => 'دينار تونسي'],
+                'country_code'     => 'TN',
+                'phone_code'       => '+216',
+                'flag'             => '🇹🇳',
+                'gmt_timezone'     => '+01:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Algeria',        'ar' => 'الجزائر'],
+                'currency'         => ['code' => 'DZD', 'symbol' => 'DA',   'en' => 'Algerian Dinar',          'ar' => 'دينار جزائري'],
+                'country_code'     => 'DZ',
+                'phone_code'       => '+213',
+                'flag'             => '🇩🇿',
+                'gmt_timezone'     => '+01:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Morocco',        'ar' => 'المغرب'],
+                'currency'         => ['code' => 'MAD', 'symbol' => 'MAD',  'en' => 'Moroccan Dirham',         'ar' => 'درهم مغربي'],
+                'country_code'     => 'MA',
+                'phone_code'       => '+212',
+                'flag'             => '🇲🇦',
+                'gmt_timezone'     => '+01:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Sudan',          'ar' => 'السودان'],
+                'currency'         => ['code' => 'SDG', 'symbol' => 'SD',   'en' => 'Sudanese Pound',          'ar' => 'جنيه سوداني'],
+                'country_code'     => 'SD',
+                'phone_code'       => '+249',
+                'flag'             => '🇸🇩',
+                'gmt_timezone'     => '+03:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Somalia',        'ar' => 'الصومال'],
+                'currency'         => ['code' => 'SOS', 'symbol' => 'Sh',   'en' => 'Somali Shilling',         'ar' => 'شلن صومالي'],
+                'country_code'     => 'SO',
+                'phone_code'       => '+252',
+                'flag'             => '🇸🇴',
+                'gmt_timezone'     => '+03:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Mauritania',     'ar' => 'موريتانيا'],
+                'currency'         => ['code' => 'MRU', 'symbol' => 'UM',   'en' => 'Mauritanian Ouguiya',     'ar' => 'أوقية موريتانية'],
+                'country_code'     => 'MR',
+                'phone_code'       => '+222',
+                'flag'             => '🇲🇷',
+                'gmt_timezone'     => '+00:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Djibouti',       'ar' => 'جيبوتي'],
+                'currency'         => ['code' => 'DJF', 'symbol' => 'Fdj',  'en' => 'Djiboutian Franc',        'ar' => 'فرنك جيبوتي'],
+                'country_code'     => 'DJ',
+                'phone_code'       => '+253',
+                'flag'             => '🇩🇯',
+                'gmt_timezone'     => '+03:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Comoros',        'ar' => 'جزر القمر'],
+                'currency'         => ['code' => 'KMF', 'symbol' => 'CF',   'en' => 'Comorian Franc',          'ar' => 'فرنك قمري'],
+                'country_code'     => 'KM',
+                'phone_code'       => '+269',
+                'flag'             => '🇰🇲',
+                'gmt_timezone'     => '+03:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+
+            // =================================================================
+            //  EUROPE
+            // =================================================================
+
+            [
+                'country'          => ['en' => 'United Kingdom', 'ar' => 'المملكة المتحدة'],
+                'currency'         => ['code' => 'GBP', 'symbol' => '£',    'en' => 'British Pound Sterling',  'ar' => 'جنيه إسترليني'],
+                'country_code'     => 'GB',
+                'phone_code'       => '+44',
+                'flag'             => '🇬🇧',
+                'gmt_timezone'     => '+00:00',
+                'user_location'    => true,
+                'serving_location' => true,
+            ],
+            [
+                'country'          => ['en' => 'Germany',        'ar' => 'ألمانيا'],
+                'currency'         => ['code' => 'EUR', 'symbol' => '€',    'en' => 'Euro',                    'ar' => 'يورو'],
+                'country_code'     => 'DE',
+                'phone_code'       => '+49',
+                'flag'             => '🇩🇪',
+                'gmt_timezone'     => '+01:00',
+                'user_location'    => true,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'France',         'ar' => 'فرنسا'],
+                'currency'         => ['code' => 'EUR', 'symbol' => '€',    'en' => 'Euro',                    'ar' => 'يورو'],
+                'country_code'     => 'FR',
+                'phone_code'       => '+33',
+                'flag'             => '🇫🇷',
+                'gmt_timezone'     => '+01:00',
+                'user_location'    => true,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Italy',          'ar' => 'إيطاليا'],
+                'currency'         => ['code' => 'EUR', 'symbol' => '€',    'en' => 'Euro',                    'ar' => 'يورو'],
+                'country_code'     => 'IT',
+                'phone_code'       => '+39',
+                'flag'             => '🇮🇹',
+                'gmt_timezone'     => '+01:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Spain',          'ar' => 'إسبانيا'],
+                'currency'         => ['code' => 'EUR', 'symbol' => '€',    'en' => 'Euro',                    'ar' => 'يورو'],
+                'country_code'     => 'ES',
+                'phone_code'       => '+34',
+                'flag'             => '🇪🇸',
+                'gmt_timezone'     => '+01:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Netherlands',    'ar' => 'هولندا'],
+                'currency'         => ['code' => 'EUR', 'symbol' => '€',    'en' => 'Euro',                    'ar' => 'يورو'],
+                'country_code'     => 'NL',
+                'phone_code'       => '+31',
+                'flag'             => '🇳🇱',
+                'gmt_timezone'     => '+01:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Sweden',         'ar' => 'السويد'],
+                'currency'         => ['code' => 'SEK', 'symbol' => 'kr',   'en' => 'Swedish Krona',           'ar' => 'كرونة سويدية'],
+                'country_code'     => 'SE',
+                'phone_code'       => '+46',
+                'flag'             => '🇸🇪',
+                'gmt_timezone'     => '+01:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Norway',         'ar' => 'النرويج'],
+                'currency'         => ['code' => 'NOK', 'symbol' => 'kr',   'en' => 'Norwegian Krone',         'ar' => 'كرونة نرويجية'],
+                'country_code'     => 'NO',
+                'phone_code'       => '+47',
+                'flag'             => '🇳🇴',
+                'gmt_timezone'     => '+01:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Switzerland',    'ar' => 'سويسرا'],
+                'currency'         => ['code' => 'CHF', 'symbol' => 'CHF',  'en' => 'Swiss Franc',             'ar' => 'فرنك سويسري'],
+                'country_code'     => 'CH',
+                'phone_code'       => '+41',
+                'flag'             => '🇨🇭',
+                'gmt_timezone'     => '+01:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Belgium',        'ar' => 'بلجيكا'],
+                'currency'         => ['code' => 'EUR', 'symbol' => '€',    'en' => 'Euro',                    'ar' => 'يورو'],
+                'country_code'     => 'BE',
+                'phone_code'       => '+32',
+                'flag'             => '🇧🇪',
+                'gmt_timezone'     => '+01:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Austria',        'ar' => 'النمسا'],
+                'currency'         => ['code' => 'EUR', 'symbol' => '€',    'en' => 'Euro',                    'ar' => 'يورو'],
+                'country_code'     => 'AT',
+                'phone_code'       => '+43',
+                'flag'             => '🇦🇹',
+                'gmt_timezone'     => '+01:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Poland',         'ar' => 'بولندا'],
+                'currency'         => ['code' => 'PLN', 'symbol' => 'zł',   'en' => 'Polish Zloty',            'ar' => 'زلوتي بولندي'],
+                'country_code'     => 'PL',
+                'phone_code'       => '+48',
+                'flag'             => '🇵🇱',
+                'gmt_timezone'     => '+01:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Portugal',       'ar' => 'البرتغال'],
+                'currency'         => ['code' => 'EUR', 'symbol' => '€',    'en' => 'Euro',                    'ar' => 'يورو'],
+                'country_code'     => 'PT',
+                'phone_code'       => '+351',
+                'flag'             => '🇵🇹',
+                'gmt_timezone'     => '+00:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Greece',         'ar' => 'اليونان'],
+                'currency'         => ['code' => 'EUR', 'symbol' => '€',    'en' => 'Euro',                    'ar' => 'يورو'],
+                'country_code'     => 'GR',
+                'phone_code'       => '+30',
+                'flag'             => '🇬🇷',
+                'gmt_timezone'     => '+02:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Turkey',         'ar' => 'تركيا'],
+                'currency'         => ['code' => 'TRY', 'symbol' => '₺',    'en' => 'Turkish Lira',            'ar' => 'ليرة تركية'],
+                'country_code'     => 'TR',
+                'phone_code'       => '+90',
+                'flag'             => '🇹🇷',
+                'gmt_timezone'     => '+03:00',
+                'user_location'    => true,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Russia',         'ar' => 'روسيا'],
+                'currency'         => ['code' => 'RUB', 'symbol' => '₽',    'en' => 'Russian Ruble',           'ar' => 'روبل روسي'],
+                'country_code'     => 'RU',
+                'phone_code'       => '+7',
+                'flag'             => '🇷🇺',
+                'gmt_timezone'     => '+03:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+
+            // =================================================================
+            //  AMERICAS
+            // =================================================================
+
+            [
+                'country'          => ['en' => 'United States',  'ar' => 'الولايات المتحدة'],
+                'currency'         => ['code' => 'USD', 'symbol' => '$',    'en' => 'US Dollar',               'ar' => 'دولار أمريكي'],
+                'country_code'     => 'US',
+                'phone_code'       => '+1',
+                'flag'             => '🇺🇸',
+                'gmt_timezone'     => '-05:00',
+                'user_location'    => true,
+                'serving_location' => true,
+            ],
+            [
+                'country'          => ['en' => 'Canada',         'ar' => 'كندا'],
+                'currency'         => ['code' => 'CAD', 'symbol' => 'C$',   'en' => 'Canadian Dollar',         'ar' => 'دولار كندي'],
+                'country_code'     => 'CA',
+                'phone_code'       => '+1',
+                'flag'             => '🇨🇦',
+                'gmt_timezone'     => '-05:00',
+                'user_location'    => true,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Brazil',         'ar' => 'البرازيل'],
+                'currency'         => ['code' => 'BRL', 'symbol' => 'R$',   'en' => 'Brazilian Real',          'ar' => 'ريال برازيلي'],
+                'country_code'     => 'BR',
+                'phone_code'       => '+55',
+                'flag'             => '🇧🇷',
+                'gmt_timezone'     => '-03:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Mexico',         'ar' => 'المكسيك'],
+                'currency'         => ['code' => 'MXN', 'symbol' => 'MX$',  'en' => 'Mexican Peso',            'ar' => 'بيسو مكسيكي'],
+                'country_code'     => 'MX',
+                'phone_code'       => '+52',
+                'flag'             => '🇲🇽',
+                'gmt_timezone'     => '-06:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Argentina',      'ar' => 'الأرجنتين'],
+                'currency'         => ['code' => 'ARS', 'symbol' => 'AR$',  'en' => 'Argentine Peso',          'ar' => 'بيسو أرجنتيني'],
+                'country_code'     => 'AR',
+                'phone_code'       => '+54',
+                'flag'             => '🇦🇷',
+                'gmt_timezone'     => '-03:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+
+            // =================================================================
+            //  ASIA & OCEANIA
+            // =================================================================
+
+            [
+                'country'          => ['en' => 'India',          'ar' => 'الهند'],
+                'currency'         => ['code' => 'INR', 'symbol' => '₹',    'en' => 'Indian Rupee',            'ar' => 'روبية هندية'],
+                'country_code'     => 'IN',
+                'phone_code'       => '+91',
+                'flag'             => '🇮🇳',
+                'gmt_timezone'     => '+05:30',
+                'user_location'    => true,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'China',          'ar' => 'الصين'],
+                'currency'         => ['code' => 'CNY', 'symbol' => '¥',    'en' => 'Chinese Yuan Renminbi',   'ar' => 'يوان صيني'],
+                'country_code'     => 'CN',
+                'phone_code'       => '+86',
+                'flag'             => '🇨🇳',
+                'gmt_timezone'     => '+08:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Japan',          'ar' => 'اليابان'],
+                'currency'         => ['code' => 'JPY', 'symbol' => '¥',    'en' => 'Japanese Yen',            'ar' => 'ين ياباني'],
+                'country_code'     => 'JP',
+                'phone_code'       => '+81',
+                'flag'             => '🇯🇵',
+                'gmt_timezone'     => '+09:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'South Korea',    'ar' => 'كوريا الجنوبية'],
+                'currency'         => ['code' => 'KRW', 'symbol' => '₩',    'en' => 'South Korean Won',        'ar' => 'وون كوري جنوبي'],
+                'country_code'     => 'KR',
+                'phone_code'       => '+82',
+                'flag'             => '🇰🇷',
+                'gmt_timezone'     => '+09:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Pakistan',       'ar' => 'باكستان'],
+                'currency'         => ['code' => 'PKR', 'symbol' => 'Rs',   'en' => 'Pakistani Rupee',         'ar' => 'روبية باكستانية'],
+                'country_code'     => 'PK',
+                'phone_code'       => '+92',
+                'flag'             => '🇵🇰',
+                'gmt_timezone'     => '+05:00',
+                'user_location'    => true,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Bangladesh',     'ar' => 'بنغلاديش'],
+                'currency'         => ['code' => 'BDT', 'symbol' => '৳',    'en' => 'Bangladeshi Taka',        'ar' => 'تاكا بنغلاديشية'],
+                'country_code'     => 'BD',
+                'phone_code'       => '+880',
+                'flag'             => '🇧🇩',
+                'gmt_timezone'     => '+06:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Philippines',    'ar' => 'الفلبين'],
+                'currency'         => ['code' => 'PHP', 'symbol' => '₱',    'en' => 'Philippine Peso',         'ar' => 'بيسو فلبيني'],
+                'country_code'     => 'PH',
+                'phone_code'       => '+63',
+                'flag'             => '🇵🇭',
+                'gmt_timezone'     => '+08:00',
+                'user_location'    => true,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Indonesia',      'ar' => 'إندونيسيا'],
+                'currency'         => ['code' => 'IDR', 'symbol' => 'Rp',   'en' => 'Indonesian Rupiah',       'ar' => 'روبية إندونيسية'],
+                'country_code'     => 'ID',
+                'phone_code'       => '+62',
+                'flag'             => '🇮🇩',
+                'gmt_timezone'     => '+07:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Malaysia',       'ar' => 'ماليزيا'],
+                'currency'         => ['code' => 'MYR', 'symbol' => 'RM',   'en' => 'Malaysian Ringgit',       'ar' => 'رينغيت ماليزي'],
+                'country_code'     => 'MY',
+                'phone_code'       => '+60',
+                'flag'             => '🇲🇾',
+                'gmt_timezone'     => '+08:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Singapore',      'ar' => 'سنغافورة'],
+                'currency'         => ['code' => 'SGD', 'symbol' => 'S$',   'en' => 'Singapore Dollar',        'ar' => 'دولار سنغافوري'],
+                'country_code'     => 'SG',
+                'phone_code'       => '+65',
+                'flag'             => '🇸🇬',
+                'gmt_timezone'     => '+08:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Thailand',       'ar' => 'تايلاند'],
+                'currency'         => ['code' => 'THB', 'symbol' => '฿',    'en' => 'Thai Baht',               'ar' => 'بات تايلاندي'],
+                'country_code'     => 'TH',
+                'phone_code'       => '+66',
+                'flag'             => '🇹🇭',
+                'gmt_timezone'     => '+07:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Australia',      'ar' => 'أستراليا'],
+                'currency'         => ['code' => 'AUD', 'symbol' => 'A$',   'en' => 'Australian Dollar',       'ar' => 'دولار أسترالي'],
+                'country_code'     => 'AU',
+                'phone_code'       => '+61',
+                'flag'             => '🇦🇺',
+                'gmt_timezone'     => '+10:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'New Zealand',    'ar' => 'نيوزيلندا'],
+                'currency'         => ['code' => 'NZD', 'symbol' => 'NZ$',  'en' => 'New Zealand Dollar',      'ar' => 'دولار نيوزيلندي'],
+                'country_code'     => 'NZ',
+                'phone_code'       => '+64',
+                'flag'             => '🇳🇿',
+                'gmt_timezone'     => '+12:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Iran',           'ar' => 'إيران'],
+                'currency'         => ['code' => 'IRR', 'symbol' => '﷼',    'en' => 'Iranian Rial',            'ar' => 'ريال إيراني'],
+                'country_code'     => 'IR',
+                'phone_code'       => '+98',
+                'flag'             => '🇮🇷',
+                'gmt_timezone'     => '+03:30',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+
+            // =================================================================
+            //  AFRICA
+            // =================================================================
+
+            [
+                'country'          => ['en' => 'South Africa',   'ar' => 'جنوب أفريقيا'],
+                'currency'         => ['code' => 'ZAR', 'symbol' => 'R',    'en' => 'South African Rand',      'ar' => 'راند جنوب أفريقي'],
+                'country_code'     => 'ZA',
+                'phone_code'       => '+27',
+                'flag'             => '🇿🇦',
+                'gmt_timezone'     => '+02:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Nigeria',        'ar' => 'نيجيريا'],
+                'currency'         => ['code' => 'NGN', 'symbol' => '₦',    'en' => 'Nigerian Naira',          'ar' => 'نيرة نيجيرية'],
+                'country_code'     => 'NG',
+                'phone_code'       => '+234',
+                'flag'             => '🇳🇬',
+                'gmt_timezone'     => '+01:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Kenya',          'ar' => 'كينيا'],
+                'currency'         => ['code' => 'KES', 'symbol' => 'KSh',  'en' => 'Kenyan Shilling',         'ar' => 'شلن كيني'],
+                'country_code'     => 'KE',
+                'phone_code'       => '+254',
+                'flag'             => '🇰🇪',
+                'gmt_timezone'     => '+03:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Ethiopia',       'ar' => 'إثيوبيا'],
+                'currency'         => ['code' => 'ETB', 'symbol' => 'Br',   'en' => 'Ethiopian Birr',          'ar' => 'بير إثيوبي'],
+                'country_code'     => 'ET',
+                'phone_code'       => '+251',
+                'flag'             => '🇪🇹',
+                'gmt_timezone'     => '+03:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Ghana',          'ar' => 'غانا'],
+                'currency'         => ['code' => 'GHS', 'symbol' => 'GH₵',  'en' => 'Ghanaian Cedi',           'ar' => 'سيدي غاني'],
+                'country_code'     => 'GH',
+                'phone_code'       => '+233',
+                'flag'             => '🇬🇭',
+                'gmt_timezone'     => '+00:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+
+            // =================================================================
+            //  SOUTH & CENTRAL ASIA
+            // =================================================================
+
+            [
+                'country'          => ['en' => 'Afghanistan',    'ar' => 'أفغانستان'],
+                'currency'         => ['code' => 'AFN', 'symbol' => '؋',    'en' => 'Afghan Afghani',          'ar' => 'أفغاني أفغاني'],
+                'country_code'     => 'AF',
+                'phone_code'       => '+93',
+                'flag'             => '🇦🇫',
+                'gmt_timezone'     => '+04:30',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Kazakhstan',     'ar' => 'كازاخستان'],
+                'currency'         => ['code' => 'KZT', 'symbol' => '₸',    'en' => 'Kazakhstani Tenge',       'ar' => 'تينغي كازاخستاني'],
+                'country_code'     => 'KZ',
+                'phone_code'       => '+7',
+                'flag'             => '🇰🇿',
+                'gmt_timezone'     => '+06:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+            [
+                'country'          => ['en' => 'Uzbekistan',     'ar' => 'أوزبكستان'],
+                'currency'         => ['code' => 'UZS', 'symbol' => 'soʻm', 'en' => 'Uzbekistani Som',         'ar' => 'سوم أوزبكي'],
+                'country_code'     => 'UZ',
+                'phone_code'       => '+998',
+                'flag'             => '🇺🇿',
+                'gmt_timezone'     => '+05:00',
+                'user_location'    => false,
+                'serving_location' => false,
+            ],
+        ];
+    }
+}

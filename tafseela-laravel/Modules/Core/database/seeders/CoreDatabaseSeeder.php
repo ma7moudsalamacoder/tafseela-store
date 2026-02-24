@@ -11,6 +11,9 @@ class CoreDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call([]);
+        $this->call([
+            CountrySeeder::class,
+            CitySeeder::class,
+        ]);
     }
 }
