@@ -18,10 +18,12 @@ class RolesSeeder extends Seeder
         Role::firstOrCreate(['name' => 'customer', 'guard_name' => 'web']);
         Role::firstOrCreate(['name' => 'product_manager', 'guard_name' => 'web']);
         Role::firstOrCreate(['name' => 'sales_manager', 'guard_name' => 'web']);
+        Role::firstOrCreate(['name' => 'delivery_man', 'guard_name' => 'web']);
         Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
         Role::firstOrCreate(['name' => 'customer', 'guard_name' => 'api']);
         Role::firstOrCreate(['name' => 'product_manager', 'guard_name' => 'api']);
         Role::firstOrCreate(['name' => 'sales_manager', 'guard_name' => 'api']);
+        Role::firstOrCreate(['name' => 'delivery_man', 'guard_name' => 'api']);
         Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'api']);
     }
 }

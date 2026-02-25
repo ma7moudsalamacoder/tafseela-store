@@ -16,7 +16,7 @@ return new class extends Migration
             $table->json('country');
             $table->string('country_code', 2);
             $table->string('phone_code', 5);
-            $table->ajax('currency');
+            $table->string('currency');
             $table->string('flag', 20)->nullable();
             $table->string('gmt_timezone', 10)->nullable();
             $table->boolean('user_location')->default(false);
