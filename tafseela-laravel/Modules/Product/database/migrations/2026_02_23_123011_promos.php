@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedInteger('used')->default(0);
             $table->unsignedInteger('total')->default(0);
             $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->auditions();
             $table->timestamps();
 
             $table->index('status');

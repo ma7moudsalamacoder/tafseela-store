@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('cover_image')->nullable();
+            $table->auditions();
             $table->timestamps();
 
             $table->index('title');

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('category');
             $table->string('subcategory')->nullable();
             $table->string('cover_image')->nullable();
+            $table->auditions();
             $table->timestamps();
 
             $table->index(['category', 'subcategory']);

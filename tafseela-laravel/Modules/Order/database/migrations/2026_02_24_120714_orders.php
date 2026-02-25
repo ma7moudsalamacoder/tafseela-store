@@ -25,6 +25,7 @@ return new class extends Migration
                 ->references('promo_code')
                 ->on('promos')
                 ->nullOnDelete();
+            $table->auditions();
             $table->timestamps();
 
             $table->index(['user_id', 'status']);

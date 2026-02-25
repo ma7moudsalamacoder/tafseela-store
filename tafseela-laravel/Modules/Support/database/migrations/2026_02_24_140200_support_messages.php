@@ -24,6 +24,7 @@ return new class extends Migration
             $table->text('message');
             $table->boolean('is_internal')->default(false);
             $table->timestamp('read_at')->nullable();
+            $table->auditions();
             $table->timestamps();
 
             $table->index(['support_ticket_id', 'created_at','is_internal','sender_id', 'sender_type']);

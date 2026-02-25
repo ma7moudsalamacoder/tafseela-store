@@ -5,6 +5,7 @@ namespace Modules\Core\Providers;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Modules\Core\Console\InstallSystem;
+use Modules\Core\Macros\BlueprintMacros;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -22,6 +23,7 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        BlueprintMacros::register();
         $this->registerCommands();
         $this->registerCommandSchedules();
         $this->registerTranslations();

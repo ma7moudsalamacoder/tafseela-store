@@ -31,6 +31,7 @@ return new class extends Migration
             $table->enum('status', ['open', 'in_progress', 'resolved', 'closed'])->default('open');
             $table->timestamp('last_reply_at')->nullable();
             $table->timestamp('closed_at')->nullable();
+            $table->auditions();
             $table->timestamps();
 
             $table->index(['user_id', 'assigned_to', 'status', 'priority', 'last_reply_at']);

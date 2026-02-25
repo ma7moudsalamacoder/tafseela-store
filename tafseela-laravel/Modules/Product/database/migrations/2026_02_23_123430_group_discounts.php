@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('value', 10, 2);
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
+            $table->auditions();
             $table->timestamps();
 
             $table->index(['item_id', 'start_date', 'end_date']);
@@ -29,6 +30,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('item_id')->constrained('products')->cascadeOnDelete();
             $table->foreignId('group_discount_id')->constrained('group_discounts')->cascadeOnDelete();
+            $table->auditions();
             $table->timestamps();
 
             $table->index(['item_id', 'group_discount_id']);

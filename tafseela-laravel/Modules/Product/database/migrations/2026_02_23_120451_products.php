@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedInteger('stock_qty')->default(0);
             $table->string('image')->nullable();
             $table->enum('status', ['show', 'hide'])->default('show');
+            $table->auditions();
             $table->timestamps();
 
             $table->index('name');
