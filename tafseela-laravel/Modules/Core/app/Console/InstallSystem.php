@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Artisan;
 use Modules\Admin\Database\Seeders\AdminDatabaseSeeder;
 use Modules\Cart\Database\Seeders\CartDatabaseSeeder;
 use Modules\Core\Database\Seeders\CoreDatabaseSeeder;
+use Modules\Delivery\Database\Seeders\DeliveryDatabaseSeeder;
 use Modules\Identity\Database\Seeders\IdentityDatabaseSeeder;
 use Modules\Order\Database\Seeders\OrderDatabaseSeeder;
 use Modules\Payment\Database\Seeders\PaymentDatabaseSeeder;
@@ -46,6 +47,7 @@ class InstallSystem extends Command
             base_path('Modules/Product/database/migrations'),
             base_path('Modules/Cart/database/migrations'),
             base_path('Modules/Order/database/migrations'),
+            base_path('Modules/Delivery/database/migrations'),
             base_path('Modules/Payment/database/migrations'),
             base_path('Modules/Support/database/migrations'),
             base_path('Modules/Admin/database/migrations'),
@@ -73,6 +75,7 @@ class InstallSystem extends Command
             ProductDatabaseSeeder::class,
             CartDatabaseSeeder::class,
             OrderDatabaseSeeder::class,
+            DeliveryDatabaseSeeder::class,
             PaymentDatabaseSeeder::class,
             SupportDatabaseSeeder::class,
             AdminDatabaseSeeder::class,
