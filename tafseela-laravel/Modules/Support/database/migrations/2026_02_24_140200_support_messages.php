@@ -27,7 +27,10 @@ return new class extends Migration
             $table->auditions();
             $table->timestamps();
 
-            $table->index(['support_ticket_id', 'created_at','is_internal','sender_id', 'sender_type']);
+            $table->index(
+                ['support_ticket_id', 'created_at', 'is_internal', 'sender_id', 'sender_type'],
+                'support_messages_lookup_idx'
+            );
         });
     }
 

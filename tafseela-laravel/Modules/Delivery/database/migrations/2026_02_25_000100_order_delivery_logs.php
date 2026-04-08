@@ -27,7 +27,10 @@ return new class extends Migration
             ]);
             $table->timestamp('timestamp')->useCurrent();
 
-            $table->index(['order_delivery_id', 'status', 'timestamp']);
+            $table->index(
+                ['order_delivery_id', 'status', 'timestamp'],
+                'order_delivery_logs_lookup_idx'
+            );
         });
     }
 
@@ -39,4 +42,3 @@ return new class extends Migration
         Schema::dropIfExists('order_delivery_logs');
     }
 };
-

@@ -34,7 +34,10 @@ return new class extends Migration
             $table->auditions();
             $table->timestamps();
 
-            $table->index(['user_id', 'assigned_to', 'status', 'priority', 'last_reply_at']);
+            $table->index(
+                ['user_id', 'assigned_to', 'status', 'priority', 'last_reply_at'],
+                'support_tickets_lookup_idx'
+            );
         });
     }
 

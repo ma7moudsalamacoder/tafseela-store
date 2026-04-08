@@ -33,7 +33,10 @@ return new class extends Migration
             $table->auditions();
             $table->timestamps();
 
-            $table->index(['order_id', 'customer_id', 'delivery_man_id', 'status', 'confirmed']);
+            $table->index(
+                ['order_id', 'customer_id', 'delivery_man_id', 'status', 'confirmed'],
+                'order_deliveries_lookup_idx'
+            );
         });
     }
 

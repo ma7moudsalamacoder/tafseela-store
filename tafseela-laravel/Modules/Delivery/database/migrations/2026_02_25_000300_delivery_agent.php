@@ -24,7 +24,10 @@ return new class extends Migration
             $table->auditions();
             $table->timestamps();
 
-            $table->index(['user_id', 'type', 'delivery_company_id']);
+            $table->index(
+                ['user_id', 'type', 'delivery_company_id'],
+                'delivery_agents_lookup_idx'
+            );
             $table->index('delivery_company_id');
         });
     }
