@@ -10,7 +10,6 @@ use Modules\Core\Transformers\ActionsResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-
 $fs = new Filesystem();
 
 return Application::configure(basePath: dirname(__DIR__))

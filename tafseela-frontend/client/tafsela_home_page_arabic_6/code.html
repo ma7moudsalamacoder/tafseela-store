@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tafsela | تفصيلة - إتمام الشراء</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&amp;family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#8C6239",
+                "primary-dark": "#5D4026",
+                "accent-gold": "#A67C52",
+                "background-light": "#FDFCFB",
+                "background-dark": "#121212",
+                "neutral-charcoal": "#1A1A1A",
+                "neutral-beige": "#F7F3F0",
+              },
+              fontFamily: {
+                "display": ["Almarai", "sans-serif"],
+                "body": ["IBM Plex Sans Arabic", "sans-serif"]
+              },
+              borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply font-body text-neutral-charcoal bg-background-light dark:bg-background-dark dark:text-gray-100 antialiased;
+            }
+            h1, h2, h3, h4, h5, h6 {
+                @apply font-display tracking-tight;
+            }
+        }
+        .step-active {
+            @apply text-primary font-bold border-b-2 border-primary;
+        }
+        .step-inactive {
+            @apply text-gray-400 font-medium;
+        }
+    </style>
+</head>
+<body class="transition-colors duration-300">
+<div class="bg-primary-dark text-white text-center py-2.5 text-[11px] font-bold tracking-[0.1em] uppercase border-b border-white/5">
+        شحن مجاني للطلبات الأكثر من 500 جنيه مصري | كود الخصم: <span class="font-sans" dir="ltr">TAFSELA24</span>
+</div>
+<header class="bg-white/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
+<div class="container mx-auto px-4 lg:px-12 py-6 flex items-center justify-between">
+<div class="flex-shrink-0">
+<h1 class="text-3xl font-extrabold text-neutral-charcoal dark:text-white tracking-tighter uppercase italic">تفصيلة</h1>
+</div>
+<div class="hidden md:flex items-center gap-12 text-[12px] font-bold uppercase tracking-widest">
+<div class="flex items-center gap-2 step-inactive">
+<span>السلة</span>
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</div>
+<div class="flex items-center gap-2 step-active pb-1">
+<span>الشحن</span>
+</div>
+<div class="flex items-center gap-2 step-inactive">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<span>الدفع</span>
+</div>
+<div class="flex items-center gap-2 step-inactive">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<span>المراجعة</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<a class="text-xs font-bold hover:text-primary transition-colors flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-lg">shopping_bag</span>
+<span>العودة للمتجر</span>
+</a>
+</div>
+</div>
+</header>
+<main class="container mx-auto px-4 lg:px-12 py-12">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+<div class="lg:col-span-7 space-y-12">
+<section>
+<div class="flex items-center gap-4 mb-8">
+<span class="w-10 h-10 bg-primary/10 text-primary flex items-center justify-center font-bold text-lg">1</span>
+<h2 class="text-2xl font-extrabold">عنوان الشحن</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-[11px] font-bold uppercase tracking-wider text-gray-500">الاسم الأول</label>
+<input class="w-full border-gray-200 focus:ring-primary focus:border-primary py-3 px-4 bg-gray-50/50" placeholder="مثال: أحمد" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-[11px] font-bold uppercase tracking-wider text-gray-500">اسم العائلة</label>
+<input class="w-full border-gray-200 focus:ring-primary focus:border-primary py-3 px-4 bg-gray-50/50" placeholder="مثال: محمد" type="text"/>
+</div>
+<div class="md:col-span-2 space-y-2">
+<label class="text-[11px] font-bold uppercase tracking-wider text-gray-500">العنوان بالتفصيل</label>
+<input class="w-full border-gray-200 focus:ring-primary focus:border-primary py-3 px-4 bg-gray-50/50" placeholder="رقم المبنى، اسم الشارع، المنطقة" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-[11px] font-bold uppercase tracking-wider text-gray-500">المدينة</label>
+<select class="w-full border-gray-200 focus:ring-primary focus:border-primary py-3 px-4 bg-gray-50/50">
+<option>القاهرة</option>
+<option>الجيزة</option>
+<option>الإسكندرية</option>
+<option>أخرى</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-[11px] font-bold uppercase tracking-wider text-gray-500">رقم الهاتف</label>
+<input class="w-full border-gray-200 focus:ring-primary focus:border-primary py-3 px-4 bg-gray-50/50 text-right" dir="ltr" placeholder="+20 1XX XXX XXXX" type="tel"/>
+</div>
+</div>
+</section>
+<hr class="border-gray-100"/>
+<section>
+<div class="flex items-center gap-4 mb-8">
+<span class="w-10 h-10 bg-primary/10 text-primary flex items-center justify-center font-bold text-lg">2</span>
+<h2 class="text-2xl font-extrabold">طريقة الدفع</h2>
+</div>
+<div class="space-y-4">
+<label class="flex items-center justify-between p-5 border-2 border-primary bg-primary/5 cursor-pointer">
+<div class="flex items-center gap-4">
+<input checked="" class="text-primary focus:ring-primary h-5 w-5" name="payment" type="radio"/>
+<div class="space-y-1">
+<span class="block font-bold">الدفع عند الاستلام</span>
+<span class="block text-xs text-gray-500">ادفع نقداً عند وصول طلبك إلى منزلك</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-3xl text-primary">payments</span>
+</label>
+<label class="flex items-center justify-between p-5 border border-gray-200 hover:border-primary/50 transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<input class="text-primary focus:ring-primary h-5 w-5" name="payment" type="radio"/>
+<div class="space-y-1">
+<span class="block font-bold">بطاقة ائتمان / ميزة</span>
+<span class="block text-xs text-gray-500">دفع آمن وسريع عبر البطاقات البنكية</span>
+</div>
+</div>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-3xl text-gray-400">credit_card</span>
+</div>
+</label>
+</div>
+</section>
+</div>
+<div class="lg:col-span-5">
+<div class="sticky top-28 bg-neutral-beige p-8 border border-neutral-charcoal/5">
+<h3 class="text-xl font-extrabold mb-8 pb-4 border-b border-neutral-charcoal/10 uppercase tracking-widest">ملخص الطلب</h3>
+<div class="space-y-6 mb-8 max-h-[400px] overflow-y-auto pr-2">
+<div class="flex gap-4">
+<div class="w-20 h-24 bg-gray-200 flex-shrink-0">
+<img alt="Product" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAa8rxsCtnHO1uoqPKohyj3olgrRNYd84CD7ibbTxlOhJunn23RMdUvhV50rilc6g5xsGQ_Bz3Y6_Xi3llenb_loo06rLbJj2A5MY-DoJt46VO0LHC-q4_C_TuacMR1u3F4JMj1Ljr3TR_Js_TN_DGjG6a96fJulUh_UttCtpU5wRgwu7HoF0JwqHBOu_Qz_pKne5ROiSCvA5oWyansb_9tY7WE5Mz3MOeEqJBIlamFRHh5OYXaonC9MQawVhOYhPZoq8Au59PQYaLn"/>
+</div>
+<div class="flex-grow flex flex-col justify-between">
+<div>
+<h4 class="font-bold text-sm">قميص كتان كاجوال</h4>
+<p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1">رجالي - أزرق فاتح / XL</p>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-xs font-bold text-gray-400">الكمية: 1</span>
+<span class="font-bold text-primary">850 جنيه</span>
+</div>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="w-20 h-24 bg-gray-200 flex-shrink-0">
+<img alt="Product" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuqwrlfWKG6vFStSzVmd0f2X4f_P-ExhbD-4U2atWtuMsdC3ucmUuQ4gdvfeSIKUq3KCqQ1rZJJKzditbqLMvAvo0xv_6p14wD_gt3jr7oC7Qvl-_Ov5ptoM57Cv4ZuB7msBqwVPN1niFmaSEMj9d5MbyHQqB0FGmBVSgWUC8fl7Z3LjeeIdjYtquM_ehZQsFC9BQY9juJFJu8oRg3ibAPuEYm_30mdxrFj3mOvbd7ziu8oe3e7SqYItiSw0wM0Sq2ilUG9UPWctWe"/>
+</div>
+<div class="flex-grow flex flex-col justify-between">
+<div>
+<h4 class="font-bold text-sm">جاكيت جينز عصري</h4>
+<p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1">أطفال - كحلي / 10 سنوات</p>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-xs font-bold text-gray-400">الكمية: 1</span>
+<span class="font-bold text-primary">600 جنيه</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex gap-2 mb-8">
+<input class="flex-grow border-gray-200 focus:ring-primary focus:border-primary text-xs py-3 px-4" placeholder="كود الخصم" type="text"/>
+<button class="bg-neutral-charcoal text-white px-6 py-3 text-xs font-bold uppercase tracking-widest hover:bg-black transition-colors">تطبيق</button>
+</div>
+<div class="space-y-4 pt-6 border-t border-neutral-charcoal/10">
+<div class="flex justify-between text-sm">
+<span class="text-gray-500 font-medium">المجموع الفرعي</span>
+<span class="font-bold">1,450 جنيه</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-gray-500 font-medium">مصاريف الشحن</span>
+<span class="text-green-600 font-bold uppercase tracking-widest">مجاني</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-gray-500 font-medium">الخصم (10%)</span>
+<span class="text-red-500 font-bold">-145 جنيه</span>
+</div>
+<div class="flex justify-between text-xl font-extrabold pt-4 border-t border-neutral-charcoal/10">
+<span>الإجمالي</span>
+<span class="text-primary">1,305 جنيه</span>
+</div>
+</div>
+<button class="w-full bg-primary text-white py-6 mt-10 font-extrabold uppercase tracking-[0.2em] text-sm hover:bg-primary-dark transition-all shadow-xl shadow-primary/20 flex items-center justify-center gap-4">
+                        تأكيد الطلب
+                        <span class="material-symbols-outlined text-lg">check_circle</span>
+</button>
+<p class="text-[10px] text-gray-400 text-center mt-6 leading-relaxed">
+                        بالضغط على تأكيد الطلب، فإنك توافق على <a class="underline" href="#">شروط وأحكام</a> تفصيلة وسياسة الخصوصية.
+                    </p>
+</div>
+</div>
+</div>
+</main>
+<footer class="bg-primary-dark text-white pt-24 pb-12">
+<div class="container mx-auto px-4 lg:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-24">
+<div class="space-y-8">
+<h4 class="text-3xl font-extrabold tracking-tighter uppercase italic">تفصيلة</h4>
+<p class="text-white/70 leading-relaxed font-light text-sm">
+                    متجركم الأول للأزياء العصرية المصممة بدقة لتلائم أسلوب حياتكم. الجودة والفخامة في كل غرزة منذ عام 2020.
+                </p>
+<div class="flex gap-4">
+<a aria-label="Facebook" class="w-12 h-12 border border-white/20 flex items-center justify-center hover:bg-white hover:text-primary-dark transition-all duration-300" href="#">
+<i class="material-icons-outlined text-xl">facebook</i>
+</a>
+<a aria-label="Instagram" class="w-12 h-12 border border-white/20 flex items-center justify-center hover:bg-white hover:text-primary-dark transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-xl">camera</span>
+</a>
+</div>
+</div>
+<div>
+<h5 class="font-bold text-xs uppercase tracking-[0.3em] mb-10 text-white">تسوق حسب الفئة</h5>
+<ul class="space-y-5 text-white/70 font-bold text-[11px] uppercase tracking-widest">
+<li><a class="hover:text-white transition-colors flex items-center gap-3" href="#"><span class="w-4 h-[1px] bg-white/30"></span>وصلنا حديثاً</a></li>
+<li><a class="hover:text-white transition-colors flex items-center gap-3" href="#"><span class="w-4 h-[1px] bg-white/30"></span>مجموعة الرجال</a></li>
+<li><a class="hover:text-white transition-colors flex items-center gap-3" href="#"><span class="w-4 h-[1px] bg-white/30"></span>مجموعة النساء</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold text-xs uppercase tracking-[0.3em] mb-10 text-white">خدمة العملاء</h5>
+<ul class="space-y-5 text-white/70 font-bold text-[11px] uppercase tracking-widest">
+<li><a class="hover:text-white transition-colors" href="#">تتبع الطلبية</a></li>
+<li><a class="hover:text-white transition-colors" href="#">سياسة الاسترجاع</a></li>
+<li><a class="hover:text-white transition-colors" href="#">الأسئلة الشائعة</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold text-xs uppercase tracking-[0.3em] mb-10 text-white">تواصل معنا</h5>
+<ul class="space-y-6 text-white/70 text-[13px] font-medium">
+<li class="flex items-start gap-4">
+<span class="material-symbols-outlined text-white text-xl mt-1">location_on</span>
+<span class="leading-relaxed">شارع التسعين، التجمع الخامس، القاهرة، مصر</span>
+</li>
+<li class="flex items-center gap-4">
+<span class="material-symbols-outlined text-white text-xl">call</span>
+<span class="font-bold tracking-wider" dir="ltr">+20 123 456 7890</span>
+</li>
+</ul>
+</div>
+</div>
+<div class="border-t border-white/10 pt-12 text-center container mx-auto px-4 lg:px-12 flex flex-col md:flex-row justify-between items-center gap-8">
+<p class="text-white/50 text-[10px] font-bold tracking-[0.2em] uppercase">
+                © 2024 تفصيلة <span class="font-sans" dir="ltr">Tafsela</span>. جميع الحقوق محفوظة
+            </p>
+<div class="flex gap-8 opacity-40 grayscale items-center invert">
+<span class="material-symbols-outlined text-3xl">payments</span>
+<span class="material-symbols-outlined text-3xl">credit_card</span>
+</div>
+</div>
+</footer>
+
+</body></html>

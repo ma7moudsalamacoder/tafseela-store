@@ -1,0 +1,5 @@
+{
+    "name": "tafseela/customer",
+    "description": "Customer-facing storefront module",
+    "type": "laravel-module"
+}

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tafsela | تفصيلة - حسابي</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&amp;family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#A67C52",
+                "primary-dark": "#7D5A39",
+                "accent-gold": "#A67C52",
+                "success-green": "#2D6A4F",
+                "background-light": "#FDFCFB",
+                "background-dark": "#121212",
+                "neutral-charcoal": "#1A1A1A",
+                "neutral-beige": "#F7F3F0",
+              },
+              fontFamily: {
+                "display": ["Almarai", "sans-serif"],
+                "body": ["IBM Plex Sans Arabic", "sans-serif"]
+              },
+              borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply font-body text-neutral-charcoal bg-background-light dark:bg-background-dark dark:text-gray-100 antialiased;
+            }
+            h1, h2, h3, h4, h5, h6 {
+                @apply font-display tracking-tight;
+            }
+        }
+        .dashboard-card {
+            @apply border border-gray-100 dark:border-gray-800 bg-white dark:bg-neutral-charcoal/30 p-8 shadow-sm transition-all duration-300;
+        }
+        .nav-link-active {
+            @apply text-primary border-b-2 border-primary;
+        }
+        .nav-link {
+            @apply text-gray-400 hover:text-primary transition-colors pb-4 border-b-2 border-transparent;
+        }
+    </style>
+</head>
+<body class="transition-colors duration-300">
+<header class="sticky top-0 z-30 bg-white/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
+<div class="container mx-auto px-4 lg:px-12 py-5 flex items-center justify-between">
+<div class="flex-shrink-0">
+<a class="text-3xl font-extrabold text-neutral-charcoal dark:text-white tracking-tighter uppercase italic" href="#">تفصيلة</a>
+</div>
+<div class="hidden lg:flex items-center gap-12">
+<a class="text-[11px] font-bold tracking-widest uppercase hover:text-primary transition-colors" href="#">المتجر</a>
+<a class="text-[11px] font-bold tracking-widest uppercase hover:text-primary transition-colors" href="#">المجموعات</a>
+<a class="text-[11px] font-bold tracking-widest uppercase hover:text-primary transition-colors text-primary border-b border-primary pb-1" href="#">حسابي</a>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-[11px] font-bold hover:text-primary transition-colors flex items-center gap-1.5 uppercase tracking-widest whitespace-nowrap">
+<span class="font-sans">English</span>
+<span class="material-symbols-outlined text-lg">language</span>
+</button>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">shopping_bag</span>
+</div>
+</div>
+</header>
+<main class="container mx-auto px-4 lg:px-12 py-12">
+<div class="mb-12">
+<h1 class="text-4xl font-extrabold text-neutral-charcoal dark:text-white mb-3">أهلاً بك مجدداً، أحمد</h1>
+<p class="text-gray-500 dark:text-gray-400">إليك نظرة سريعة على نشاط حسابك الأخير.</p>
+</div>
+<nav class="flex items-center gap-10 mb-12 border-b border-gray-100 dark:border-gray-800">
+<a class="nav-link-active font-bold text-xs uppercase tracking-[0.2em] pb-4" href="#">لوحة التحكم</a>
+<a class="nav-link font-bold text-xs uppercase tracking-[0.2em]" href="#">طلباتي</a>
+<a class="nav-link font-bold text-xs uppercase tracking-[0.2em]" href="#">العناوين</a>
+<a class="nav-link font-bold text-xs uppercase tracking-[0.2em]" href="#">تفضيلاتي</a>
+<a class="nav-link font-bold text-xs uppercase tracking-[0.2em]" href="#">الإعدادات</a>
+</nav>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-2 space-y-8">
+<div class="dashboard-card">
+<div class="flex items-center justify-between mb-8">
+<h3 class="font-bold text-lg">آخر الطلبات</h3>
+<a class="text-xs font-bold text-primary hover:underline uppercase tracking-widest" href="#">عرض الكل</a>
+</div>
+<div class="space-y-6">
+<div class="flex flex-col md:flex-row md:items-center justify-between p-6 bg-neutral-beige/50 dark:bg-white/5 border border-gray-100 dark:border-gray-800">
+<div class="flex gap-4 items-center mb-4 md:mb-0">
+<div class="w-16 h-20 bg-gray-200 overflow-hidden flex-shrink-0">
+<img alt="Product" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAa8rxsCtnHO1uoqPKohyj3olgrRNYd84CD7ibbTxlOhJunn23RMdUvhV50rilc6g5xsGQ_Bz3Y6_Xi3llenb_loo06rLbJj2A5MY-DoJt46VO0LHC-q4_C_TuacMR1u3F4JMj1Ljr3TR_Js_TN_DGjG6a96fJulUh_UttCtpU5wRgwu7HoF0JwqHBOu_Qz_pKne5ROiSCvA5oWyansb_9tY7WE5Mz3MOeEqJBIlamFRHh5OYXaonC9MQawVhOYhPZoq8Au59PQYaLn"/>
+</div>
+<div>
+<p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">طلب #TF-98234</p>
+<h4 class="font-bold text-sm">قميص كتان فاخر + 1 منتج آخر</h4>
+<p class="text-[10px] text-gray-500 mt-1">تم الطلب في 20 مايو 2024</p>
+</div>
+</div>
+<div class="flex items-center justify-between md:gap-12">
+<div class="text-left md:text-right">
+<p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">الحالة</p>
+<span class="text-xs font-bold text-primary bg-primary/10 px-3 py-1">قيد التجهيز</span>
+</div>
+<div class="text-left md:text-right">
+<p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">الإجمالي</p>
+<p class="text-sm font-bold">2,050 جنيه</p>
+</div>
+<a class="material-symbols-outlined text-gray-400 hover:text-primary transition-colors" href="#">chevron_left</a>
+</div>
+</div>
+<div class="flex flex-col md:flex-row md:items-center justify-between p-6 bg-white dark:bg-transparent border border-gray-100 dark:border-gray-800">
+<div class="flex gap-4 items-center mb-4 md:mb-0">
+<div class="w-16 h-20 bg-gray-200 overflow-hidden flex-shrink-0">
+<img alt="Product" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAa8rxsCtnHO1uoqPKohyj3olgrRNYd84CD7ibbTxlOhJunn23RMdUvhV50rilc6g5xsGQ_Bz3Y6_Xi3llenb_loo06rLbJj2A5MY-DoJt46VO0LHC-q4_C_TuacMR1u3F4JMj1Ljr3TR_Js_TN_DGjG6a96fJulUh_UttCtpU5wRgwu7HoF0JwqHBOu_Qz_pKne5ROiSCvA5oWyansb_9tY7WE5Mz3MOeEqJBIlamFRHh5OYXaonC9MQawVhOYhPZoq8Au59PQYaLn"/>
+</div>
+<div>
+<p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">طلب #TF-97112</p>
+<h4 class="font-bold text-sm">قميص قطن أبيض كلاسيك</h4>
+<p class="text-[10px] text-gray-500 mt-1">تم الطلب في 05 مايو 2024</p>
+</div>
+</div>
+<div class="flex items-center justify-between md:gap-12">
+<div class="text-left md:text-right">
+<p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">الحالة</p>
+<span class="text-xs font-bold text-success-green bg-success-green/10 px-3 py-1">تم التوصيل</span>
+</div>
+<div class="text-left md:text-right">
+<p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">الإجمالي</p>
+<p class="text-sm font-bold">750 جنيه</p>
+</div>
+<a class="material-symbols-outlined text-gray-400 hover:text-primary transition-colors" href="#">chevron_left</a>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="dashboard-card bg-neutral-charcoal text-white border-none">
+<span class="material-symbols-outlined text-accent-gold text-4xl mb-4">stars</span>
+<h4 class="text-xl font-bold mb-2">عضوية التميز</h4>
+<p class="text-gray-400 text-sm mb-6 leading-relaxed">لديك 450 نقطة ولاء. يمكنك استبدالها بخصم 15% على طلبك القادم.</p>
+<button class="bg-accent-gold text-white text-[10px] font-extrabold uppercase tracking-widest px-6 py-3 hover:bg-white hover:text-neutral-charcoal transition-all">استبدال النقاط</button>
+</div>
+<div class="dashboard-card border-dashed border-2 border-gray-200 dark:border-gray-800 flex flex-col items-center justify-center text-center py-10">
+<span class="material-symbols-outlined text-gray-300 text-4xl mb-4">add_circle</span>
+<h4 class="font-bold text-sm mb-2">إضافة نمطك المفضل</h4>
+<p class="text-gray-500 text-xs px-8">أخبرنا عن مقاساتك وذوقك لنخصص تجربتك</p>
+</div>
+</div>
+</div>
+<div class="space-y-8">
+<div class="dashboard-card">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-bold text-lg">العنوان الرئيسي</h3>
+<span class="material-symbols-outlined text-primary">location_on</span>
+</div>
+<div class="space-y-1">
+<p class="text-sm font-bold">أحمد محمد</p>
+<p class="text-xs text-gray-500 leading-relaxed">24 شارع التسعين الشمالي، التجمع الخامس</p>
+<p class="text-xs text-gray-500">القاهرة، مصر</p>
+<p class="text-[10px] font-sans text-gray-400 mt-4">+20 102 345 6789</p>
+</div>
+<button class="w-full mt-8 border border-gray-200 dark:border-gray-800 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-neutral-charcoal hover:text-white transition-all">تعديل العنوان</button>
+</div>
+<div class="dashboard-card">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-bold text-lg">إعدادات الحساب</h3>
+<span class="material-symbols-outlined text-primary">settings</span>
+</div>
+<ul class="space-y-4">
+<li class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-gray-400 text-lg">person</span>
+<span class="text-xs font-bold text-gray-600 dark:text-gray-300">البيانات الشخصية</span>
+</div>
+<span class="material-symbols-outlined text-sm text-gray-300">chevron_left</span>
+</li>
+<li class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-gray-400 text-lg">lock</span>
+<span class="text-xs font-bold text-gray-600 dark:text-gray-300">تغيير كلمة المرور</span>
+</div>
+<span class="material-symbols-outlined text-sm text-gray-300">chevron_left</span>
+</li>
+<li class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-gray-400 text-lg">notifications</span>
+<span class="text-xs font-bold text-gray-600 dark:text-gray-300">التنبيهات</span>
+</div>
+<span class="material-symbols-outlined text-sm text-gray-300">chevron_left</span>
+</li>
+<li class="flex items-center justify-between border-t border-gray-50 dark:border-gray-800 pt-4 mt-4">
+<div class="flex items-center gap-3 text-red-500">
+<span class="material-symbols-outlined text-lg">logout</span>
+<span class="text-xs font-bold">تسجيل الخروج</span>
+</div>
+</li>
+</ul>
+</div>
+<div class="bg-accent-gold/5 p-8 border border-accent-gold/20">
+<h4 class="font-bold text-sm mb-2">هل تحتاج للمساعدة؟</h4>
+<p class="text-xs text-gray-500 mb-6 leading-relaxed">فريق خدمة العملاء متاح دائماً لمساعدتك في أي استفسار حول طلباتك.</p>
+<a class="inline-flex items-center gap-2 text-[10px] font-bold text-primary uppercase tracking-widest group" href="#">
+                        تواصل معنا
+                        <span class="material-symbols-outlined text-lg transition-transform group-hover:-translate-x-1">arrow_right_alt</span>
+</a>
+</div>
+</div>
+</div>
+<section class="mt-32 pt-16 border-t border-gray-100 dark:border-gray-800">
+<div class="text-center mb-12">
+<h3 class="text-2xl font-extrabold mb-2 uppercase tracking-tight">مختارات لك</h3>
+<div class="w-12 h-1 bg-primary mx-auto"></div>
+</div>
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+<div class="space-y-4 group cursor-pointer">
+<div class="aspect-[3/4] bg-gray-100 overflow-hidden relative">
+<img alt="Product" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbi3E7Kulf-O39skm-_q21SAHf1y-hZ4ToIZmrNSJz5N7tKArej1WXHzgD2l1Jvtm7wor_gDh9NC2j0ZAMXdV1bCjcvYAqXP_xWrT6PSJYaKk9-1PdFQopPgmBmBFgWDA5_sJ3Vnxzp9IkrlliKv5tQZjFVT3j-_BoV5Y9Ij4sr1ctB3EuNxssOGOTkdmFQ8tWUJ1V3wJAXvqDNNnN-M_9wCPr9ClSqkeODujbxIdxwFE12bb2qCRHl3mp8xOFHnrxg00RkrqoykTB"/>
+<div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors"></div>
+</div>
+<div>
+<h4 class="font-bold text-sm">سترة صوفية ناعمة</h4>
+<p class="text-primary font-bold text-sm mt-1">1,450 جنيه</p>
+</div>
+</div>
+<div class="space-y-4 group cursor-pointer">
+<div class="aspect-[3/4] bg-gray-100 overflow-hidden relative">
+<img alt="Product" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD55sDnuTNCU7sBX1jr1StVjbWmYFeqZK4Gy_tpA6izp9D-hK7bZkpmRo2dZOfQP4KUjqpRKi86MyDd0QDfy__R8OTaSxS68fA5-b4xtYTrdutWDPR6bZd8wYTbfVUCphyByZDz-Yl8MPS2HTrOes1u1KdzS8s8D_vR6nKfySirpmhbBVYMuxKNadWMwau8YSMjRKphq53QPJM6UIRQCB20U0jc1Df1gdbsol42-LzV68izutNhL6PJza4Gw7gj4yAqMsIRyxw_z2I0"/>
+<div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors"></div>
+</div>
+<div>
+<h4 class="font-bold text-sm">بنطال تشينو كلاسيك</h4>
+<p class="text-primary font-bold text-sm mt-1">1,200 جنيه</p>
+</div>
+</div>
+<div class="space-y-4 group cursor-pointer">
+<div class="aspect-[3/4] bg-gray-100 overflow-hidden relative">
+<img alt="Product" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAa8rxsCtnHO1uoqPKohyj3olgrRNYd84CD7ibbTxlOhJunn23RMdUvhV50rilc6g5xsGQ_Bz3Y6_Xi3llenb_loo06rLbJj2A5MY-DoJt46VO0LHC-q4_C_TuacMR1u3F4JMj1Ljr3TR_Js_TN_DGjG6a96fJulUh_UttCtpU5wRgwu7HoF0JwqHBOu_Qz_pKne5ROiSCvA5oWyansb_9tY7WE5Mz3MOeEqJBIlamFRHh5OYXaonC9MQawVhOYhPZoq8Au59PQYaLn"/>
+<div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors"></div>
+</div>
+<div>
+<h4 class="font-bold text-sm">جاكيت بليزر كاجوال</h4>
+<p class="text-primary font-bold text-sm mt-1">2,800 جنيه</p>
+</div>
+</div>
+<div class="space-y-4 group cursor-pointer">
+<div class="aspect-[3/4] bg-gray-100 overflow-hidden relative">
+<img alt="Product" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD55sDnuTNCU7sBX1jr1StVjbWmYFeqZK4Gy_tpA6izp9D-hK7bZkpmRo2dZOfQP4KUjqpRKi86MyDd0QDfy__R8OTaSxS68fA5-b4xtYTrdutWDPR6bZd8wYTbfVUCphyByZDz-Yl8MPS2HTrOes1u1KdzS8s8D_vR6nKfySirpmhbBVYMuxKNadWMwau8YSMjRKphq53QPJM6UIRQCB20U0jc1Df1gdbsol42-LzV68izutNhL6PJza4Gw7gj4yAqMsIRyxw_z2I0"/>
+<div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors"></div>
+</div>
+<div>
+<h4 class="font-bold text-sm">حذاء جلد طبيعي</h4>
+<p class="text-primary font-bold text-sm mt-1">1,950 جنيه</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="bg-primary-dark text-white pt-24 pb-12">
+<div class="container mx-auto px-4 lg:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-24">
+<div class="space-y-8">
+<h4 class="text-3xl font-extrabold tracking-tighter uppercase italic">تفصيلة</h4>
+<p class="text-white/70 leading-relaxed font-light text-sm">
+                    متجركم الأول للأزياء العصرية المصممة بدقة لتلائم أسلوب حياتكم. الجودة والفخامة في كل غرزة منذ عام 2020.
+                </p>
+</div>
+<div>
+<h5 class="font-bold text-xs uppercase tracking-[0.3em] mb-10 text-white">تسوق حسب الفئة</h5>
+<ul class="space-y-5 text-white/70 font-bold text-[11px] uppercase tracking-widest">
+<li><a class="hover:text-white transition-colors flex items-center gap-3" href="#"><span class="w-4 h-[1px] bg-white/30"></span>وصلنا حديثاً</a></li>
+<li><a class="hover:text-white transition-colors flex items-center gap-3" href="#"><span class="w-4 h-[1px] bg-white/30"></span>مجموعة الرجال</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold text-xs uppercase tracking-[0.3em] mb-10 text-white">خدمة العملاء</h5>
+<ul class="space-y-5 text-white/70 font-bold text-[11px] uppercase tracking-widest">
+<li><a class="hover:text-white transition-colors" href="#">تتبع الطلبية</a></li>
+<li><a class="hover:text-white transition-colors" href="#">سياسة الاسترجاع</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold text-xs uppercase tracking-[0.3em] mb-10 text-white">تواصل معنا</h5>
+<ul class="space-y-6 text-white/70 text-[13px] font-medium">
+<li class="flex items-start gap-4">
+<span class="material-symbols-outlined text-white text-xl mt-1">location_on</span>
+<span class="leading-relaxed">شارع التسعين، التجمع الخامس، القاهرة، مصر</span>
+</li>
+</ul>
+</div>
+</div>
+<div class="container mx-auto px-4 lg:px-12 pt-12 border-t border-white/10 text-center">
+<p class="text-white/40 text-[10px] uppercase tracking-[0.2em]">© 2024 جميع الحقوق محفوظة لشركة تفصيلة للأزياء</p>
+</div>
+</footer>
+
+</body></html>

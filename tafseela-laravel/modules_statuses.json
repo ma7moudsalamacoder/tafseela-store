@@ -7,5 +7,6 @@
     "Support": true,
     "Admin": true,
     "Order": true,
-    "Delivery": true
+    "Delivery": true,
+    "Customer": true
 }

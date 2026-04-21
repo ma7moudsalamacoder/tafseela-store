@@ -1,4 +1,4 @@
-# Tafseela
+# Tafseela Store
 
 Tafseela is an online shopping destination focused on making product discovery and purchasing simple for everyday customers.
 

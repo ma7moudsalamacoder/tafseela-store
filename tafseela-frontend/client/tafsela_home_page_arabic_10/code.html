@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tafsela | تفصيلة - تتبع الطلب</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&amp;family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#A67C52",
+                "primary-dark": "#7D5A39",
+                "accent-gold": "#A67C52",
+                "success-green": "#2D6A4F",
+                "background-light": "#FDFCFB",
+                "background-dark": "#121212",
+                "neutral-charcoal": "#1A1A1A",
+                "neutral-beige": "#F7F3F0",
+              },
+              fontFamily: {
+                "display": ["Almarai", "sans-serif"],
+                "body": ["IBM Plex Sans Arabic", "sans-serif"]
+              },
+              borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply font-body text-neutral-charcoal bg-background-light dark:bg-background-dark dark:text-gray-100 antialiased;
+            }
+            h1, h2, h3, h4, h5, h6 {
+                @apply font-display tracking-tight;
+            }
+        }
+        .tracking-step-active {
+            @apply text-primary;
+        }
+        .tracking-step-line {
+            @apply absolute h-0.5 bg-gray-200 dark:bg-gray-700 top-5 left-0 right-0 -z-10;
+        }
+        .tracking-step-line-active {
+            @apply absolute h-0.5 bg-primary top-5 -z-10;
+        }
+        .order-card {
+            @apply border border-gray-100 dark:border-gray-800 bg-white dark:bg-neutral-charcoal/30 p-8 shadow-sm;
+        }
+    </style>
+</head>
+<body class="transition-colors duration-300">
+<header class="sticky top-0 z-30 bg-white/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
+<div class="container mx-auto px-4 lg:px-12 py-5 flex items-center justify-between">
+<div class="flex-shrink-0">
+<a class="text-3xl font-extrabold text-neutral-charcoal dark:text-white tracking-tighter uppercase italic" href="#">تفصيلة</a>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-[11px] font-bold hover:text-primary transition-colors flex items-center gap-1.5 uppercase tracking-widest whitespace-nowrap">
+<span class="font-sans">English</span>
+<span class="material-symbols-outlined text-lg">language</span>
+</button>
+</div>
+</div>
+</header>
+<main class="container mx-auto px-4 lg:px-12 py-12">
+<nav class="flex mb-8 text-xs font-bold uppercase tracking-widest text-gray-400 gap-2">
+<a class="hover:text-primary transition-colors" href="#">الرئيسية</a>
+<span>/</span>
+<span class="text-neutral-charcoal dark:text-gray-200">تتبع طلبك</span>
+</nav>
+<div class="mb-12">
+<h2 class="text-3xl font-extrabold text-neutral-charcoal dark:text-white mb-2">تتبع طلبك</h2>
+<p class="text-gray-500 dark:text-gray-400">طلب رقم <span class="text-primary font-sans font-bold">#TF-98234</span> | تم الطلب في 20 مايو 2024</p>
+</div>
+<div class="mb-16 relative">
+<div class="flex justify-between max-w-5xl mx-auto relative">
+<div class="tracking-step-line w-full"></div>
+<div class="tracking-step-line-active" style="right: 0; width: 66%;"></div>
+<div class="flex flex-col items-center gap-3 relative z-10 bg-background-light dark:bg-background-dark px-2">
+<div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-xl">check</span>
+</div>
+<span class="text-sm font-bold text-primary">تم تأكيد الطلب</span>
+</div>
+<div class="flex flex-col items-center gap-3 relative z-10 bg-background-light dark:bg-background-dark px-2">
+<div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-xl">inventory_2</span>
+</div>
+<span class="text-sm font-bold text-primary">قيد التجهيز</span>
+</div>
+<div class="flex flex-col items-center gap-3 relative z-10 bg-background-light dark:bg-background-dark px-2">
+<div class="w-10 h-10 rounded-full border-2 border-primary bg-white dark:bg-neutral-charcoal text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-xl">local_shipping</span>
+</div>
+<span class="text-sm font-bold text-primary">تم الشحن</span>
+</div>
+<div class="flex flex-col items-center gap-3 relative z-10 bg-background-light dark:bg-background-dark px-2">
+<div class="w-10 h-10 rounded-full border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-neutral-charcoal text-gray-300 flex items-center justify-center">
+<span class="material-symbols-outlined text-xl">home_pin</span>
+</div>
+<span class="text-sm font-bold text-gray-400">تم التوصيل</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-2 space-y-8">
+<div class="order-card">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-gray-100 dark:border-gray-800">
+<div>
+<p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">شركة الشحن</p>
+<h3 class="text-lg font-bold">أرامكس - Aramex</h3>
+</div>
+<div>
+<p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">رقم التتبع</p>
+<div class="flex items-center gap-3">
+<span class="text-lg font-bold font-sans text-primary">AX-5928114092</span>
+<button class="flex items-center text-gray-400 hover:text-primary transition-colors" title="نسخ رقم التتبع">
+<span class="material-symbols-outlined text-lg">content_copy</span>
+</button>
+</div>
+</div>
+<div class="bg-success-green/10 text-success-green px-4 py-2 text-xs font-bold">
+                        في الطريق إليك
+                    </div>
+</div>
+<div class="mt-8">
+<h3 class="font-bold text-lg mb-8">تفاصيل التتبع</h3>
+<div class="space-y-0 relative">
+<div class="absolute right-3.5 top-2 bottom-2 w-0.5 bg-gray-100 dark:bg-gray-800"></div>
+<div class="relative pr-10 pb-8">
+<div class="absolute right-0 top-1.5 w-7 h-7 rounded-full bg-primary border-4 border-white dark:border-neutral-charcoal shadow-sm"></div>
+<div class="flex flex-col md:flex-row md:justify-between">
+<div>
+<h4 class="font-bold text-sm">تم الشحن من المستودع</h4>
+<p class="text-xs text-gray-500 mt-1">القاهرة، مدينة نصر - مركز التوزيع الرئيسي</p>
+</div>
+<div class="mt-2 md:mt-0 text-left">
+<p class="text-xs font-bold text-neutral-charcoal dark:text-gray-300">22 مايو 2024</p>
+<p class="text-[10px] text-gray-400 font-sans">09:45 AM</p>
+</div>
+</div>
+</div>
+<div class="relative pr-10 pb-8">
+<div class="absolute right-0 top-1.5 w-7 h-7 rounded-full bg-gray-200 dark:bg-gray-700 border-4 border-white dark:border-neutral-charcoal shadow-sm"></div>
+<div class="flex flex-col md:flex-row md:justify-between">
+<div>
+<h4 class="font-bold text-sm text-gray-500">تم تجهيز الطلب للتغليف</h4>
+<p class="text-xs text-gray-400 mt-1">تم التحقق من جودة المنتجات وتغليفها</p>
+</div>
+<div class="mt-2 md:mt-0 text-left">
+<p class="text-xs font-bold text-gray-400">21 مايو 2024</p>
+<p class="text-[10px] text-gray-400 font-sans">02:30 PM</p>
+</div>
+</div>
+</div>
+<div class="relative pr-10">
+<div class="absolute right-0 top-1.5 w-7 h-7 rounded-full bg-gray-200 dark:bg-gray-700 border-4 border-white dark:border-neutral-charcoal shadow-sm"></div>
+<div class="flex flex-col md:flex-row md:justify-between">
+<div>
+<h4 class="font-bold text-sm text-gray-500">تم تأكيد الطلب بنجاح</h4>
+<p class="text-xs text-gray-400 mt-1">بدء معالجة الطلب في نظامنا</p>
+</div>
+<div class="mt-2 md:mt-0 text-left">
+<p class="text-xs font-bold text-gray-400">20 مايو 2024</p>
+<p class="text-[10px] text-gray-400 font-sans">11:15 AM</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-8">
+<div class="order-card">
+<h3 class="font-bold text-lg border-b border-gray-100 dark:border-gray-800 pb-4 mb-6">ملخص الطلب</h3>
+<div class="space-y-6 mb-8">
+<div class="flex items-center gap-4">
+<div class="w-14 h-18 bg-gray-50 flex-shrink-0">
+<img alt="Product" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAa8rxsCtnHO1uoqPKohyj3olgrRNYd84CD7ibbTxlOhJunn23RMdUvhV50rilc6g5xsGQ_Bz3Y6_Xi3llenb_loo06rLbJj2A5MY-DoJt46VO0LHC-q4_C_TuacMR1u3F4JMj1Ljr3TR_Js_TN_DGjG6a96fJulUh_UttCtpU5wRgwu7HoF0JwqHBOu_Qz_pKne5ROiSCvA5oWyansb_9tY7WE5Mz3MOeEqJBIlamFRHh5OYXaonC9MQawVhOYhPZoq8Au59PQYaLn"/>
+</div>
+<div class="flex-grow">
+<h4 class="font-bold text-xs">قميص كتان فاخر - أزرق داكن</h4>
+<p class="text-[10px] text-gray-400 font-bold">مقاس: L | الكمية: 1</p>
+</div>
+<div class="text-xs font-bold">850 جنيه</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-14 h-18 bg-gray-50 flex-shrink-0">
+<img alt="Product" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD55sDnuTNCU7sBX1jr1StVjbWmYFeqZK4Gy_tpA6izp9D-hK7bZkpmRo2dZOfQP4KUjqpRKi86MyDd0QDfy__R8OTaSxS68fA5-b4xtYTrdutWDPR6bZd8wYTbfVUCphyByZDz-Yl8MPS2HTrOes1u1KdzS8s8D_vR6nKfySirpmhbBVYMuxKNadWMwau8YSMjRKphq53QPJM6UIRQCB20U0jc1Df1gdbsol42-LzV68izutNhL6PJza4Gw7gj4yAqMsIRyxw_z2I0"/>
+</div>
+<div class="flex-grow">
+<h4 class="font-bold text-xs">بنطال تشينو كلاسيك</h4>
+<p class="text-[10px] text-gray-400 font-bold">مقاس: 32 | الكمية: 1</p>
+</div>
+<div class="text-xs font-bold">1,200 جنيه</div>
+</div>
+</div>
+<div class="border-t border-gray-100 dark:border-gray-800 pt-4 space-y-2">
+<div class="flex justify-between text-xs">
+<span class="text-gray-500">المجموع</span>
+<span class="font-bold">2,050 جنيه</span>
+</div>
+</div>
+</div>
+<div class="order-card">
+<h3 class="font-bold text-lg border-b border-gray-100 dark:border-gray-800 pb-4 mb-6">معلومات التوصيل</h3>
+<div class="space-y-6">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<div>
+<p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">عنوان الشحن</p>
+<p class="text-sm font-bold leading-relaxed">
+                                أحمد محمد<br/>
+                                24 شارع التسعين الشمالي، التجمع الخامس<br/>
+                                القاهرة، مصر
+                            </p>
+</div>
+</div>
+<div class="flex gap-4 border-t border-gray-100 dark:border-gray-800 pt-6">
+<span class="material-symbols-outlined text-primary">call</span>
+<div>
+<p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">بيانات الاتصال</p>
+<p class="text-sm font-bold font-sans">+20 102 345 6789</p>
+<p class="text-xs text-gray-400">ahmed.m@example.com</p>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full bg-neutral-charcoal text-white px-8 py-5 font-extrabold text-[12px] uppercase tracking-[0.2em] hover:bg-black transition-all duration-300">
+                تحتاج مساعدة؟ تواصل معنا
+            </button>
+</div>
+</div>
+<section class="mt-32 pt-16 border-t border-gray-100 dark:border-gray-800">
+<div class="text-center mb-12">
+<h3 class="text-2xl font-extrabold mb-2">قد يعجبك أيضاً</h3>
+<div class="w-12 h-1 bg-primary mx-auto"></div>
+</div>
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+<div class="space-y-4">
+<div class="aspect-[3/4] bg-gray-100 overflow-hidden relative group">
+<img alt="Recommendation" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbi3E7Kulf-O39skm-_q21SAHf1y-hZ4ToIZmrNSJz5N7tKArej1WXHzgD2l1Jvtm7wor_gDh9NC2j0ZAMXdV1bCjcvYAqXP_xWrT6PSJYaKk9-1PdFQopPgmBmBFgWDA5_sJ3Vnxzp9IkrlliKv5tQZjFVT3j-_BoV5Y9Ij4sr1ctB3EuNxssOGOTkdmFQ8tWUJ1V3wJAXvqDNNnN-M_9wCPr9ClSqkeODujbxIdxwFE12bb2qCRHl3mp8xOFHnrxg00RkrqoykTB"/>
+</div>
+<div>
+<h4 class="font-bold text-sm">سترة صوفية ناعمة</h4>
+<p class="text-primary font-bold text-sm mt-1">1,450 جنيه</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="aspect-[3/4] bg-gray-100 overflow-hidden relative group">
+<img alt="Recommendation" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAa8rxsCtnHO1uoqPKohyj3olgrRNYd84CD7ibbTxlOhJunn23RMdUvhV50rilc6g5xsGQ_Bz3Y6_Xi3llenb_loo06rLbJj2A5MY-DoJt46VO0LHC-q4_C_TuacMR1u3F4JMj1Ljr3TR_Js_TN_DGjG6a96fJulUh_UttCtpU5wRgwu7HoF0JwqHBOu_Qz_pKne5ROiSCvA5oWyansb_9tY7WE5Mz3MOeEqJBIlamFRHh5OYXaonC9MQawVhOYhPZoq8Au59PQYaLn"/>
+</div>
+<div>
+<h4 class="font-bold text-sm">قميص قطن أبيض</h4>
+<p class="text-primary font-bold text-sm mt-1">750 جنيه</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="aspect-[3/4] bg-gray-100 overflow-hidden relative group">
+<img alt="Recommendation" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAa8rxsCtnHO1uoqPKohyj3olgrRNYd84CD7ibbTxlOhJunn23RMdUvhV50rilc6g5xsGQ_Bz3Y6_Xi3llenb_loo06rLbJj2A5MY-DoJt46VO0LHC-q4_C_TuacMR1u3F4JMj1Ljr3TR_Js_TN_DGjG6a96fJulUh_UttCtpU5wRgwu7HoF0JwqHBOu_Qz_pKne5ROiSCvA5oWyansb_9tY7WE5Mz3MOeEqJBIlamFRHh5OYXaonC9MQawVhOYhPZoq8Au59PQYaLn"/>
+</div>
+<div>
+<h4 class="font-bold text-sm">جاكيت بليزر كاجوال</h4>
+<p class="text-primary font-bold text-sm mt-1">2,800 جنيه</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="aspect-[3/4] bg-gray-100 overflow-hidden relative group">
+<img alt="Recommendation" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD55sDnuTNCU7sBX1jr1StVjbWmYFeqZK4Gy_tpA6izp9D-hK7bZkpmRo2dZOfQP4KUjqpRKi86MyDd0QDfy__R8OTaSxS68fA5-b4xtYTrdutWDPR6bZd8wYTbfVUCphyByZDz-Yl8MPS2HTrOes1u1KdzS8s8D_vR6nKfySirpmhbBVYMuxKNadWMwau8YSMjRKphq53QPJM6UIRQCB20U0jc1Df1gdbsol42-LzV68izutNhL6PJza4Gw7gj4yAqMsIRyxw_z2I0"/>
+</div>
+<div>
+<h4 class="font-bold text-sm">حذاء جلد طبيعي</h4>
+<p class="text-primary font-bold text-sm mt-1">1,950 جنيه</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="bg-primary-dark text-white pt-24 pb-12">
+<div class="container mx-auto px-4 lg:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-24">
+<div class="space-y-8">
+<h4 class="text-3xl font-extrabold tracking-tighter uppercase italic">تفصيلة</h4>
+<p class="text-white/70 leading-relaxed font-light text-sm">
+                متجركم الأول للأزياء العصرية المصممة بدقة لتلائم أسلوب حياتكم. الجودة والفخامة في كل غرزة منذ عام 2020.
+            </p>
+</div>
+<div>
+<h5 class="font-bold text-xs uppercase tracking-[0.3em] mb-10 text-white">تسوق حسب الفئة</h5>
+<ul class="space-y-5 text-white/70 font-bold text-[11px] uppercase tracking-widest">
+<li><a class="hover:text-white transition-colors flex items-center gap-3" href="#"><span class="w-4 h-[1px] bg-white/30"></span>وصلنا حديثاً</a></li>
+<li><a class="hover:text-white transition-colors flex items-center gap-3" href="#"><span class="w-4 h-[1px] bg-white/30"></span>مجموعة الرجال</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold text-xs uppercase tracking-[0.3em] mb-10 text-white">خدمة العملاء</h5>
+<ul class="space-y-5 text-white/70 font-bold text-[11px] uppercase tracking-widest">
+<li><a class="hover:text-white transition-colors" href="#">تتبع الطلبية</a></li>
+<li><a class="hover:text-white transition-colors" href="#">سياسة الاسترجاع</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold text-xs uppercase tracking-[0.3em] mb-10 text-white">تواصل معنا</h5>
+<ul class="space-y-6 text-white/70 text-[13px] font-medium">
+<li class="flex items-start gap-4">
+<span class="material-symbols-outlined text-white text-xl mt-1">location_on</span>
+<span class="leading-relaxed">شارع التسعين، التجمع الخامس، القاهرة، مصر</span>
+</li>
+</ul>
+</div>
+</div>
+<div class="container mx-auto px-4 lg:px-12 pt-12 border-t border-white/10 text-center">
+<p class="text-white/40 text-[10px] uppercase tracking-[0.2em]">© 2024 جميع الحقوق محفوظة لشركة تفصيلة للأزياء</p>
+</div>
+</footer>
+
+</body></html>

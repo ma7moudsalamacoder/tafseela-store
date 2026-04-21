@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tafsela | تفصيلة - حسابي الشخصي</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&amp;family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#A67C52",
+                "primary-dark": "#7D5A39",
+                "accent-gold": "#A67C52",
+                "success-green": "#2D6A4F",
+                "background-light": "#FDFCFB",
+                "background-dark": "#121212",
+                "neutral-charcoal": "#1A1A1A",
+                "neutral-beige": "#F7F3F0",
+              },
+              fontFamily: {
+                "display": ["Almarai", "sans-serif"],
+                "body": ["IBM Plex Sans Arabic", "sans-serif"]
+              },
+              borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply font-body text-neutral-charcoal bg-background-light dark:bg-background-dark dark:text-gray-100 antialiased;
+            }
+            h1, h2, h3, h4, h5, h6 {
+                @apply font-display tracking-tight;
+            }
+        }
+        .form-input {
+            @apply block w-full border-gray-200 dark:border-gray-800 bg-white dark:bg-neutral-charcoal/50 py-4 px-6 focus:border-primary focus:ring-0 text-sm transition-all;
+        }
+        .sidebar-link {
+            @apply flex items-center gap-4 py-4 px-6 border-r-2 border-transparent hover:bg-neutral-beige dark:hover:bg-neutral-charcoal/50 transition-all text-sm font-bold text-gray-500;
+        }
+        .sidebar-link.active {
+            @apply border-primary text-primary bg-neutral-beige dark:bg-neutral-charcoal/50;
+        }
+        .account-card {
+            @apply border border-gray-100 dark:border-gray-800 bg-white dark:bg-neutral-charcoal/30 p-10 shadow-sm;
+        }
+    </style>
+</head>
+<body class="transition-colors duration-300">
+<header class="sticky top-0 z-30 bg-white/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
+<div class="container mx-auto px-4 lg:px-12 py-5 flex items-center justify-between">
+<div class="flex-shrink-0">
+<a class="text-3xl font-extrabold text-neutral-charcoal dark:text-white tracking-tighter uppercase italic" href="#">تفصيلة</a>
+</div>
+<div class="hidden lg:flex items-center gap-12 text-[11px] font-bold uppercase tracking-widest">
+<a class="hover:text-primary transition-colors" href="#">وصلنا حديثاً</a>
+<a class="hover:text-primary transition-colors" href="#">رجالي</a>
+<a class="hover:text-primary transition-colors" href="#">نسائي</a>
+<a class="hover:text-primary transition-colors" href="#">اكسسوارات</a>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-[11px] font-bold hover:text-primary transition-colors flex items-center gap-1.5 uppercase tracking-widest whitespace-nowrap">
+<span class="font-sans">English</span>
+<span class="material-symbols-outlined text-lg">language</span>
+</button>
+<button class="material-symbols-outlined text-2xl hover:text-primary transition-colors">person</button>
+<button class="material-symbols-outlined text-2xl hover:text-primary transition-colors">shopping_bag</button>
+</div>
+</div>
+</header>
+<main class="container mx-auto px-4 lg:px-12 py-12">
+<nav class="flex mb-12 text-xs font-bold uppercase tracking-widest text-gray-400 gap-2">
+<a class="hover:text-primary transition-colors" href="#">الرئيسية</a>
+<span>/</span>
+<span class="text-neutral-charcoal dark:text-gray-200">حسابي الشخصي</span>
+</nav>
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-12 items-start">
+<aside class="lg:col-span-1 space-y-2 order-2 lg:order-2">
+<div class="account-card p-0 overflow-hidden">
+<nav class="flex flex-col">
+<a class="sidebar-link active" href="#">
+<span class="material-symbols-outlined text-xl">person</span>
+<span>المعلومات الشخصية</span>
+</a>
+<a class="sidebar-link" href="#">
+<span class="material-symbols-outlined text-xl">package_2</span>
+<span>طلباتي</span>
+</a>
+<a class="sidebar-link" href="#">
+<span class="material-symbols-outlined text-xl">location_on</span>
+<span>دفتر العناوين</span>
+</a>
+<a class="sidebar-link" href="#">
+<span class="material-symbols-outlined text-xl">credit_card</span>
+<span>طرق الدفع</span>
+</a>
+<a class="sidebar-link" href="#">
+<span class="material-symbols-outlined text-xl">favorite</span>
+<span>قائمة الأمنيات</span>
+</a>
+<a class="sidebar-link text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20" href="#">
+<span class="material-symbols-outlined text-xl">logout</span>
+<span>تسجيل الخروج</span>
+</a>
+</nav>
+</div>
+</aside>
+<div class="lg:col-span-3 space-y-8 order-1 lg:order-1">
+<div class="account-card">
+<div class="mb-12 border-b border-gray-100 dark:border-gray-800 pb-8 flex flex-col md:flex-row items-center gap-8">
+<div class="relative group">
+<div class="w-32 h-32 rounded-full bg-neutral-beige dark:bg-neutral-charcoal overflow-hidden border-2 border-primary">
+<img alt="Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0Xoq36MzHEAstNuj86TcKp12vgp2pBPqyXkVvMe_rN-En25bs19pM21ZPLtrcFOrDz71uNjED4bFQPldtL-NI9GRKuCYkGvuqNu8_82RPMfQKpjxhd_nu5XNkMAuRM1fjmJSX6RiTdnWoej4uHldWDQ95xvsb0pujU-Mbhrk9GIaIfYf6Z8DF1gYY_u94pBuQMuGoxTNUhVXGPK2sUVxOlX7xOmBFl8HqWUqDq8gGbRGwGeBphiMvbuDCVcZ4LEhTuW3_OkukBZqP"/>
+</div>
+<button class="absolute bottom-0 right-0 bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg border-2 border-white dark:border-neutral-charcoal hover:bg-primary-dark transition-colors">
+<span class="material-symbols-outlined text-xl">photo_camera</span>
+</button>
+</div>
+<div class="text-center md:text-right">
+<h2 class="text-3xl font-extrabold text-neutral-charcoal dark:text-white mb-2">أهلاً بك، أحمد محمد</h2>
+<p class="text-gray-500 dark:text-gray-400">قم بتحديث معلوماتك الشخصية وإعدادات حسابك</p>
+</div>
+</div>
+<form class="space-y-10">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="space-y-3">
+<label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block">الاسم بالكامل</label>
+<input class="form-input" placeholder="أدخل اسمك الكامل" type="text" value="أحمد محمد"/>
+</div>
+<div class="space-y-3">
+<label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block">البريد الإلكتروني</label>
+<input class="form-input font-sans" placeholder="email@example.com" type="email" value="ahmed.m@example.com"/>
+</div>
+<div class="space-y-3">
+<label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block">رقم الهاتف</label>
+<input class="form-input font-sans" placeholder="+20 000 000 0000" type="tel" value="+20 102 345 6789"/>
+</div>
+<div class="space-y-3">
+<label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block">تاريخ الميلاد (اختياري)</label>
+<input class="form-input font-sans text-gray-400" type="date"/>
+</div>
+</div>
+<div class="pt-8 border-t border-gray-100 dark:border-gray-800">
+<h3 class="font-bold text-lg mb-8">تغيير كلمة المرور</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="space-y-3">
+<label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block">كلمة المرور الحالية</label>
+<input class="form-input" placeholder="••••••••" type="password"/>
+</div>
+<div class="space-y-3">
+<label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest block">كلمة المرور الجديدة</label>
+<input class="form-input" placeholder="••••••••" type="password"/>
+</div>
+</div>
+</div>
+<div class="pt-8 flex flex-col md:flex-row gap-4">
+<button class="bg-primary text-white px-12 py-5 font-extrabold text-[12px] uppercase tracking-[0.2em] hover:bg-primary-dark transition-all duration-300" type="submit">
+                            حفظ التغييرات
+                        </button>
+<button class="bg-transparent text-neutral-charcoal dark:text-white border border-neutral-charcoal dark:border-gray-700 px-12 py-5 font-extrabold text-[12px] uppercase tracking-[0.2em] hover:bg-neutral-charcoal hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300" type="button">
+                            إلغاء
+                        </button>
+</div>
+</form>
+</div>
+</div>
+</div>
+</main>
+<footer class="bg-primary-dark text-white pt-24 pb-12 mt-24">
+<div class="container mx-auto px-4 lg:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-24">
+<div class="space-y-8">
+<h4 class="text-3xl font-extrabold tracking-tighter uppercase italic">تفصيلة</h4>
+<p class="text-white/70 leading-relaxed font-light text-sm">
+                متجركم الأول للأزياء العصرية المصممة بدقة لتلائم أسلوب حياتكم. الجودة والفخامة في كل غرزة منذ عام 2020.
+            </p>
+</div>
+<div>
+<h5 class="font-bold text-xs uppercase tracking-[0.3em] mb-10 text-white">تسوق حسب الفئة</h5>
+<ul class="space-y-5 text-white/70 font-bold text-[11px] uppercase tracking-widest">
+<li><a class="hover:text-white transition-colors flex items-center gap-3" href="#"><span class="w-4 h-[1px] bg-white/30"></span>وصلنا حديثاً</a></li>
+<li><a class="hover:text-white transition-colors flex items-center gap-3" href="#"><span class="w-4 h-[1px] bg-white/30"></span>مجموعة الرجال</a></li>
+<li><a class="hover:text-white transition-colors flex items-center gap-3" href="#"><span class="w-4 h-[1px] bg-white/30"></span>مجموعة النساء</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold text-xs uppercase tracking-[0.3em] mb-10 text-white">خدمة العملاء</h5>
+<ul class="space-y-5 text-white/70 font-bold text-[11px] uppercase tracking-widest">
+<li><a class="hover:text-white transition-colors" href="#">تتبع الطلبية</a></li>
+<li><a class="hover:text-white transition-colors" href="#">سياسة الاسترجاع</a></li>
+<li><a class="hover:text-white transition-colors" href="#">الأسئلة الشائعة</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold text-xs uppercase tracking-[0.3em] mb-10 text-white">تواصل معنا</h5>
+<ul class="space-y-6 text-white/70 text-[13px] font-medium">
+<li class="flex items-start gap-4">
+<span class="material-symbols-outlined text-white text-xl mt-1">location_on</span>
+<span class="leading-relaxed">شارع التسعين، التجمع الخامس، القاهرة، مصر</span>
+</li>
+<li class="flex items-start gap-4">
+<span class="material-symbols-outlined text-white text-xl mt-1">call</span>
+<span class="leading-relaxed font-sans">+20 102 345 6789</span>
+</li>
+</ul>
+</div>
+</div>
+<div class="container mx-auto px-4 lg:px-12 pt-12 border-t border-white/10 text-center">
+<p class="text-white/40 text-[10px] uppercase tracking-[0.2em]">© 2024 جميع الحقوق محفوظة لشركة تفصيلة للأزياء</p>
+</div>
+</footer>
+
+</body></html>
