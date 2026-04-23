@@ -1,2 +1,75 @@
 {
+    "validation": {
+        "email_required": "The email address is required.",
+        "email_email": "Please enter a valid email address.",
+        "email_unique": "This email address is already registered.",
+        "password_required": "The password is required.",
+        "password_min": "The password must be at least 8 characters.",
+        "password_letters": "The password must contain at least one letter.",
+        "password_numbers": "The password must contain at least one number.",
+        "password_symbols": "The password must contain at least one symbol.",
+        "password_uncompromised": "The password has been compromised. Please choose a different one.",
+        "password_confirmation_required": "Please confirm your password.",
+        "password_confirmation_same": "The passwords do not match.",
+        "first_name_required": "The first name is required.",
+        "first_name_max": "The first name may not exceed 100 characters.",
+        "last_name_required": "The last name is required.",
+        "last_name_max": "The last name may not exceed 100 characters.",
+        "phone_max": "The phone number may not exceed 20 characters.",
+        "country_id_exists": "Please select a valid country.",
+        "city_id_exists": "Please select a valid city.",
+        "date_of_birth_date_format": "Please enter a valid date.",
+        "date_of_birth_before": "The date of birth must be before today.",
+        "gender_in": "Please select a valid gender.",
+        "bio_max": "The bio may not exceed 500 characters.",
+        "type_required": "The address type is required.",
+        "type_in": "Please select a valid address type.",
+        "label_max": "The label may not exceed 100 characters.",
+        "recipient_name_required": "The recipient name is required.",
+        "recipient_name_max": "The recipient name may not exceed 100 characters.",
+        "recipient_phone_required": "The recipient phone is required.",
+        "recipient_phone_max": "The recipient phone may not exceed 20 characters.",
+        "state_max": "The state may not exceed 100 characters.",
+        "district_max": "The district may not exceed 100 characters.",
+        "street_max": "The street may not exceed 255 characters.",
+        "address_line_1_max": "Address line 1 may not exceed 255 characters.",
+        "address_line_2_max": "Address line 2 may not exceed 255 characters.",
+        "building_no_max": "The building number may not exceed 50 characters.",
+        "floor_no_max": "The floor number may not exceed 20 characters.",
+        "apartment_no_max": "The apartment number may not exceed 20 characters.",
+        "postal_code_max": "The postal code may not exceed 20 characters.",
+        "landmark_max": "The landmark may not exceed 255 characters.",
+        "latitude_between": "Please enter a valid latitude.",
+        "longitude_between": "Please enter a valid longitude.",
+        "delivery_notes_max": "The delivery notes may not exceed 500 characters.",
+        "is_default_boolean": "Please select a valid option.",
+        "current_password_required": "The current password is required.",
+        "current_password_hash_check": "The current password is incorrect."
+    },
+    "notifications": {
+        "account_created": {
+            "subject": "Verify Your Account",
+            "body": "Your account has been created. Use the OTP below to verify your email address.",
+            "otp_label": "OTP:",
+            "action": "Verify Email"
+        },
+        "account_verified": {
+            "subject": "Account Verified",
+            "body": "Your account has been successfully verified."
+        },
+        "recovery_requested": {
+            "subject": "Account Recovery Request",
+            "body": "You requested to recover your account. Use the OTP below to verify your identity.",
+            "otp_label": "OTP:",
+            "action": "Recover Account"
+        },
+        "account_recovered": {
+            "subject": "Account Recovered",
+            "body": "Your account has been successfully recovered. You can now log in with your new password."
+        },
+        "new_device_session": {
+            "subject": "New Device Login",
+            "body": "A new login was detected on your account from an unrecognized device."
+        }
+    }
 }
