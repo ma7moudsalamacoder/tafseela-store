@@ -1,130 +1,54 @@
-# Repository Guidelines
+# Tafseela
 
-This document provides essential guidelines for contributing to the Tafseela project.
+E-commerce platform: Laravel 11 backend + frontend mockups (static HTML).
 
-## Project Structure
+## Structure
 
-Tafseela is a monorepo with two main components:
+- `tafseela-laravel/` — Main application
+- `tafseela-frontend/` — Static client mockups only (no build)
 
-- `tafseela-laravel/` — Laravel 11 backend (main application)
-- `tafseela-frontend/` — Frontend directories (admin/client placeholders)
+**Backend uses `nwidart/laravel-modules`:** Modules/{ModuleName}/
+- Admin, Cart, Core, Customer, Delivery, Identity, Order, Payment, Product, Support
+- Core module = shared utilities, middlewares, base resources
 
-### Modular Architecture
+## Commands
 
-The backend uses `nwidart/laravel-modules` for a modular structure. Each module follows this pattern:
+Run from `tafseela-laravel/`:
 
+```bash
+# All services + dev server
+composer run dev
+
+# Tests
+./vendor/bin/phpunit
+./vendor/bin/phpunit --testsuite=Unit
+./vendor/bin/phpunit --testsuite=Feature
+
+# Code style fix
+./vendor/bin/pint
 ```
-Modules/{ModuleName}/
-├── app/
-│   ├── Http/
-│   └── Providers/
-├── database/
-│   ├── migrations/
-│   ├── factories/
-│   └── seeders/
-├── routes/
-└── Resources/
-```
 
-**Existing modules:** Admin, Cart, Core, Delivery, Identity, Order, Payment, Product, Support
-
-**Core module** contains shared utilities, middlewares, and base resources used across all modules.
-
-## Development Environment
-
-### Docker Stack
-
-Start all services via Docker Compose:
+## Docker
 
 ```bash
 docker compose up -d
 ```
 
-Services exposed at:
-- **Nginx:** http://localhost:8090
-- **MySQL:** localhost:3307
-- **Mailpit:** http://localhost:8025
-
-### Laravel Development Command
-
-Runs all services concurrently:
-
-```bash
-composer run dev
-```
-
-This starts: PHP server, queue worker, log viewer, and Vite.
-
-## Coding Standards
-
-### Style Configuration
-
-- **Indentation:** 4 spaces
-- **Line endings:** LF
-- **Encoding:** UTF-8
-
-### Code Formatting
-
-Use Laravel Pint to auto-fix styling:
-
-```bash
-./vendor/bin/pint
-```
-
-Run before committing to ensure consistent code style.
+Services: Nginx localhost:8090, MySQL localhost:3307, Mailpit localhost:8025
 
 ## Testing
 
-**Framework:** PHPUnit 11
+- MySQL required (no SQLite)
+- DB commented in phpunit.xml. Uses `.env` database
+- Run migrations before tests: `php artisan migrate`
 
-Run all tests:
+## Git
 
-```bash
-./vendor/bin/phpunit
-```
-
-Run specific suites:
-
-```bash
-./vendor/bin/phpunit --testsuite=Unit
-./vendor/bin/phpunit --testsuite=Feature
-```
-
-Test files live in `tafseela-laravel/tests/`:
-- `tests/Unit/` — Unit tests
-- `tests/Feature/` — Feature/integration tests
-
-## Git Conventions
-
-### Commit Message Format
-
-Follow **Conventional Commits**:
+Conventional commits:
 
 ```
-type(scope): description
+type(module): description
 ```
 
-**Examples:**
-```
-feat(identity): add OTP verification support
-refactor(cart): simplify quantity update logic
-fix(order): resolve double-charging issue
-docs: update API documentation
-```
-
-**Types:** `feat`, `fix`, `refactor`, `docs`, `chore`, `test`
-
-**Scope:** Use the module name (e.g., `identity`, `cart`, `core`) or omit for cross-cutting changes.
-
-### Branch Naming
-
-```
-feat/{module}/feature-name
-fix/{module}/issue-description
-```
-
-### Pull Requests
-
-- Link related issues in the PR description
-- Ensure all tests pass before requesting review
-- Run `./vendor/bin/pint` before submitting
+Types: `feat`, `fix`, `refactor`, `docs`, `chore`, `test`
+Bracket branch names: `feat/{module}/feature-name`
