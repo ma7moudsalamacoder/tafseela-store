@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 
-namespace Modules\Identity\app\Enums;
+namespace Modules\Identity\Enums;
 
 enum OtpActions: string
 {
@@ -9,3 +9,4 @@ enum OtpActions: string
     case CONFIRM_2FA = 'confirm_2fa';
     case CONFIRM_PAYMENT = 'confirm_payment';
 }
+

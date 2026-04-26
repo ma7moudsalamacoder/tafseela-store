@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 
-namespace Modules\Identity\app\Notifications;
+namespace Modules\Identity\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -31,3 +31,4 @@ class AccountCreatedNotification extends Notification implements ShouldQueue
             ->action(__('identity::notifications.account_created.action'), url('/verify?hash='.$this->hash));
     }
 }
+

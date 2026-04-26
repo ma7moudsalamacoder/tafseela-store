@@ -1,31 +1,30 @@
 # Tafseela
 
-E-commerce platform: Laravel 11 backend + frontend mockups (static HTML).
+Laravel 11 e-commerce + nwidart/laravel-modules.
 
 ## Structure
 
-- `tafseela-laravel/` — Main application
-- `tafseela-frontend/` — Static client mockups only (no build)
+- `tafseela-laravel/` — Main application (Laravel 11 + nwidart/laravel-modules)
+- `tafseela-frontend/` — Static client mockups
 
-**Backend uses `nwidart/laravel-modules`:** Modules/{ModuleName}/
-- Admin, Cart, Core, Customer, Delivery, Identity, Order, Payment, Product, Support
-- Core module = shared utilities, middlewares, base resources
+**Modules** (`Modules/{Module}/app/`): Admin, Cart, Core, Customer, Delivery, Identity, Order, Payment, Product, Support
 
 ## Commands
 
 Run from `tafseela-laravel/`:
 
 ```bash
-# All services + dev server
+# Dev
 composer run dev
 
 # Tests
 ./vendor/bin/phpunit
-./vendor/bin/phpunit --testsuite=Unit
-./vendor/bin/phpunit --testsuite=Feature
 
-# Code style fix
+# Code style (Laravel Pint)
 ./vendor/bin/pint
+
+# Clear caches
+php artisan view:clear && php artisan cache:clear && php artisan route:clear
 ```
 
 ## Docker
@@ -34,21 +33,41 @@ composer run dev
 docker compose up -d
 ```
 
-Services: Nginx localhost:8090, MySQL localhost:3307, Mailpit localhost:8025
+Ports: Nginx :8090, MySQL :3307, Mailpit :8025
 
-## Testing
+## Namespace Convention (CRITICAL)
 
-- MySQL required (no SQLite)
-- DB commented in phpunit.xml. Uses `.env` database
-- Run migrations before tests: `php artisan migrate`
+Module autoload maps `Modules\{Module}\` to `Modules/{Module}/app/`. Check `composer.json` autoload config.
+
+```php
+// Correct namespaces per composer.json:
+namespace Modules\Identity\Http\Controllers;
+namespace Modules\Identity\Http\Requests;
+namespace Modules\Identity\Services;
+namespace Modules\Identity\Models;
+```
+
+NOT `Modules\Identity\app\Http\Controllers` - the autoload does NOT include `app/` segment.
+
+## Blade Components
+
+Register anonymous components in ServiceProvider:
+
+```php
+// In IdentityServiceProvider::registerViews():
+Blade::component('identity::components.auth-input', 'auth-input');
+Blade::component('identity::layouts.auth', 'layouts.auth');
+```
+
+Use short alias: `<x-auth-input>`, `<x-auth-card>`, `<x-auth-layout>`
+
+## Routes
+
+Module routes at `Modules/{Module}/routes/web.php` — imported via `RouteServiceProvider`.
 
 ## Git
 
-Conventional commits:
+Conventional: `type(module): description`
 
-```
-type(module): description
-```
-
-Types: `feat`, `fix`, `refactor`, `docs`, `chore`, `test`
-Bracket branch names: `feat/{module}/feature-name`
+Types: feat, fix, refactor, docs, chore, test  
+Branches: `feat/{module}/feature-name`

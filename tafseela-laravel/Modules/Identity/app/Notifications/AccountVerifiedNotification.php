@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 
-namespace Modules\Identity\app\Notifications;
+namespace Modules\Identity\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -27,3 +27,4 @@ class AccountVerifiedNotification extends Notification implements ShouldQueue
             ->line(__('identity::notifications.account_verified.body'));
     }
 }
+

@@ -1,8 +1,8 @@
-<?php
+﻿<?php
 
-namespace Modules\Identity\app\Listeners;
+namespace Modules\Identity\Listeners;
 
-use Modules\Identity\app\Events\VerificationFailedEvent;
+use Modules\Identity\Events\VerificationFailedEvent;
 
 class VerificationFailedEventListener
 {
@@ -11,3 +11,4 @@ class VerificationFailedEventListener
         //
     }
 }
+

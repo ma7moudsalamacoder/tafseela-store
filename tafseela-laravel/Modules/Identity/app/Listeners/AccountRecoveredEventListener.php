@@ -1,10 +1,11 @@
-<?php
+﻿<?php
 
-namespace Modules\Identity\app\Listeners;
+namespace Modules\Identity\Listeners;
 
-use Modules\Identity\app\Events\AccountRecoveredEvent;
+use Modules\Identity\Events\AccountRecoveredEvent;
 
 class AccountRecoveredEventListener
 {
     public function handle(AccountRecoveredEvent $event): void {}
 }
+

@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 
-namespace Modules\Identity\app\Enums;
+namespace Modules\Identity\Enums;
 
 enum LockReasons: string
 {
@@ -8,3 +8,4 @@ enum LockReasons: string
     case UNAUTHORIZED_DEVICE = 'unauthorized_device';
     case UNAUTHORIZED_ACCESS = 'unauthorized_access';
 }
+

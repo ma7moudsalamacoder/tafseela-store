@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 
-namespace Modules\Identity\app\Events;
+namespace Modules\Identity\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -13,3 +13,4 @@ class AccountVerifiedEvent
         public int $userId,
     ) {}
 }
+

@@ -1,11 +1,11 @@
-<?php
+﻿<?php
 
 namespace Modules\Identity\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Core\Traits\HasAuditions;
-use Modules\Identity\app\Enums\OtpActions;
+use Modules\Identity\Enums\OtpActions;
 
 class Otp extends Model
 {
@@ -34,3 +34,4 @@ class Otp extends Model
         return $this->belongsTo(User::class);
     }
 }
+

@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 
-namespace Modules\Identity\app\Http\Requests;
+namespace Modules\Identity\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -31,3 +31,4 @@ class SignInRequest extends FormRequest
         ];
     }
 }
+

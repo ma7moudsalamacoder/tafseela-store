@@ -1,10 +1,11 @@
-<?php
+﻿<?php
 
-namespace Modules\Identity\app\Listeners;
+namespace Modules\Identity\Listeners;
 
-use Modules\Identity\app\Events\NewDeviceSessionEvent;
+use Modules\Identity\Events\NewDeviceSessionEvent;
 
 class NewDeviceSessionEventListener
 {
     public function handle(NewDeviceSessionEvent $event): void {}
 }
+

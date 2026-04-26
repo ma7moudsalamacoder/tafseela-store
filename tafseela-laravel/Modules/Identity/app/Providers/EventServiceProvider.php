@@ -1,26 +1,26 @@
-<?php
+﻿<?php
 
 namespace Modules\Identity\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Modules\Identity\app\Events\AccountCreatedEvent;
-use Modules\Identity\app\Events\AccountLockedEvent;
-use Modules\Identity\app\Events\AccountRecoveredEvent;
-use Modules\Identity\app\Events\AccountUnlockedEvent;
-use Modules\Identity\app\Events\AccountVerifiedEvent;
-use Modules\Identity\app\Events\NewDeviceSessionEvent;
-use Modules\Identity\app\Events\RecoveryRequestedEvent;
-use Modules\Identity\app\Events\SessionStartedEvent;
-use Modules\Identity\app\Events\VerificationFailedEvent;
-use Modules\Identity\app\Listeners\AccountCreatedEventListener;
-use Modules\Identity\app\Listeners\AccountLockedEventListener;
-use Modules\Identity\app\Listeners\AccountRecoveredEventListener;
-use Modules\Identity\app\Listeners\AccountUnlockedEventListener;
-use Modules\Identity\app\Listeners\AccountVerifiedEventListener;
-use Modules\Identity\app\Listeners\NewDeviceSessionEventListener;
-use Modules\Identity\app\Listeners\RecoveryRequestedEventListener;
-use Modules\Identity\app\Listeners\SessionStartedEventListener;
-use Modules\Identity\app\Listeners\VerificationFailedEventListener;
+use Modules\Identity\Events\AccountCreatedEvent;
+use Modules\Identity\Events\AccountLockedEvent;
+use Modules\Identity\Events\AccountRecoveredEvent;
+use Modules\Identity\Events\AccountUnlockedEvent;
+use Modules\Identity\Events\AccountVerifiedEvent;
+use Modules\Identity\Events\NewDeviceSessionEvent;
+use Modules\Identity\Events\RecoveryRequestedEvent;
+use Modules\Identity\Events\SessionStartedEvent;
+use Modules\Identity\Events\VerificationFailedEvent;
+use Modules\Identity\Listeners\AccountCreatedEventListener;
+use Modules\Identity\Listeners\AccountLockedEventListener;
+use Modules\Identity\Listeners\AccountRecoveredEventListener;
+use Modules\Identity\Listeners\AccountUnlockedEventListener;
+use Modules\Identity\Listeners\AccountVerifiedEventListener;
+use Modules\Identity\Listeners\NewDeviceSessionEventListener;
+use Modules\Identity\Listeners\RecoveryRequestedEventListener;
+use Modules\Identity\Listeners\SessionStartedEventListener;
+use Modules\Identity\Listeners\VerificationFailedEventListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -71,3 +71,4 @@ class EventServiceProvider extends ServiceProvider
      */
     protected function configureEmailVerification(): void {}
 }
+

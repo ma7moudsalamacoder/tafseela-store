@@ -1,10 +1,11 @@
-<?php
+﻿<?php
 
-namespace Modules\Identity\app\Listeners;
+namespace Modules\Identity\Listeners;
 
-use Modules\Identity\app\Events\AccountCreatedEvent;
+use Modules\Identity\Events\AccountCreatedEvent;
 
 class AccountCreatedEventListener
 {
     public function handle(AccountCreatedEvent $event): void {}
 }
+

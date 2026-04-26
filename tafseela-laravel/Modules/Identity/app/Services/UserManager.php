@@ -1,20 +1,20 @@
 <?php
 
-namespace Modules\Identity\app\Services;
+namespace Modules\Identity\Services;
 
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Modules\Identity\app\Enums\LockReasons;
-use Modules\Identity\app\Enums\OtpActions;
-use Modules\Identity\app\Events\AccountCreatedEvent;
-use Modules\Identity\app\Events\AccountLockedEvent;
-use Modules\Identity\app\Events\AccountRecoveredEvent;
-use Modules\Identity\app\Events\AccountUnlockedEvent;
-use Modules\Identity\app\Events\AccountVerifiedEvent;
-use Modules\Identity\app\Events\RecoveryRequestedEvent;
-use Modules\Identity\app\Events\SessionStartedEvent;
-use Modules\Identity\app\Events\VerificationFailedEvent;
+use Modules\Identity\Enums\LockReasons;
+use Modules\Identity\Enums\OtpActions;
+use Modules\Identity\Events\AccountCreatedEvent;
+use Modules\Identity\Events\AccountLockedEvent;
+use Modules\Identity\Events\AccountRecoveredEvent;
+use Modules\Identity\Events\AccountUnlockedEvent;
+use Modules\Identity\Events\AccountVerifiedEvent;
+use Modules\Identity\Events\RecoveryRequestedEvent;
+use Modules\Identity\Events\SessionStartedEvent;
+use Modules\Identity\Events\VerificationFailedEvent;
 use Modules\Identity\Models\AccessLock;
 use Modules\Identity\Models\AccessLog;
 use Modules\Identity\Models\Otp;

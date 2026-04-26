@@ -1,10 +1,11 @@
-<?php
+﻿<?php
 
-namespace Modules\Identity\app\Listeners;
+namespace Modules\Identity\Listeners;
 
-use Modules\Identity\app\Events\SessionStartedEvent;
+use Modules\Identity\Events\SessionStartedEvent;
 
 class SessionStartedEventListener
 {
     public function handle(SessionStartedEvent $event): void {}
 }
+

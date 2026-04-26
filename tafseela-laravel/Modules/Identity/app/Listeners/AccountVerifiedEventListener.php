@@ -1,10 +1,11 @@
-<?php
+﻿<?php
 
-namespace Modules\Identity\app\Listeners;
+namespace Modules\Identity\Listeners;
 
-use Modules\Identity\app\Events\AccountVerifiedEvent;
+use Modules\Identity\Events\AccountVerifiedEvent;
 
 class AccountVerifiedEventListener
 {
     public function handle(AccountVerifiedEvent $event): void {}
 }
+

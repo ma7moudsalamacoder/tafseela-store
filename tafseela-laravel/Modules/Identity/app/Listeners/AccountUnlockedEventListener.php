@@ -1,8 +1,9 @@
-<?php
+﻿<?php
 
-namespace Modules\Identity\app\Listeners;
+namespace Modules\Identity\Listeners;
 
 class AccountUnlockedEventListener
 {
     public function handle($event): void {}
 }
+
