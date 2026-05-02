@@ -3,9 +3,13 @@
 namespace Modules\Customer\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
+use Modules\Product\Models\Category;
+use Modules\Product\Models\Product;
 
 class StorefrontController extends Controller
 {
+    private ?array $products = null;
+
     public function products(): View
     {
         return view('customer::products.index', [
@@ -78,168 +82,68 @@ class StorefrontController extends Controller
      */
     private function productsData(): array
     {
+        if ($this->products !== null) {
+            return $this->products;
+        }
+
+        $this->products = Product::query()
+            ->with(['category', 'collection', 'details'])
+            ->where('status', 'show')
+            ->get()
+            ->map(fn (Product $product): array => $this->mapProduct($product))
+            ->all();
+
+        return $this->products;
+    }
+
+    private function mapProduct(Product $product): array
+    {
+        $category = $product->category;
+        $collection = $product->collection;
+        $details = $product->details;
+
+        $sizes = $details->pluck('size')->filter()->unique()->values()->all();
+        $colors = $details->pluck('color')->filter()->unique()->values()->all();
+
+        $slug = $this->slugString($product->name) ?: (string) $product->id;
+
         return [
-            [
-                'id' => 1,
-                'slug' => 'premium-linen-shirt',
-                'name' => 'قميص كتان فاخر',
-                'subtitle' => 'رجالي - كلاسيك',
-                'section_slug' => 'mens-shirts',
-                'section_name' => 'قمصان رجالي',
-                'price' => 850,
-                'formatted_price' => '850 جنيه',
-                'old_price' => 1100,
-                'formatted_old_price' => '1,100 جنيه',
-                'badge' => 'وصلنا حديثاً',
-                'description' => 'صمم هذا القميص من أرقى أنواع الكتان الطبيعي ليوفر لك الراحة والأناقة في آن واحد. يتميز بقصة عصرية تناسب جميع المناسبات الرسمية والكاجوال.',
-                'short_description' => 'قميص كتان أنيق بقصة عصرية ولمسة فاخرة تناسب الإطلالات اليومية والرسمية.',
-                'main_image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuAa8rxsCtnHO1uoqPKohyj3olgrRNYd84CD7ibbTxlOhJunn23RMdUvhV50rilc6g5xsGQ_Bz3Y6_Xi3llenb_loo06rLbJj2A5MY-DoJt46VO0LHC-q4_C_TuacMR1u3F4JMj1Ljr3TR_Js_TN_DGjG6a96fJulUh_UttCtpU5wRgwu7HoF0JwqHBOu_Qz_pKne5ROiSCvA5oWyansb_9tY7WE5Mz3MOeEqJBIlamFRHh5OYXaonC9MQawVhOYhPZoq8Au59PQYaLn',
-                'gallery' => [
-                    'https://lh3.googleusercontent.com/aida-public/AB6AXuAa8rxsCtnHO1uoqPKohyj3olgrRNYd84CD7ibbTxlOhJunn23RMdUvhV50rilc6g5xsGQ_Bz3Y6_Xi3llenb_loo06rLbJj2A5MY-DoJt46VO0LHC-q4_C_TuacMR1u3F4JMj1Ljr3TR_Js_TN_DGjG6a96fJulUh_UttCtpU5wRgwu7HoF0JwqHBOu_Qz_pKne5ROiSCvA5oWyansb_9tY7WE5Mz3MOeEqJBIlamFRHh5OYXaonC9MQawVhOYhPZoq8Au59PQYaLn',
-                    'https://lh3.googleusercontent.com/aida-public/AB6AXuDfMNJWS58aYPNNEez7zZBK5oYciY9gRf1GmsCiGl5SzDQjlijSF7npj2Mt4NvlkEPwpwhWpFmI7xkaz5-A16AUn3QOJq0vdNIyeOmDH8gyNS5jxRDEjW4aYPqGjFzkGzpH_TVCvOzCXirQkdZh9p42PP65T5aKazbGhn-0H8vn4zOGs6qOHiF7ASAXUd22n5J9ViCrJgx0ASgEWABTEchYdsy1T8PuXZjOWvjQJcpXXRLC7J7EyBtUkgOKd7YQ_qoisaPjpRaZMtSu',
-                    'https://lh3.googleusercontent.com/aida-public/AB6AXuAbi3E7Kulf-O39skm-_q21SAHf1y-hZ4ToIZmrNSJz5N7tKArej1WXHzgD2l1Jvtm7wor_gDh9NC2j0ZAMXdV1bCjcvYAqXP_xWrT6PSJYaKk9-1PdFQopPgmBmBFgWDA5_sJ3Vnxzp9IkrlliKv5tQZjFVT3j-_BoV5Y9Ij4sr1ctB3EuNxssOGOTkdmFQ8tWUJ1V3wJAXvqDNNnN-M_9wCPr9ClSqkeODujbxIdxwFE12bb2qCRHl3mp8xOFHnrxg00RkrqoykTB',
-                ],
-                'colors' => ['أسود', 'أبيض', 'بني', 'كحلي'],
-                'sizes' => ['S', 'M', 'L', 'XL', 'XXL'],
-                'selected_size' => 'M',
-                'details' => [
-                    'الوصف' => 'قماش كتان طبيعي بتهوية عالية ولمسة ناعمة، مع ياقة كلاسيكية وأزرار مخفية بإتقان.',
-                    'الخامات والعناية' => '100% كتان. يغسل بماء بارد ويكوى على درجة منخفضة للحفاظ على الملمس.',
-                ],
-            ],
-            [
-                'id' => 2,
-                'slug' => 'silk-evening-dress',
-                'name' => 'فستان سهرة حرير',
-                'subtitle' => 'حريمي - مناسبات',
-                'section_slug' => 'womens-dresses',
-                'section_name' => 'فساتين نسائي',
-                'price' => 2200,
-                'formatted_price' => '2,200 جنيه',
-                'old_price' => 2600,
-                'formatted_old_price' => '2,600 جنيه',
-                'badge' => 'خصم 15%',
-                'description' => 'فستان سهرة فاخر بقصة انسيابية وتفاصيل حريرية ناعمة يمنحك حضوراً لافتاً في المناسبات.',
-                'short_description' => 'فستان سهرة حريري بتفاصيل أنيقة ولمعان هادئ للمناسبات الخاصة.',
-                'main_image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuD55sDnuTNCU7sBX1jr1StVjbWmYFeqZK4Gy_tpA6izp9D-hK7bZkpmRo2dZOfQP4KUjqpRKi86MyDd0QDfy__R8OTaSxS68fA5-b4xtYTrdutWDPR6bZd8wYTbfVUCphyByZDz-Yl8MPS2HTrOes1u1KdzS8s8D_vR6nKfySirpmhbBVYMuxKNadWMwau8YSMjRKphq53QPJM6UIRQCB20U0jc1Df1gdbsol42-LzV68izutNhL6PJza4Gw7gj4yAqMsIRyxw_z2I0',
-                'gallery' => [
-                    'https://lh3.googleusercontent.com/aida-public/AB6AXuD55sDnuTNCU7sBX1jr1StVjbWmYFeqZK4Gy_tpA6izp9D-hK7bZkpmRo2dZOfQP4KUjqpRKi86MyDd0QDfy__R8OTaSxS68fA5-b4xtYTrdutWDPR6bZd8wYTbfVUCphyByZDz-Yl8MPS2HTrOes1u1KdzS8s8D_vR6nKfySirpmhbBVYMuxKNadWMwau8YSMjRKphq53QPJM6UIRQCB20U0jc1Df1gdbsol42-LzV68izutNhL6PJza4Gw7gj4yAqMsIRyxw_z2I0',
-                    'https://lh3.googleusercontent.com/aida-public/AB6AXuA1e3t8dR8xZ2WI1MVX0Gqk8raZ9GUv7YaPyACYE4NdFCZyv_jRej1HZ5hgwDvEGUFNjpp2Ggb2i-KJJvdSIVIPB4D7hndDuZjPmWrs5yXhgpJoQ5F3CwhVdwoxRJfJV9ejc9XdgoYJUOXakvpAYgx_BQwT2GVe40SawcCY_aWVkn8K9Yr8WY5S8935KjXxxCLo06IcJ1wmOMevC9pQSreWx96ISzPU_PDNuRGJLtfxsKR_jK_CwTKOgO7wN2URxaWF29Qq02zL6uoB',
-                ],
-                'colors' => ['أحمر', 'أسود', 'ذهبي'],
-                'sizes' => ['S', 'M', 'L', 'XL'],
-                'selected_size' => 'L',
-                'details' => [
-                    'الوصف' => 'تصميم انسيابي مع خصر محدد وتفاصيل لامعة خفيفة لمظهر راقٍ.',
-                    'الخامات والعناية' => 'حرير صناعي فاخر، ينظف تنظيفاً جافاً للحفاظ على البنية.',
-                ],
-            ],
-            [
-                'id' => 3,
-                'slug' => 'modern-jacket',
-                'name' => 'جاكيت عصري',
-                'subtitle' => 'رجالي - شتوي',
-                'section_slug' => 'mens-jackets',
-                'section_name' => 'جواكت رجالي',
-                'price' => 1650,
-                'formatted_price' => '1,650 جنيه',
-                'old_price' => null,
-                'formatted_old_price' => null,
-                'badge' => 'إصدار محدود',
-                'description' => 'جاكيت عملي بلمسة عصرية وتفصيلات دقيقة يناسب الإطلالات اليومية الأنيقة.',
-                'short_description' => 'جاكيت شتوي أنيق بقصة معاصرة وتفاصيل عملية.',
-                'main_image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuAbi3E7Kulf-O39skm-_q21SAHf1y-hZ4ToIZmrNSJz5N7tKArej1WXHzgD2l1Jvtm7wor_gDh9NC2j0ZAMXdV1bCjcvYAqXP_xWrT6PSJYaKk9-1PdFQopPgmBmBFgWDA5_sJ3Vnxzp9IkrlliKv5tQZjFVT3j-_BoV5Y9Ij4sr1ctB3EuNxssOGOTkdmFQ8tWUJ1V3wJAXvqDNNnN-M_9wCPr9ClSqkeODujbxIdxwFE12bb2qCRHl3mp8xOFHnrxg00RkrqoykTB',
-                'gallery' => [
-                    'https://lh3.googleusercontent.com/aida-public/AB6AXuAbi3E7Kulf-O39skm-_q21SAHf1y-hZ4ToIZmrNSJz5N7tKArej1WXHzgD2l1Jvtm7wor_gDh9NC2j0ZAMXdV1bCjcvYAqXP_xWrT6PSJYaKk9-1PdFQopPgmBmBFgWDA5_sJ3Vnxzp9IkrlliKv5tQZjFVT3j-_BoV5Y9Ij4sr1ctB3EuNxssOGOTkdmFQ8tWUJ1V3wJAXvqDNNnN-M_9wCPr9ClSqkeODujbxIdxwFE12bb2qCRHl3mp8xOFHnrxg00RkrqoykTB',
-                    'https://lh3.googleusercontent.com/aida-public/AB6AXuAtKicfpnDGxV6OZ2AcKbavKPy2wiKTHJpXSR_qEVlqnyuzIWeOETtGbC1_xTCE3wiEs37Je1VvyoWrDgJlz4-W0sOonxdwLSRtNxXrYspmmROYfEJ9Bgx31eWI7Aha_atd1OG0Q6EAEIuvh7oHir9DLMvuPUNLiVe2XwNwWYuAOtONslDp2u_F7V9pMFNeviQfyvM92F3CZlvlpUvctZJLIOB_tmP_EKmLrmB26IrTo3Lm4KX8ty7bDv3v09A3LtqGyo_7BJUoin53',
-                ],
-                'colors' => ['كحلي', 'رمادي', 'أسود'],
-                'sizes' => ['M', 'L', 'XL'],
-                'selected_size' => 'L',
-                'details' => [
-                    'الوصف' => 'مناسب للأجواء الباردة مع بطانة خفيفة وجيوب عملية.',
-                    'الخامات والعناية' => 'خليط صوف وبوليستر، يغسل يدوياً أو تنظيف جاف.',
-                ],
-            ],
-            [
-                'id' => 4,
-                'slug' => 'classic-chino-pants',
-                'name' => 'بنطال تشينو كلاسيك',
-                'subtitle' => 'رجالي - كاجوال',
-                'section_slug' => 'mens-pants',
-                'section_name' => 'بناطيل رجالي',
-                'price' => 1200,
-                'formatted_price' => '1,200 جنيه',
-                'old_price' => null,
-                'formatted_old_price' => null,
-                'badge' => null,
-                'description' => 'بنطال تشينو بتفصيلة متوازنة يدمج الراحة مع الطابع العملي الأنيق.',
-                'short_description' => 'بنطال تشينو مرن للاستخدام اليومي بإطلالة مرتبة.',
-                'main_image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuDfMNJWS58aYPNNEez7zZBK5oYciY9gRf1GmsCiGl5SzDQjlijSF7npj2Mt4NvlkEPwpwhWpFmI7xkaz5-A16AUn3QOJq0vdNIyeOmDH8gyNS5jxRDEjW4aYPqGjFzkGzpH_TVCvOzCXirQkdZh9p42PP65T5aKazbGhn-0H8vn4zOGs6qOHiF7ASAXUd22n5J9ViCrJgx0ASgEWABTEchYdsy1T8PuXZjOWvjQJcpXXRLC7J7EyBtUkgOKd7YQ_qoisaPjpRaZMtSu',
-                'gallery' => [
-                    'https://lh3.googleusercontent.com/aida-public/AB6AXuDfMNJWS58aYPNNEez7zZBK5oYciY9gRf1GmsCiGl5SzDQjlijSF7npj2Mt4NvlkEPwpwhWpFmI7xkaz5-A16AUn3QOJq0vdNIyeOmDH8gyNS5jxRDEjW4aYPqGjFzkGzpH_TVCvOzCXirQkdZh9p42PP65T5aKazbGhn-0H8vn4zOGs6qOHiF7ASAXUd22n5J9ViCrJgx0ASgEWABTEchYdsy1T8PuXZjOWvjQJcpXXRLC7J7EyBtUkgOKd7YQ_qoisaPjpRaZMtSu',
-                ],
-                'colors' => ['رمادي', 'بيج', 'كحلي'],
-                'sizes' => ['30', '32', '34', '36'],
-                'selected_size' => '32',
-                'details' => [
-                    'الوصف' => 'بنطال يومي بقصة مستقيمة وخامة متينة مع مرونة خفيفة.',
-                    'الخامات والعناية' => 'قطن مع نسبة إيلاستين بسيطة، يغسل في الغسالة على دورة لطيفة.',
-                ],
-            ],
-            [
-                'id' => 5,
-                'slug' => 'soft-knit-cardigan',
-                'name' => 'سترة صوفية ناعمة',
-                'subtitle' => 'حريمي - شتوي',
-                'section_slug' => 'womens-knitwear',
-                'section_name' => 'تريكو نسائي',
-                'price' => 1450,
-                'formatted_price' => '1,450 جنيه',
-                'old_price' => null,
-                'formatted_old_price' => null,
-                'badge' => 'الأكثر مبيعاً',
-                'description' => 'سترة صوفية ناعمة بطبقات دافئة وتفصيلات أنيقة تناسب الإطلالات الشتوية اليومية.',
-                'short_description' => 'سترة دافئة بملمس ناعم وتفاصيل مريحة.',
-                'main_image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuAtKicfpnDGxV6OZ2AcKbavKPy2wiKTHJpXSR_qEVlqnyuzIWeOETtGbC1_xTCE3wiEs37Je1VvyoWrDgJlz4-W0sOonxdwLSRtNxXrYspmmROYfEJ9Bgx31eWI7Aha_atd1OG0Q6EAEIuvh7oHir9DLMvuPUNLiVe2XwNwWYuAOtONslDp2u_F7V9pMFNeviQfyvM92F3CZlvlpUvctZJLIOB_tmP_EKmLrmB26IrTo3Lm4KX8ty7bDv3v09A3LtqGyo_7BJUoin53',
-                'gallery' => [
-                    'https://lh3.googleusercontent.com/aida-public/AB6AXuAtKicfpnDGxV6OZ2AcKbavKPy2wiKTHJpXSR_qEVlqnyuzIWeOETtGbC1_xTCE3wiEs37Je1VvyoWrDgJlz4-W0sOonxdwLSRtNxXrYspmmROYfEJ9Bgx31eWI7Aha_atd1OG0Q6EAEIuvh7oHir9DLMvuPUNLiVe2XwNwWYuAOtONslDp2u_F7V9pMFNeviQfyvM92F3CZlvlpUvctZJLIOB_tmP_EKmLrmB26IrTo3Lm4KX8ty7bDv3v09A3LtqGyo_7BJUoin53',
-                ],
-                'colors' => ['عاجي', 'بني', 'زيتي'],
-                'sizes' => ['S', 'M', 'L'],
-                'selected_size' => 'M',
-                'details' => [
-                    'الوصف' => 'قطعة شتوية ناعمة مثالية للتنسيق مع البنطال أو الفساتين الخفيفة.',
-                    'الخامات والعناية' => 'خليط صوف وأكريليك، يفضل الغسيل اليدوي.',
-                ],
-            ],
-            [
-                'id' => 6,
-                'slug' => 'natural-leather-shoes',
-                'name' => 'حذاء جلد طبيعي',
-                'subtitle' => 'إكسسوارات - رسمي',
-                'section_slug' => 'accessories',
-                'section_name' => 'إكسسوارات',
-                'price' => 1950,
-                'formatted_price' => '1,950 جنيه',
-                'old_price' => null,
-                'formatted_old_price' => null,
-                'badge' => null,
-                'description' => 'حذاء جلدي راقٍ يمنح الإطلالة الرسمية لمسة فاخرة ويتميز بخياطة دقيقة.',
-                'short_description' => 'حذاء رسمي من الجلد الطبيعي بتشطيب فاخر.',
-                'main_image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuD55sDnuTNCU7sBX1jr1StVjbWmYFeqZK4Gy_tpA6izp9D-hK7bZkpmRo2dZOfQP4KUjqpRKi86MyDd0QDfy__R8OTaSxS68fA5-b4xtYTrdutWDPR6bZd8wYTbfVUCphyByZDz-Yl8MPS2HTrOes1u1KdzS8s8D_vR6nKfySirpmhbBVYMuxKNadWMwau8YSMjRKphq53QPJM6UIRQCB20U0jc1Df1gdbsol42-LzV68izutNhL6PJza4Gw7gj4yAqMsIRyxw_z2I0',
-                'gallery' => [
-                    'https://lh3.googleusercontent.com/aida-public/AB6AXuD55sDnuTNCU7sBX1jr1StVjbWmYFeqZK4Gy_tpA6izp9D-hK7bZkpmRo2dZOfQP4KUjqpRKi86MyDd0QDfy__R8OTaSxS68fA5-b4xtYTrdutWDPR6bZd8wYTbfVUCphyByZDz-Yl8MPS2HTrOes1u1KdzS8s8D_vR6nKfySirpmhbBVYMuxKNadWMwau8YSMjRKphq53QPJM6UIRQCB20U0jc1Df1gdbsol42-LzV68izutNhL6PJza4Gw7gj4yAqMsIRyxw_z2I0',
-                ],
-                'colors' => ['بني', 'أسود'],
-                'sizes' => ['41', '42', '43', '44'],
-                'selected_size' => '42',
-                'details' => [
-                    'الوصف' => 'تصميم رسمي متين بنعل مريح وملمس فاخر يناسب المناسبات الخاصة.',
-                    'الخامات والعناية' => 'جلد طبيعي، يستخدم ملمع الجلد للحفاظ على اللمعان.',
-                ],
+            'id' => $product->id,
+            'slug' => $slug,
+            'name' => $product->name,
+            'subtitle' => $collection?->title ?? $category?->category ?? 'منتجات',
+            'section_slug' => $category ? ($category->subcategory ? $this->slugString($category->subcategory) : $this->slugString($category->category)) : 'products',
+            'section_name' => $category?->subcategory ?? $category?->category ?? 'منتجات',
+            'price' => $product->price,
+            'formatted_price' => number_format($product->price, 0, '.', ',') . ' جنيه',
+            'old_price' => null,
+            'formatted_old_price' => null,
+            'badge' => $collection && $collection->title === 'وصلنا حديثاً' ? 'وصلنا حديثاً' : null,
+            'description' => trim($product->notes ?: $product->fabric ?: 'تفاصيل المنتج غير متوفرة.'),
+            'short_description' => trim($product->fabric ?: $product->notes ?: 'اكتشف هذا المنتج المميز.'),
+            'main_image' => $product->image ?: asset('images/product-placeholder.png'),
+            'gallery' => array_fill(0, 4, $product->image ?: asset('images/product-placeholder.png')),
+            'colors' => $colors ?: ['أسود', 'أبيض', 'كحلي'],
+            'sizes' => $sizes ?: ['S', 'M', 'L', 'XL'],
+            'selected_size' => $sizes[0] ?? 'M',
+            'details' => [
+                'الوصف' => $product->notes ?: 'تفاصيل المنتج غير متوفرة.',
+                'الخامات والعناية' => $product->fabric
+                    ? sprintf('الخامة: %s. ينصح باتباع تعليمات العناية الملصقة على المنتج.', $product->fabric)
+                    : 'تفاصيل الخامة غير متاحة.',
             ],
         ];
+    }
+
+    /**
+     * @return string
+     */
+    private function slugString(string $value): string
+    {
+        $slug = preg_replace('/[^\p{L}\p{N}\s-]+/u', '', $value);
+        $slug = preg_replace('/[\s]+/u', '-', trim($slug));
+
+        return mb_strtolower($slug, 'UTF-8');
     }
 
     /**
@@ -277,12 +181,15 @@ class StorefrontController extends Controller
      */
     private function categories(): array
     {
-        return [
-            ['name' => 'تيشيرتات', 'count' => 120],
-            ['name' => 'قمصان', 'count' => 85],
-            ['name' => 'بناطيل', 'count' => 64],
-            ['name' => 'جواكت', 'count' => 42],
-        ];
+        return Category::query()
+            ->withCount(['products' => fn ($query) => $query->where('status', 'show')])
+            ->get()
+            ->map(fn (Category $category): array => [
+                'name' => $category->subcategory ?: $category->category,
+                'count' => $category->products_count,
+            ])
+            ->values()
+            ->all();
     }
 
     /**

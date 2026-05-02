@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 namespace Modules\Identity\Events;
 
@@ -15,4 +15,5 @@ class RecoveryRequestedEvent
         public int $userId,
     ) {}
 }
+
 

@@ -54,3 +54,4 @@ class IdentityController extends Controller
      */
     public function destroy($id) {}
 }
+

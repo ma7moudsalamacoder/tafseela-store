@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 namespace Modules\Identity\Http\Requests;
 
@@ -31,4 +31,5 @@ class SignInRequest extends FormRequest
         ];
     }
 }
+
 

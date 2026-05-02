@@ -134,7 +134,9 @@ class IdentityServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(array_merge($this->getPublishableViewPaths(), [$sourcePath]), $this->nameLower);
 
-        Blade::componentNamespace(config('modules.namespace').'\\' . $this->name . '\\View\\Components', $this->nameLower);
+        Blade::component('identity::components.auth-input', 'auth-input');
+        Blade::component('identity::components.layouts.auth', 'auth-layout');
+        Blade::component('identity::components.layouts.master', 'layouts.master');
     }
 
     /**

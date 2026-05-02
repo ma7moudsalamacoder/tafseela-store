@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 namespace Modules\Identity\Listeners;
 
@@ -11,4 +11,5 @@ class VerificationFailedEventListener
         //
     }
 }
+
 

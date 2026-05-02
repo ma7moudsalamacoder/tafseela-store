@@ -14,7 +14,7 @@ class CoreDatabaseSeeder extends Seeder
     {
         $this->call([
             CountriesSeeder::class,
-            CitiesSeeder::class, 
+            CitiesSeeder::class,
+            ColorsSeeder::class,
         ]);
-    }
-}
+    }}

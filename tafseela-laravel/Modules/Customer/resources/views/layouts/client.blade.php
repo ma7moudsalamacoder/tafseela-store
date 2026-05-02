@@ -6,39 +6,10 @@
     <title>{{ $title ?? 'تفصيلة - Tafsela' }}</title>
     <meta name="description" content="{{ $description ?? 'متجر تفصيلة للأزياء العصرية والفاخرة' }}">
     
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#A67C52",
-                        "primary-dark": "#7D5A39",
-                        "accent-gold": "#A67C52",
-                        "background-light": "#FDFCFB",
-                        "background-dark": "#121212",
-                        "neutral-charcoal": "#1A1A1A",
-                        "neutral-beige": "#F7F3F0",
-                    },
-                    fontFamily: {
-                        "display": ["Almarai", "sans-serif"],
-                        "body": ["IBM Plex Sans Arabic", "sans-serif"]
-                    },
-                    borderRadius: {
-                        "DEFAULT": "0px",
-                        "lg": "0px",
-                        "xl": "0px",
-                        "full": "9999px"
-                    }
-                }
-            }
-        }
-    </script>
     
     <style>
         .hide-scrollbar::-webkit-scrollbar { display: none; }

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 namespace Modules\Identity\Http\Requests;
 
@@ -15,12 +15,6 @@ class SignUpRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email.required' => trans('identity::validation.email_required'),
-            'email.email' => trans('identity::validation.email_email'),
-            'email.unique' => trans('identity::validation.email_unique'),
-            'password.required' => trans('identity::validation.password_required'),
-            'password_confirmation.required' => trans('identity::validation.password_confirmation_required'),
-            'password_confirmation.same' => trans('identity::validation.password_confirmation_same'),
             'email' => 'required|email|unique:users,email',
             'password' => ['required', Password::min(8)->letters()->numbers()->symbols()->uncompromised()],
             'password_confirmation' => 'required|string|same:password',

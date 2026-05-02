@@ -85,3 +85,4 @@ class SocialAuthController extends Controller
         return redirect()->intended('/dashboard');
     }
 }
+

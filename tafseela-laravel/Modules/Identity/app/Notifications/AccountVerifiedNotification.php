@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 namespace Modules\Identity\Notifications;
 
@@ -27,4 +27,5 @@ class AccountVerifiedNotification extends Notification implements ShouldQueue
             ->line(__('identity::notifications.account_verified.body'));
     }
 }
+
 

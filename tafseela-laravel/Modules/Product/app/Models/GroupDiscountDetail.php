@@ -10,6 +10,8 @@ class GroupDiscountDetail extends Model
 {
     use HasAuditions;
 
+    protected $table = 'group_discounts_details';
+
     protected $fillable = [
         'item_id',
         'group_discount_id',

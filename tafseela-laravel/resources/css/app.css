@@ -1,3 +1,17 @@
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn-primary {
+    @apply bg-primary text-white hover:bg-primary-dark;
+}
+
+.btn-primary-dark {
+    @apply bg-primary-dark text-white hover:bg-primary;
+}
+
+.btn-secondary {
+    @apply bg-charcoal text-white hover:bg-neutral-beige hover:text-charcoal;
+}

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 namespace Modules\Identity\Notifications;
 
@@ -31,4 +31,5 @@ class RecoveryRequestedNotification extends Notification implements ShouldQueue
             ->action(__('identity::notifications.recovery_requested.action'), url('/recover?hash='.$this->hash));
     }
 }
+
 

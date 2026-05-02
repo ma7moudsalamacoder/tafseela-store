@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 namespace Modules\Identity\Events;
 
@@ -13,4 +13,5 @@ class VerificationFailedEvent
         public int $userId,
     ) {}
 }
+
 

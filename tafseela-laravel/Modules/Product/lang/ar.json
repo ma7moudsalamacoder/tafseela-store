@@ -1,2 +1,15 @@
 {
+    "enums": {
+        "item_status": {
+            "none": "الكل",
+            "show": "عرض",
+            "hide": "إخفاء"
+        },
+        "product_categories": {
+            "men": "رجالي",
+            "women": "حريمي",
+            "kids": "أطفال",
+            "accessories": "إكسسوارات"
+        }
+    }
 }

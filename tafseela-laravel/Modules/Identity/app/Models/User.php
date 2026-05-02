@@ -86,3 +86,4 @@ class User extends \App\Models\User
             ->dontSubmitEmptyLogs();
     }
 }
+

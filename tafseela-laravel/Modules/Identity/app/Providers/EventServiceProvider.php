@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 namespace Modules\Identity\Providers;
 
@@ -71,4 +71,3 @@ class EventServiceProvider extends ServiceProvider
      */
     protected function configureEmailVerification(): void {}
 }
-

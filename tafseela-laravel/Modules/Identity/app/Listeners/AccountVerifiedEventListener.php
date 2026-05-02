@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 namespace Modules\Identity\Listeners;
 
@@ -8,4 +8,5 @@ class AccountVerifiedEventListener
 {
     public function handle(AccountVerifiedEvent $event): void {}
 }
+
 

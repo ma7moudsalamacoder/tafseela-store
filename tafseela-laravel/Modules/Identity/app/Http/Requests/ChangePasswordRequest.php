@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 namespace Modules\Identity\Http\Requests;
 
@@ -41,4 +41,5 @@ class ChangePasswordRequest extends FormRequest
         ];
     }
 }
+
 

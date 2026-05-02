@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 namespace Modules\Identity\Listeners;
 
@@ -8,4 +8,5 @@ class RecoveryRequestedEventListener
 {
     public function handle(RecoveryRequestedEvent $event): void {}
 }
+
 

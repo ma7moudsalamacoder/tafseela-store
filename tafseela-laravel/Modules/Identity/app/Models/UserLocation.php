@@ -57,3 +57,4 @@ class UserLocation extends Model
         return $this->belongsTo(City::class);
     }
 }
+

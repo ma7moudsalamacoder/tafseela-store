@@ -14,6 +14,7 @@ class Category extends Model
         'category',
         'subcategory',
         'cover_image',
+        'status',
     ];
 
     public function products(): HasMany

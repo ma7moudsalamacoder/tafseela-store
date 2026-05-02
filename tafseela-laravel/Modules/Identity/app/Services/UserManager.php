@@ -113,6 +113,8 @@ class UserManager
             'provider' => 'email',
         ]);
 
+        $user->assignRole('customer');
+
         $otpData = $this->generateOTP($user->id, OtpActions::VERIFY_EMAIL);
 
         AccountCreatedEvent::dispatch($otpData['otp_code'], $otpData['hash'], $user->id);
@@ -343,3 +345,7 @@ class UserManager
         return true;
     }
 }
+
+
+
+

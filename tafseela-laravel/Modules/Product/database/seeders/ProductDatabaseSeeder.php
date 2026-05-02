@@ -11,6 +11,17 @@ class ProductDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call([]);
+        $this->call([
+            CategoriesSeeder::class,
+            CollectionsSeeder::class,
+            ProductsSeeder::class,
+            ChildrenProductsSeeder::class,
+            ProductDetailsSeeder::class,
+            PromosSeeder::class,
+            ProductDiscountsSeeder::class,
+            CategoryDiscountsSeeder::class,
+            CollectionDiscountsSeeder::class,
+            GroupDiscountsSeeder::class,
+        ]);
     }
 }

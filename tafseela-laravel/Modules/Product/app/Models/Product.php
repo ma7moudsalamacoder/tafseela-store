@@ -4,6 +4,7 @@ namespace Modules\Product\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Core\Traits\HasAuditions;
 
 class Product extends Model
@@ -16,7 +17,8 @@ class Product extends Model
         'collection_id',
         'tags',
         'price',
-        'stock_qty',
+        'fabric',
+        'notes',
         'image',
         'status',
     ];
@@ -26,7 +28,6 @@ class Product extends Model
         return [
             'tags' => 'array',
             'price' => 'decimal:2',
-            'stock_qty' => 'integer',
         ];
     }
 
@@ -38,5 +39,10 @@ class Product extends Model
     public function collection(): BelongsTo
     {
         return $this->belongsTo(Collection::class);
+    }
+
+    public function details(): HasMany
+    {
+        return $this->hasMany(ProductDetail::class);
     }
 }

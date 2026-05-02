@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 namespace Modules\Identity\Models;
 
@@ -34,4 +34,5 @@ class Otp extends Model
         return $this->belongsTo(User::class);
     }
 }
+
 
