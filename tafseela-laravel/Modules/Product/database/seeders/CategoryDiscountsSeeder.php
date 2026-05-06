@@ -10,7 +10,7 @@ class CategoryDiscountsSeeder extends Seeder
 {
     public function run(): void
     {
-        $category = Category::firstWhere(['category' => 'رجالي', 'subcategory' => 'قمصان']);
+        $category = Category::firstWhere(['category' => 'رجالي']);
 
         if (! $category) {
             return;

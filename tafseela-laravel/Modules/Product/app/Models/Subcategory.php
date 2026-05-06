@@ -3,22 +3,24 @@
 namespace Modules\Product\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Core\Traits\HasAuditions;
 
-class Category extends Model
+class Subcategory extends Model
 {
     use HasAuditions;
 
     protected $fillable = [
-        'category',
-        'cover_image',
+        'title',
         'status',
+        'cover_image',
+        'category_id',
     ];
 
-    public function subcategories(): HasMany
+    public function category(): BelongsTo
     {
-        return $this->hasMany(Subcategory::class);
+        return $this->belongsTo(Category::class);
     }
 
     public function products(): HasMany

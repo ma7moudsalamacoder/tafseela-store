@@ -4,6 +4,7 @@ namespace Modules\Product\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Modules\Product\Models\Category;
+use Modules\Product\Models\Subcategory;
 use Modules\Product\Models\Collection;
 use Modules\Product\Models\Product;
 use Modules\Product\Models\ProductDetail;
@@ -12,19 +13,15 @@ class ChildrenProductsSeeder extends Seeder
 {
     public function run(): void
     {
-        $childrenCategories = [
-            ['category' => 'أطفال', 'subcategory' => 'أولاد', 'cover_image' => null],
-            ['category' => 'أطفال', 'subcategory' => 'بنات', 'cover_image' => null],
+        $category = Category::firstOrCreate(['category' => 'أطفال']);
+
+        $subcategories = [
+            ['title' => 'أولاد', 'category_id' => $category->id],
+            ['title' => 'بنات', 'category_id' => $category->id],
         ];
 
-        foreach ($childrenCategories as $categoryData) {
-            Category::firstOrCreate(
-                [
-                    'category' => $categoryData['category'],
-                    'subcategory' => $categoryData['subcategory'],
-                ],
-                ['cover_image' => $categoryData['cover_image']]
-            );
+        foreach ($subcategories as $subData) {
+            Subcategory::firstOrCreate($subData);
         }
 
         $collections = [
@@ -39,12 +36,12 @@ class ChildrenProductsSeeder extends Seeder
             );
         }
 
-        $categories = [
-            'boys' => Category::firstWhere(['category' => 'أطفال', 'subcategory' => 'أولاد']),
-            'girls' => Category::firstWhere(['category' => 'أطفال', 'subcategory' => 'بنات']),
+        $subs = [
+            'boys' => Subcategory::where(['title' => 'أولاد', 'category_id' => $category->id])->first(),
+            'girls' => Subcategory::where(['title' => 'بنات', 'category_id' => $category->id])->first(),
         ];
 
-        $collections = [
+        $cols = [
             'new_kids' => Collection::firstWhere('title', 'أطفال - جديد'),
             'casual_kids' => Collection::firstWhere('title', 'أطفال - كاجوال'),
         ];
@@ -52,8 +49,9 @@ class ChildrenProductsSeeder extends Seeder
         $products = [
             [
                 'name' => 'تيشيرت أطفال برسومات',
-                'category_id' => $categories['boys']->id,
-                'collection_id' => $collections['new_kids']->id,
+                'category_id' => $category->id,
+                'subcategory_id' => $subs['boys']->id,
+                'collection_id' => $cols['new_kids']->id,
                 'tags' => ['kids', 'tshirt', 'boys'],
                 'price' => 450,
                 'fabric' => 'قطن ناعم',
@@ -63,8 +61,9 @@ class ChildrenProductsSeeder extends Seeder
             ],
             [
                 'name' => 'بنطال أطفال جينز',
-                'category_id' => $categories['boys']->id,
-                'collection_id' => $collections['casual_kids']->id,
+                'category_id' => $category->id,
+                'subcategory_id' => $subs['boys']->id,
+                'collection_id' => $cols['casual_kids']->id,
                 'tags' => ['kids', 'jeans', 'boys'],
                 'price' => 620,
                 'fabric' => 'دينم مرن',
@@ -74,8 +73,9 @@ class ChildrenProductsSeeder extends Seeder
             ],
             [
                 'name' => 'فستان أطفال مطبوع',
-                'category_id' => $categories['girls']->id,
-                'collection_id' => $collections['new_kids']->id,
+                'category_id' => $category->id,
+                'subcategory_id' => $subs['girls']->id,
+                'collection_id' => $cols['new_kids']->id,
                 'tags' => ['kids', 'dress', 'girls'],
                 'price' => 540,
                 'fabric' => 'قماش قطني خفيف',
@@ -85,8 +85,9 @@ class ChildrenProductsSeeder extends Seeder
             ],
             [
                 'name' => 'بلوزة أطفال بنقشة زهرية',
-                'category_id' => $categories['girls']->id,
-                'collection_id' => $collections['casual_kids']->id,
+                'category_id' => $category->id,
+                'subcategory_id' => $subs['girls']->id,
+                'collection_id' => $cols['casual_kids']->id,
                 'tags' => ['kids', 'top', 'girls'],
                 'price' => 360,
                 'fabric' => 'قطن مع لمسة إيلاستين',
@@ -96,8 +97,9 @@ class ChildrenProductsSeeder extends Seeder
             ],
             [
                 'name' => 'جاكيت أطفال دافئ',
-                'category_id' => $categories['boys']->id,
-                'collection_id' => $collections['casual_kids']->id,
+                'category_id' => $category->id,
+                'subcategory_id' => $subs['boys']->id,
+                'collection_id' => $cols['casual_kids']->id,
                 'tags' => ['kids', 'jacket', 'boys', 'winter'],
                 'price' => 780,
                 'fabric' => 'نايلون مقاوم للماء',
@@ -107,8 +109,9 @@ class ChildrenProductsSeeder extends Seeder
             ],
             [
                 'name' => 'سروال أطفال رياضي',
-                'category_id' => $categories['boys']->id,
-                'collection_id' => $collections['new_kids']->id,
+                'category_id' => $category->id,
+                'subcategory_id' => $subs['boys']->id,
+                'collection_id' => $cols['new_kids']->id,
                 'tags' => ['kids', 'shorts', 'boys', 'sports'],
                 'price' => 420,
                 'fabric' => 'قطن مع إيلاستين',
@@ -118,8 +121,9 @@ class ChildrenProductsSeeder extends Seeder
             ],
             [
                 'name' => 'تنورة أطفال قصيرة',
-                'category_id' => $categories['girls']->id,
-                'collection_id' => $collections['casual_kids']->id,
+                'category_id' => $category->id,
+                'subcategory_id' => $subs['girls']->id,
+                'collection_id' => $cols['casual_kids']->id,
                 'tags' => ['kids', 'skirt', 'girls'],
                 'price' => 380,
                 'fabric' => 'قطن خفيف',
@@ -129,8 +133,9 @@ class ChildrenProductsSeeder extends Seeder
             ],
             [
                 'name' => 'بلوزة أطفال مطرزة',
-                'category_id' => $categories['girls']->id,
-                'collection_id' => $collections['new_kids']->id,
+                'category_id' => $category->id,
+                'subcategory_id' => $subs['girls']->id,
+                'collection_id' => $cols['new_kids']->id,
                 'tags' => ['kids', 'blouse', 'girls'],
                 'price' => 490,
                 'fabric' => 'قطن ناعم',

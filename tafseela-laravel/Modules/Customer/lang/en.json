@@ -1,0 +1,15 @@
+{
+    "enums": {
+        "item_status": {
+            "none": "None",
+            "show": "Show",
+            "hide": "Hide"
+        },
+        "product_categories": {
+            "men": "Men",
+            "women": "Women",
+            "kids": "Kids",
+            "accessories": "Accessories"
+        }
+    }
+}

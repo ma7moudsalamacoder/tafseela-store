@@ -6,17 +6,18 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 use Modules\Product\Enums\ItemStatus;
 use Modules\Product\Models\Category;
+use Modules\Product\Models\Subcategory;
 use Modules\Product\Models\Collection as ProductCollection;
 use Modules\Product\Models\Product;
 
 class ProductManager
 {
     /**
-     * Load all unique categories.
+     * Get all unique categories.
      *
      * @param ItemStatus $status default value is NONE (all)
      */
-    public function LoadAllCategories(ItemStatus $status = ItemStatus::NONE): Collection
+    public function getAllCategories(ItemStatus $status = ItemStatus::NONE): Collection
     {
         $query = Category::query();
 
@@ -24,41 +25,49 @@ class ProductManager
             $query->where('status', $status->value);
         }
 
-        return $query->select('category')->distinct()->pluck('category');
+        return $query->pluck('category');
+    }
+
+    public function getAllCategoriesWithDetails(int $numOfItems = 0, ItemStatus $status = ItemStatus::NONE): Collection
+    {
+        $query = Category::query();
+
+        if ($status !== ItemStatus::NONE) {
+            $query->where('status', $status->value);
+        }
+        if ($numOfItems > 0) {
+            $query->withCount('products')->take($numOfItems);
+        }
+        return $query->withCount('products')->get();
     }
 
     /**
-     * Load all unique subcategories.
+     * Get all unique subcategories.
      *
      * @param bool $grouping group subcategories by related category
      * @param ItemStatus $status subcategory status
      */
-    public function LoadAllSubCategories(bool $grouping = false, ItemStatus $status = ItemStatus::NONE): Collection
+    public function getAllSubCategories(bool $grouping = false, ItemStatus $status = ItemStatus::NONE): Collection
     {
-        $query = Category::query();
+        $query = Subcategory::query()->with('category');
 
         if ($status !== ItemStatus::NONE) {
             $query->where('status', $status->value);
         }
 
         if ($grouping) {
-            return $query->select('category', 'subcategory')
-                ->whereNotNull('subcategory')
-                ->get()
-                ->groupBy('category')
-                ->map(fn ($group) => $group->pluck('subcategory')->unique()->values());
+            return $query->get()
+                ->groupBy(fn($sub) => $sub->category->category)
+                ->map(fn($group) => $group->pluck('title')->unique()->values());
         }
 
-        return $query->select('subcategory')
-            ->whereNotNull('subcategory')
-            ->distinct()
-            ->pluck('subcategory');
+        return $query->pluck('title')->unique();
     }
 
     /**
-     * Load all collections.
+     * Get all collections.
      */
-    public function LoadAllCollections(ItemStatus $status = ItemStatus::NONE): EloquentCollection
+    public function getAllCollections(ItemStatus $status = ItemStatus::NONE): EloquentCollection
     {
         $query = ProductCollection::query();
 
@@ -70,11 +79,25 @@ class ProductManager
     }
 
     /**
-     * Load all products and related details (including colors).
+     * Get collection by Name.
      */
-    public function LoadAllProducts(ItemStatus $status = ItemStatus::NONE): EloquentCollection
+    public function getCollectionByName(string $name, ItemStatus $status = ItemStatus::NONE): ?ProductCollection
     {
-        $query = Product::with(['details']);
+        $query = ProductCollection::query();
+
+        if ($status !== ItemStatus::NONE) {
+            $query->where('status', $status->value);
+        }
+
+        return $query->where('title', $name)->first();
+    }
+
+    /**
+     * Get all products and related details (including colors).
+     */
+    public function getAllProducts(ItemStatus $status = ItemStatus::NONE): EloquentCollection
+    {
+        $query = Product::with(['details', 'category', 'subcategory']);
 
         if ($status !== ItemStatus::NONE) {
             $query->where('status', $status->value);
@@ -84,11 +107,11 @@ class ProductManager
     }
 
     /**
-     * Load products by collection ID with optional filters.
+     * Get products by collection ID with optional filters.
      */
-    public function LoadProductsByCollectionID(int $collectionId, array $filters = []): EloquentCollection
+    public function getProductsByCollectionID(int $collectionId, array $filters = []): EloquentCollection
     {
-        $query = Product::with(['details'])->where('collection_id', $collectionId);
+        $query = Product::with(['details', 'category', 'subcategory'])->where('collection_id', $collectionId);
 
         $this->applyFilters($query, $filters);
 
@@ -96,24 +119,24 @@ class ProductManager
     }
 
     /**
-     * Load products by category ID grouped by subcategory.
+     * Get products by category ID grouped by subcategory.
      */
-    public function LoadProductsByCategoryID(int $categoryId, array $filters = []): Collection
+    public function getProductsByCategoryID(int $categoryId, array $filters = []): Collection
     {
-        $query = Product::with(['details', 'category'])->where('category_id', $categoryId);
+        $query = Product::with(['details', 'category', 'subcategory'])->where('category_id', $categoryId);
 
         $this->applyFilters($query, $filters);
 
-        return $query->get()->groupBy(fn ($product) => $product->category->subcategory ?? 'general');
+        return $query->get()->groupBy(fn($product) => $product->subcategory->title ?? 'general');
     }
 
     /**
-     * Load products by collection name.
+     * Get products by collection name.
      */
-    public function LoadProductsByCollectionName(string $name, array $filters = []): EloquentCollection
+    public function getProductsByCollectionName(string $name, array $filters = []): EloquentCollection
     {
-        $query = Product::with(['details'])
-            ->whereHas('collection', fn ($q) => $q->where('title', $name));
+        $query = Product::with(['details', 'category', 'subcategory'])
+            ->whereHas('collection', fn($q) => $q->where('title', $name));
 
         $this->applyFilters($query, $filters);
 
@@ -121,24 +144,24 @@ class ProductManager
     }
 
     /**
-     * Load products by category name grouped by subcategory.
+     * Get products by category name grouped by subcategory.
      */
-    public function LoadProductsByCategoryName(string $name, array $filters = []): Collection
+    public function getProductsByCategoryName(string $name, array $filters = []): Collection
     {
-        $query = Product::with(['details', 'category'])
-            ->whereHas('category', fn ($q) => $q->where('category', $name));
+        $query = Product::with(['details', 'category', 'subcategory'])
+            ->whereHas('category', fn($q) => $q->where('category', $name));
 
         $this->applyFilters($query, $filters);
 
-        return $query->get()->groupBy(fn ($product) => $product->category->subcategory ?? 'general');
+        return $query->get()->groupBy(fn($product) => $product->subcategory->title ?? 'general');
     }
 
     /**
-     * Load product and details by ID.
+     * Get product and details by ID.
      */
-    public function LoadProductByID(int $productId): ?Product
+    public function getProductByID(int $productId): ?Product
     {
-        return Product::with(['details'])->find($productId);
+        return Product::with(['details', 'category', 'subcategory'])->find($productId);
     }
 
     /**
@@ -159,15 +182,18 @@ class ProductManager
 
             // Filter by details
             if ($column === 'size') {
-                $query->whereHas('details', fn ($q) => $q->where('size', $value));
+                $query->whereHas('details', fn($q) => $q->where('size', $value));
             }
 
             if ($column === 'color') {
                 if (is_array($value)) {
-                    $query->whereHas('details', fn ($q) => $q->whereIn('color', $value));
+                    $query->whereHas('details', fn($q) => $q->whereIn('color', $value));
                 } else {
-                    $query->whereHas('details', fn ($q) => $q->where('color', $value));
+                    $query->whereHas('details', fn($q) => $q->where('color', $value));
                 }
+            }
+            if ($column === 'stock_qty') {
+                $query->whereHas('details', fn($q) => $q->where('stock_qty', $value));
             }
         }
     }

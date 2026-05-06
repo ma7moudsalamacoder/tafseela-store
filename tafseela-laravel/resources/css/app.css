@@ -4,14 +4,33 @@
 @tailwind components;
 @tailwind utilities;
 
-.btn-primary {
-    @apply bg-primary text-white hover:bg-primary-dark;
+@layer base {
+    body {
+        @apply font-body text-neutral-charcoal bg-background-light antialiased;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        @apply font-display tracking-tight;
+    }
+    p, span, a, li {
+        line-height: 1.7;
+    }
 }
 
-.btn-primary-dark {
-    @apply bg-primary-dark text-white hover:bg-primary;
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
-.btn-secondary {
-    @apply bg-charcoal text-white hover:bg-neutral-beige hover:text-charcoal;
+.luxury-button-hover {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-card-shadow {
+    transition: box-shadow 0.3s ease;
+}
+.product-card-shadow:hover {
+    box-shadow: 0 20px 40px -15px rgba(0,0,0,0.08);
 }

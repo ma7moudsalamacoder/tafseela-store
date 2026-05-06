@@ -32,8 +32,12 @@ class CustomerServiceProvider extends ServiceProvider
         $this->publishes([$sourcePath => $viewPath], ['views', $this->nameLower.'-module-views']);
 
         $this->loadViewsFrom([$viewPath, $sourcePath], $this->nameLower);
-        Blade::anonymousComponentPath($sourcePath, $this->nameLower);
 
-        Blade::componentNamespace('Modules\\' . $this->name . '\\View\\Components', $this->nameLower);
+        Blade::component('customer::components.category-card', 'category-card');
+        Blade::component('customer::components.collection-section', 'collection-section');
+        Blade::component('customer::components.home-product-card', 'home-product-card');
+        Blade::component('customer::components.header', 'header');
+        Blade::component('customer::components.footer', 'footer');
+        Blade::component('customer::layouts.client', 'layout.client');
     }
 }
