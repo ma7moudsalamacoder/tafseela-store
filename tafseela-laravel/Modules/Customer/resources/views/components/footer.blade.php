@@ -3,16 +3,16 @@
         <div class="space-y-8">
             <h4 class="text-3xl font-extrabold tracking-tighter uppercase italic">تفصيلة</h4>
             <p class="text-white/70 leading-relaxed font-light text-sm">
-                متجركم الأول للأزياء العصرية المصممة بدقة لتلائم أسلوب حياتكم. الجودة والفخامة في كل غرزة منذ عام 2020.
+                {{ $siteContacts->footer_slogan ?? 'متجركم الأول للأزياء العصرية المصممة بدقة لتلائم أسلوب حياتكم. الجودة والفخامة في كل غرزة منذ عام 2020.' }}
             </p>
             <div class="flex gap-4">
-                <a aria-label="Facebook" class="w-12 h-12 border border-white/20 flex items-center justify-center hover:bg-white hover:text-primary-dark transition-all duration-300" href="#">
+                <a aria-label="Facebook" class="w-12 h-12 border border-white/20 flex items-center justify-center hover:bg-white hover:text-primary-dark transition-all duration-300" href="{{ $siteContacts->facebook ?? '#' }}">
                     <i class="material-icons-outlined text-xl">facebook</i>
                 </a>
-                <a aria-label="Instagram" class="w-12 h-12 border border-white/20 flex items-center justify-center hover:bg-white hover:text-primary-dark transition-all duration-300" href="#">
+                <a aria-label="Instagram" class="w-12 h-12 border border-white/20 flex items-center justify-center hover:bg-white hover:text-primary-dark transition-all duration-300" href="{{ $siteContacts->instagram ?? '#' }}">
                     <span class="material-symbols-outlined text-xl">camera</span>
                 </a>
-                <a aria-label="Twitter" class="w-12 h-12 border border-white/20 flex items-center justify-center hover:bg-white hover:text-primary-dark transition-all duration-300" href="#">
+                <a aria-label="Twitter" class="w-12 h-12 border border-white/20 flex items-center justify-center hover:bg-white hover:text-primary-dark transition-all duration-300" href="{{ $siteContacts->twitter ?? '#' }}">
                     <span class="material-symbols-outlined text-xl">alternate_email</span>
                 </a>
             </div>
@@ -21,9 +21,9 @@
             <h5 class="font-bold text-xs uppercase tracking-[0.3em] mb-10 text-white">تسوق حسب الفئة</h5>
             <ul class="space-y-5 text-white/70 font-bold text-[11px] uppercase tracking-widest">
                 <li><a class="hover:text-white transition-colors flex items-center gap-3" href="{{ route('new-arrivals') }}"><span class="w-4 h-[1px] bg-white/30"></span>وصلنا حديثاً</a></li>
-                <li><a class="hover:text-white transition-colors flex items-center gap-3" href="{{ route('category', 'men') }}"><span class="w-4 h-[1px] bg-white/30"></span>مجموعة الرجال</a></li>
-                <li><a class="hover:text-white transition-colors flex items-center gap-3" href="{{ route('category', 'women') }}"><span class="w-4 h-[1px] bg-white/30"></span>مجموعة النساء</a></li>
-                <li><a class="hover:text-white transition-colors flex items-center gap-3" href="{{ route('category', 'kids') }}"><span class="w-4 h-[1px] bg-white/30"></span>ملابس الأطفال</a></li>
+                @foreach($navCategories ?? [] as $navCategory)
+                    <li><a class="hover:text-white transition-colors flex items-center gap-3" href="{{ route('category', $navCategory->slug) }}"><span class="w-4 h-[1px] bg-white/30"></span>{{ $navCategory->title }}</a></li>
+                @endforeach
             </ul>
         </div>
         <div>
@@ -40,15 +40,15 @@
             <ul class="space-y-6 text-white/70 text-[13px] font-medium">
                 <li class="flex items-start gap-4">
                     <span class="material-symbols-outlined text-white text-xl mt-1">location_on</span>
-                    <span class="leading-relaxed">شارع التسعين، التجمع الخامس، القاهرة، مصر</span>
+                    <span class="leading-relaxed">{{ $siteContacts->address ?? 'شارع التسعين، التجمع الخامس، القاهرة، مصر' }}</span>
                 </li>
                 <li class="flex items-center gap-4">
                     <span class="material-symbols-outlined text-white text-xl">call</span>
-                    <span class="font-bold tracking-wider" dir="ltr">+20 123 456 7890</span>
+                    <a href="tel:{{ $siteContacts->phone ?? '+201234567890' }}" class="font-bold tracking-wider hover:text-white" dir="ltr">{{ $siteContacts->phone ?? '+20 123 456 7890' }}</a>
                 </li>
                 <li class="flex items-center gap-4">
                     <span class="material-symbols-outlined text-white text-xl">mail</span>
-                    <span class="tracking-wide">care@tafsela.com</span>
+                    <a href="mailto:{{ $siteContacts->email ?? 'care@tafsela.com' }}" class="tracking-wide hover:text-white">{{ $siteContacts->email ?? 'care@tafsela.com' }}</a>
                 </li>
             </ul>
         </div>

@@ -24,16 +24,16 @@
                 <span class="material-symbols-outlined text-lg">language</span>
             </button>
             <div class="flex items-center gap-6 lg:gap-7">
-                <a class="hover:text-primary transition-colors flex flex-col items-center gap-1" href="{{ route('account') }}">
+                <a class="hover:text-primary transition-colors flex flex-col items-center gap-1" href="{{ auth()->check() ? route('account') : route('auth.signin') }}">
                     <span class="material-symbols-outlined text-[24px]">person</span>
-                    <span class="text-[9px] font-bold hidden lg:block uppercase tracking-widest text-neutral-charcoal/60">حسابي</span>
+                    <span class="text-[9px] font-bold hidden lg:block uppercase tracking-widest text-neutral-charcoal/60">{{ auth()->check() ? 'حسابي' : 'إنضم إلينا' }}</span>
                 </a>
-                <a class="hover:text-primary transition-colors flex flex-col items-center gap-1 relative" href="{{ route('wishlist') }}">
+                <a class="hover:text-primary transition-colors flex flex-col items-center gap-1 relative" href="{{ auth()->check() ? route('wishlist') : route('auth.signin') }}">
                     <span class="material-symbols-outlined text-[24px]">favorite</span>
                     <span class="text-[9px] font-bold hidden lg:block uppercase tracking-widest text-neutral-charcoal/60">المفضلة</span>
                     <span class="absolute -top-1 -right-1 bg-primary text-white text-[8px] w-4 h-4 rounded-full flex items-center justify-center font-bold">{{ $wishlistCount }}</span>
                 </a>
-                <a class="hover:text-primary transition-colors flex flex-col items-center gap-1 relative" href="{{ route('cart') }}">
+                <a class="hover:text-primary transition-colors flex flex-col items-center gap-1 relative" href="{{ auth()->check() ? route('cart') : route('auth.signin') }}">
                     <span class="material-symbols-outlined text-[24px]">shopping_bag</span>
                     <span class="text-[9px] font-bold hidden lg:block uppercase tracking-widest text-neutral-charcoal/60">السلة</span>
                     <span class="absolute -top-1 -right-1 bg-primary text-white text-[8px] w-4 h-4 rounded-full flex items-center justify-center font-bold">{{ $cartCount }}</span>
@@ -44,11 +44,18 @@
     <nav class="container mx-auto px-4 lg:px-12 pb-4 hidden md:block">
         <ul class="flex items-center gap-12 text-[12px] font-bold uppercase tracking-widest justify-center">
             <li><a class="{{ request()->routeIs('home') ? 'text-neutral-charcoal border-b-2 border-primary pb-1' : 'text-gray-500 hover:text-primary transition-colors pb-1 border-b-2 border-transparent hover:border-primary/30' }}" href="{{ route('home') }}">الرئيسية</a></li>
-            <li><a class="text-gray-500 hover:text-primary transition-colors pb-1 border-b-2 border-transparent hover:border-primary/30" href="{{ route('new-arrivals') }}">وصلنا حديثاً</a></li>
-            <li><a class="text-gray-500 hover:text-primary transition-colors pb-1 border-b-2 border-transparent hover:border-primary/30" href="{{ route('category', 'men') }}">رجالي</a></li>
-            <li><a class="text-gray-500 hover:text-primary transition-colors pb-1 border-b-2 border-transparent hover:border-primary/30" href="{{ route('category', 'women') }}">حريمي</a></li>
-            <li><a class="text-gray-500 hover:text-primary transition-colors pb-1 border-b-2 border-transparent hover:border-primary/30" href="{{ route('category', 'kids') }}">أطفال</a></li>
-            <li><a class="text-neutral-charcoal/70 hover:text-primary transition-colors pb-1 border-b-2 border-transparent hover:border-primary/30" href="{{ route('sale') }}">التخفيضات</a></li>
+            <li><a class="{{ request()->routeIs('new-arrivals') ? 'text-neutral-charcoal border-b-2 border-primary pb-1' : 'text-gray-500 hover:text-primary transition-colors pb-1 border-b-2 border-transparent hover:border-primary/30' }}" href="{{ route('new-arrivals') }}">وصلنا حديثاً</a></li>
+            
+            @foreach($navCategories ?? [] as $navCategory)
+                <li>
+                    <a class="{{ request()->is('category/' . $navCategory->slug) ? 'text-neutral-charcoal border-b-2 border-primary pb-1' : 'text-gray-500 hover:text-primary transition-colors pb-1 border-b-2 border-transparent hover:border-primary/30' }}" 
+                       href="{{ route('category', $navCategory->slug) }}">
+                        {{ $navCategory->title }}
+                    </a>
+                </li>
+            @endforeach
+
+            <li><a class="{{ request()->routeIs('sale') ? 'text-neutral-charcoal border-b-2 border-primary pb-1' : 'text-neutral-charcoal/70 hover:text-primary transition-colors pb-1 border-b-2 border-transparent hover:border-primary/30' }}" href="{{ route('sale') }}">التخفيضات</a></li>
         </ul>
     </nav>
 </header>

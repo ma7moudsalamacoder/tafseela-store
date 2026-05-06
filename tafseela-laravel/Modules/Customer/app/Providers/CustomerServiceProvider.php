@@ -22,6 +22,28 @@ class CustomerServiceProvider extends ServiceProvider
     {
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
+
+        $this->registerViewComposers();
+    }
+
+    protected function registerViewComposers(): void
+    {
+        view()->composer(['customer::components.header', 'customer::components.footer'], function ($view) {
+            $productManager = new \Modules\Product\Services\ProductManager();
+            $categories = $productManager->getAllCategoriesWithDetails(0, \Modules\Product\Enums\ItemStatus::SHOW)->map(function($cat) {
+                return (object) [
+                    'title' => $cat->category,
+                    'slug'  => strtolower(\Modules\Product\Enums\ProductSlugs::tryFrom($cat->category)?->name ?? \Illuminate\Support\Str::slug($cat->category)),
+                ];
+            });
+
+            $contacts = \Modules\Core\Models\SiteSetting::where('key', 'contacts')->first()?->value ?? [];
+
+            $view->with([
+                'navCategories' => $categories,
+                'siteContacts'  => (object) $contacts,
+            ]);
+        });
     }
 
     public function registerViews(): void
