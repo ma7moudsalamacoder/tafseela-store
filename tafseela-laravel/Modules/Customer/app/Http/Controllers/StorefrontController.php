@@ -3,16 +3,24 @@
 namespace Modules\Customer\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
-use Modules\Product\Models\Category;
-use Modules\Product\Models\Product;
+use Modules\Product\Enums\ProductSlugs;
+use Modules\Product\Services\ProductManager;
 
 class StorefrontController extends Controller
 {
-    public function index(): View
-    {
-        $categories = Category::with('products')->get();
-        $latestProducts = Product::latest()->take(10)->get();
+    public function __construct(
+        protected ProductManager $productManager
+    ) {}
 
-        return view('customer::storefront.index', compact('categories', 'latestProducts'));
+    public function index(string $slug): View
+    {
+        $slugValue = ProductSlugs::getBySlug($slug)?->value ?? null;
+        if(empty($slugValue)){
+            abort(404);
+        } 
+        $productsGrouped = $this->productManager->getProductsByCategoryName($slugValue);
+        $products = $productsGrouped->flatten();
+        $category = (object) ['category' => $slug];
+        return view('customer::category', compact('category', 'products'));
     }
 }

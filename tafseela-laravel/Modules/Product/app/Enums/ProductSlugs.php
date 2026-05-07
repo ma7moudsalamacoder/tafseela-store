@@ -12,7 +12,7 @@ enum ProductSlugs: string
     case NEW_ARRIVALS = "وصلنا حديثاً";
     case SALE = "تخفيضات";
 
-   function getBySlug(string $slug): ?self
+    public static function getBySlug(string $slug): ?self
     {
         return match ($slug) {
             'women' => self::WOMEN,

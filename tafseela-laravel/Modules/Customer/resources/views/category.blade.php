@@ -70,97 +70,18 @@
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-16">
-                            <!-- Product Grid Items Ported Directly -->
-                            <div class="group product-card-shadow">
-                                <div class="relative aspect-[4/5] overflow-hidden bg-gray-50 mb-6">
-                                    <img alt="Premium Linen Shirt" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAa8rxsCtnHO1uoqPKohyj3olgrRNYd84CD7ibbTxlOhJunn23RMdUvhV50rilc6g5xsGQ_Bz3Y6_Xi3llenb_loo06rLbJj2A5MY-DoJt46VO0LHC-q4_C_TuacMR1u3F4JMj1Ljr3TR_Js_TN_DGjG6a96fJulUh_UttCtpU5wRgwu7HoF0JwqHBOu_Qz_pKne5ROiSCvA5oWyansb_9tY7WE5Mz3MOeEqJBIlamFRHh5OYXaonC9MQawVhOYhPZoq8Au59PQYaLn"/>
-                                    <div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                    <div class="absolute bottom-4 left-4 right-4 translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500 flex gap-2">
-                                        <button class="flex-grow bg-white text-neutral-charcoal hover:bg-[#8B5E3C] hover:text-white py-4 text-[10px] font-bold uppercase tracking-widest transition-colors flex items-center justify-center gap-2">
-                                            <span class="material-symbols-outlined text-base">shopping_bag</span>
-                                            إضافة سريعة
-                                        </button>
-                                        <button class="bg-white text-neutral-charcoal hover:text-red-500 w-12 flex items-center justify-center transition-colors">
-                                            <span class="material-symbols-outlined">favorite</span>
-                                        </button>
-                                    </div>
-                                    <span class="absolute top-4 right-4 bg-[#8B5E3C] text-white text-[9px] font-extrabold px-3 py-1 tracking-widest">وصل حديثاً</span>
-                                </div>
-                                <div class="space-y-1">
-                                    <h4 class="font-bold text-base hover:text-[#8B5E3C] transition-colors cursor-pointer tracking-tight font-display">قميص كتان فاخر</h4>
-                                    <p class="text-gray-400 text-[9px] font-bold uppercase tracking-widest">أزرق سماوي - صيفي</p>
-                                    <div class="flex items-center gap-3 pt-2">
-                                        <span class="font-bold text-lg text-[#8B5E3C]">1,250 ج.م</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="group product-card-shadow">
-                                <div class="relative aspect-[4/5] overflow-hidden bg-gray-50 mb-6">
-                                    <img alt="Classic Cotton Shirt" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtKicfpnDGxV6OZ2AcKbavKPy2wiKTHJpXSR_qEVlqnyuzIWeOETtGbC1_xTCE3wiEs37Je1VvyoWrDgJlz4-W0sOonxdwLSRtNxXrYspmmROYfEJ9Bgx31eWI7Aha_atd1OG0Q6EAEIuvh7oHir9DLMvuPUNLiVe2XwNwWYuAOtONslDp2u_F7V9pMFNeviQfyvM92F3CZlvlpUvctZJLIOB_tmP_EKmLrmB26IrTo3Lm4KX8ty7bDv3v09A3LtqGyo_7BJUoin53"/>
-                                    <div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                    <div class="absolute bottom-4 left-4 right-4 translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500 flex gap-2">
-                                        <button class="flex-grow bg-white text-neutral-charcoal hover:bg-[#8B5E3C] hover:text-white py-4 text-[10px] font-bold uppercase tracking-widest transition-colors flex items-center justify-center gap-2">
-                                            <span class="material-symbols-outlined text-base">shopping_bag</span>
-                                            إضافة سريعة
-                                        </button>
-                                        <button class="bg-white text-neutral-charcoal hover:text-red-500 w-12 flex items-center justify-center transition-colors">
-                                            <span class="material-symbols-outlined">favorite</span>
-                                        </button>
-                                    </div>
-                                    <span class="absolute top-4 right-4 bg-[#8B5E3C] text-white text-[9px] font-extrabold px-3 py-1 tracking-widest">خصم 15%</span>
-                                </div>
-                                <div class="space-y-1">
-                                    <h4 class="font-bold text-base hover:text-[#8B5E3C] transition-colors cursor-pointer tracking-tight font-display">قميص قطن كلاسيكي</h4>
-                                    <p class="text-gray-400 text-[9px] font-bold uppercase tracking-widest">أبيض ملكي - رسمي</p>
-                                    <div class="flex items-center gap-3 pt-2">
-                                        <span class="font-bold text-lg text-[#8B5E3C]">950 ج.م</span>
-                                        <span class="text-sm text-gray-300 line-through">1,120 ج.م</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="group product-card-shadow">
-                                <div class="relative aspect-[4/5] overflow-hidden bg-gray-50 mb-6">
-                                    <img alt="Modern Striped Shirt" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbi3E7Kulf-O39skm-_q21SAHf1y-hZ4ToIZmrNSJz5N7tKArej1WXHzgD2l1Jvtm7wor_gDh9NC2j0ZAMXdV1bCjcvYAqXP_xWrT6PSJYaKk9-1PdFQopPgmBmBFgWDA5_sJ3Vnxzp9IkrlliKv5tQZjFVT3j-_BoV5Y9Ij4sr1ctB3EuNxssOGOTkdmFQ8tWUJ1V3wJAXvqDNNnN-M_9wCPr9ClSqkeODujbxIdxwFE12bb2qCRHl3mp8xOFHnrxg00RkrqoykTB"/>
-                                    <div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                    <div class="absolute bottom-4 left-4 right-4 translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500 flex gap-2">
-                                        <button class="flex-grow bg-white text-neutral-charcoal hover:bg-[#8B5E3C] hover:text-white py-4 text-[10px] font-bold uppercase tracking-widest transition-colors flex items-center justify-center gap-2">
-                                            <span class="material-symbols-outlined text-base">shopping_bag</span>
-                                            إضافة سريعة
-                                        </button>
-                                        <button class="bg-white text-neutral-charcoal hover:text-red-500 w-12 flex items-center justify-center transition-colors">
-                                            <span class="material-symbols-outlined">favorite</span>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="space-y-1">
-                                    <h4 class="font-bold text-base hover:text-[#8B5E3C] transition-colors cursor-pointer tracking-tight font-display">قميص مخطط عصري</h4>
-                                    <p class="text-gray-400 text-[9px] font-bold uppercase tracking-widest">كحلي ورمادي - كاجوال</p>
-                                    <div class="flex items-center gap-3 pt-2">
-                                        <span class="font-bold text-lg text-[#8B5E3C]">1,100 ج.م</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="group product-card-shadow">
-                                <div class="relative aspect-[4/5] overflow-hidden bg-gray-50 mb-6">
-                                    <img alt="Oxford Shirt" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfMNJWS58aYPNNEez7zZBK5oYciY9gRf1GmsCiGl5SzDQjlijSF7npj2Mt4NvlkEPwpwhWpFmI7xkaz5-A16AUn3QOJq0vdNIyeOmDH8gyNS5jxRDEjW4aYPqGjFzkGzpH_TVCvOzCXirQkdZh9p42PP65T5aKazbGhn-0H8vn4zOGs6qOHiF7ASAXUd22n5J9ViCrJgx0ASgEWABTEchYdsy1T8PuXZjOWvjQJcpXXRLC7J7EyBtUkgOKd7YQ_qoisaPjpRaZMtSu"/>
-                                    <div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                    <div class="absolute bottom-4 left-4 right-4 translate-y-10 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500 flex gap-2">
-                                        <button class="flex-grow bg-white text-neutral-charcoal hover:bg-[#8B5E3C] hover:text-white py-4 text-[10px] font-bold uppercase tracking-widest transition-colors flex items-center justify-center gap-2">
-                                            إضافة سريعة
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="space-y-1">
-                                    <h4 class="font-bold text-base font-display">قميص أكسفورد ناعم</h4>
-                                    <p class="text-gray-400 text-[9px] font-bold uppercase tracking-widest">رمادي هادئ</p>
-                                    <div class="flex items-center gap-3 pt-2">
-                                        <span class="font-bold text-lg text-[#8B5E3C]">890 ج.م</span>
-                                    </div>
-                                </div>
-                            </div>
+                            @foreach($products as $product)
+                                @php
+                                    $productData = [
+                                        'name' => $product->name,
+                                        'description' => $product->fabric ?? 'وصف المنتج',
+                                        'image' => $product->image ?? 'https://via.placeholder.com/400x500',
+                                        'price' => $product->price . ' ج.م',
+                                        'badge' => null, // Add badge logic if available in your model
+                                    ];
+                                @endphp
+                                <x-customer::category-product-card :product="$productData" />
+                            @endforeach
                         </div>
 
                         <!-- Pagination -->
