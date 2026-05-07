@@ -4,6 +4,7 @@ namespace Modules\Customer\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Str;
+use Modules\Core\Services\SettingsManager;
 use Modules\Product\Enums\ItemStatus;
 use Modules\Product\Enums\ProductSlugs;
 use Modules\Product\Models\Category;
@@ -13,9 +14,11 @@ use Modules\Product\Services\ProductManager;
 class HomeController extends Controller
 {
     protected $productManager;
+    protected $settingsManager;
     public function __construct()
     {
         $this->productManager = new ProductManager();
+        $this->settingsManager = new SettingsManager();
     }
     public function __invoke(): View
     {
@@ -24,8 +27,8 @@ class HomeController extends Controller
         $wishlistCount = 0;
 
 
-        $hero = \Modules\Core\Models\SiteSetting::where('key', 'hero')->first()?->value;
-        
+        $hero = $this->settingsManager->get('hero');
+
         if (!$hero) {
             $hero = [
                 'image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuAtKicfpnDGxV6OZ2AcKbavKPy2wiKTHJpXSR_qEVlqnyuzIWeOETtGbC1_xTCE3wiEs37Je1VvyoWrDgJlz4-W0sOonxdwLSRtNxXrYspmmROYfEJ9Bgx31eWI7Aha_atd1OG0Q6EAEIuvh7oHir9DLMvuPUNLiVe2XwNwWYuAOtONslDp2u_F7V9pMFNeviQfyvM92F3CZlvlpUvctZJLIOB_tmP_EKmLrmB26IrTo3Lm4KX8ty7bDv3v09A3LtqGyo_7BJUoin53',
@@ -43,7 +46,7 @@ class HomeController extends Controller
             $cat->count = $cat->products()->count() . ' منتج';
         });
 
-   
+
         if ($categories->isEmpty()) {
             $categories = [
                 ['slug' => 'women', 'title' => 'حريمي', 'image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuD55sDnuTNCU7sBX1jr1StVjbWmYFeqZK4Gy_tpA6izp9D-hK7bZkpmRo2dZOfQP4KUjqpRKi86MyDd0QDfy__R8OTaSxS68fA5-b4xtYTrdutWDPR6bZd8wYTbfVUCphyByZDz-Yl8MPS2HTrOes1u1KdzS8s8D_vR6nKfySirpmhbBVYMuxKNadWMwau8YSMjRKphq53QPJM6UIRQCB20U0jc1Df1gdbsol42-LzV68izutNhL6PJza4Gw7gj4yAqMsIRyxw_z2I0', 'alt' => 'Women', 'count' => 'أكثر من 500 منتج'],

@@ -19,3 +19,7 @@ Route::get('/collection/{slug}', [StorefrontController::class, 'index'])->name('
 Route::get('/cart', [StorefrontController::class, 'index'])->name('cart');
 Route::get('/wishlist', [StorefrontController::class, 'index'])->name('wishlist');
 Route::get('/account', [StorefrontController::class, 'index'])->name('account');
+
+Route::get('/category', function () {
+    return view('customer::category');
+});
