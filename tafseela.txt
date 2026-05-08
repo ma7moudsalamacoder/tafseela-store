@@ -1,0 +1,397 @@
+[Done] : in Identity module create new string Enum named OtpActions to has the following Items :
+- verify_email
+- forget_password
+- confirm_payment
+==================
+[Done]:in Identity module create new email notification for each event
+==================
+[Done]:in Identity module create new Event named SessionStartedEvent using user_id and empty Event Listener named SessionStartedEventListener to handle SessionStartedEvent
+==================
+[Done]:in Identity module create new Event named VerificationFailedEvent using user_id and empty Event Listener named VerificationFailedEventListener to handle VerificationFailedEvent
+
+==================
+[Done]:in Identity module create :
+- new Event named AccountVerifiedEvent using user_id and empty Event Listener named AccountVerifiedEventListener to handle AccountVerifiedEvent
+- new Event named RecoveryRequestedEvent using otp, hash and user_id and empty Event Listener named RecoveryRequestedEventListener to handle RecoveryRequestedEvent
+- new Event named AccountRecoveredEvent using user_id and empty Event Listener named AccountRecoveredEventListener to handle AccountRecoveredEvent
+- new Event named NewDeviceSessionEvent using user_id and empty Event Listener named NewDeviceSessionEventListener to handle NewDeviceSessionEvent
+
+==================
+[Done]:in Identity module create new service named UserManager to has the following functions :
+- generateOTP : used to generate new otp record for current user id and return otp_code and hash (make sure otp code is random 6 digits and expires after 15 minutes) 
+- verifyOTP : used to verify otp identified by given hash and current user id against user input code and if otp verified then trigger AccountVerifiedEvent and if otp action is forget_password then trigger
+ AccountRecoveredEvent
+- signUpByEmail : used to create new user and use email username as temp name for user until user complete his/her profile and make sure to use generateOTP to generate otp and trigger AccountCreatedEvent 
+- requestAccountRecovery : used to generate OTP with action forget_password and trigger RecoveryRequestedEvent
+
+==================
+[Done] in Identity module update UserManager service as follows:  
+- in verifyOTP function check number of attempts before verifying if attempts equals 3 then stop verification and trigger event VerificationFailedEvent
+- in signUpByEmail function should receive password as parameter with email and provider should be email 
+- in signUpByEmail function name should be the first part of user email address before the "@" sign
+==================
+
+[Done] in Identity module create :
+- new migration file with current timestamp to create new table name access_logs to include the following columns 
+	- id (primary key - int - auto increment)
+	- user_id (related users table)
+	- attempts (int)
+	- audit columns
+
+- new migration file with current timestamp to update table name access_locks to include the following columns 
+	- id (primary key - int - auto increment)
+	- user_id (related users table)
+	- hash
+	- ip_address
+	- device
+	- audit columns
+- run migration command to update table access_locks
+- update model for table access_locks
+
+
+==================
+
+[Done]in Identity module as follows :
+- in Identity module create new string Enum named LockReasons to has the following Items :
+	- original_user_request
+	- unauthorized_device
+	- unauthorized_access
+- update UserManager service to create new function named recoverAccount to update given user password using user_id and trigger AccountRecoveredEvent
+- update UserManager service to create new function addDeviceHash to add a hash for current device in cookies using generic name
+- update UserManager service to create new function getDeviceHash to add a hash for current device from cookies using cookies generic name
+- update UserManager service to create new function lockAccount to add access_locks record using device hash and user device details and user ip address
+- update UserManager service to create new function unlockAccount to remove access_locks record by device hash stored in cookies
+
+
+==================
+opencode -s ses_24a29f57cffecqpDpbzUlJAO38
+===
+[Done]in Identity module update UserManager service as follows:
+- add function description above each function
+- create requests to validate user inputs as follows :
+	- request to validate given email (required - email format) and password (required) for signin 	process
+	- request to validate given email (required - email format) and password (required - strong 	password format - confirmed match)  for signup process
+	- request to validate given profile data using prober rules
+	- request to validate given user location data using prober rules
+	- request to validate given password and confirm password using prober rules for change 	password process
+ - new Event named AccountLockedEvent using user_id and empty Event Listener named AccountLockedEventListener to handle AccountLockedEvent
+ - new Event named AccountUnlockedEvent using user_id and empty Event Listener named AccountUnlockedEventListener to handle AccountUnlockedEvent
+- update lockAccount function to trigger AccountLockedEvent after adding access_locks record
+- update unlockAccount function to trigger AccountUnlockedEvent after removing access_locks record
+- add new function name changePassword using given user_id and password to update account password
+- add new function name addProfile using given profile data to add unique user profile
+- add new function name updateProfile using profile data to update user profile (only update the changed data)
+- add new function name signInByEmail using email and password to authenticate user as follows :
+	- check if account is locked then trigger AccountLockedEvent and return false
+	- if email and password matched with given email and password then authenticate the user and 	reset number of attempts in access log using user_id and trigger SessionStartedEvent and 	return true
+	- if email and password not matched with given email and password then check number of 	attempts in access logs and if attempts greater than or equals 3 then lock account and return 	false
+================
+in Identity module update all requests to include proper translatable validation messages 
+===================
+in Identity module :
+- based on design theme create the following views :
+	- SignUp
+	- RecoverPassword
+	- CreateAccount
+	- CreateProfile
+	- CreateUserLocation
+	- SignIn (should include the ability to sign in as primary way and sign in with google and 	facebook as secondary way and also links to recover password and signUp)
+	- OTP (make sure show counter down timer starting 15 minutes)
+	- TermsAgreement 
+- use user manager service methods to build AuthController to handle the created views properly and make sure :
+	- the created user has role customer
+	- using requests to handle validation
+	- with sign up to follow the logical pages sequence CreateAccount->TermsAgreement->OTP->CreateProfile->CreateUserLocation->home)
+- add the needed routes to make them accessible and functional properly 
+======================
+in Identity module :
+- make sure all text and messages are translatable
+- return back translatable validation messages and use it in requests
+MAKE SURE TO USE TRANSLATABLE TEXT AND MESSAGES
+=======================
+in Identity module :
+- based on design theme create the following views :
+	- SignUp
+	- RecoverPassword
+	- CreateAccount
+	- CreateProfile
+	- CreateUserLocation
+	- SignIn (should include the ability to sign in as primary way and sign in with google and 	facebook as secondary way and also links to recover password and signUp)
+	- OTP (make sure show counter down timer starting 15 minutes)
+	- TermsAgreement 
+- use user manager service methods to build AuthController to handle the created views properly and make sure :
+	- the created user has role customer
+	- using requests to handle validation
+	- with sign up to follow the logical pages sequence CreateAccount->TermsAgreement->OTP->CreateProfile->CreateUserLocation->home)
+- add the needed routes to make them accessible and functional properly 
+- make sure all text and messages are translatable
+- return back translatable validation messages and use it in requests
+=======================
+in Identity module sign up page need to be updated to : 
+- handle translation properly because translation is not working
+- style need to be enhanced to be more attractive and comply with Design Theme (DESIGN.md)
+=================
+in Identity module simplify sign up page by as follows :
+- first make sure every thing load from translation (ar)
+- create new layout named AuthLayout as follows :
+	- make Arabic brand name at the top
+	- make white box with poper shadow effect in the middle of the page and consistent with design theme
+	- at bottom add copyright line 
+	- in the white box add proper Icon (based on the page) then page title then the form that include all related fields  (based on the page)
+- use the created AuthLayout to implement signup page and the other related pages
+- remove any unused component
+===================
+check psr-4 in @tafseela-laravel\composer.json to understand namespaces strategy then in Identity module fix all namespaces that do not match 
+================
+in Identity module :
+- make sure to use namespaces strategy from psr-4 in @tafseela-laravel\composer.json
+- based on design theme create the following views :
+	- SignUp
+	- RecoverPassword
+	- CreateAccount
+	- CreateProfile
+	- CreateUserLocation
+	- SignIn (should include the ability to sign in as primary way and sign in with google and 	facebook as secondary way and also links to recover password and signUp)
+	- OTP (make sure show counter down timer starting 15 minutes)
+	- TermsAgreement 
+- use user manager service methods to build AuthController to handle the created views properly and make sure :
+	- the created user has role customer
+	- using requests to handle validation
+	- with sign up to follow the logical pages sequence CreateAccount->TermsAgreement->OTP->CreateProfile->CreateUserLocation->home)
+- add the needed routes to make them accessible and functional properly 
+- make sure all text and messages are translatable
+- use translatable validation messages in requests
+================
+in Identity module update Auth Layout as follow : 
+- make Arabic brand name at the top
+- make the white box in middle and center of the page and consistent with design theme
+- at bottom add copyright line (full width only in mobile version)
+- in the white box add proper Icon (based on the page) using fontawsome icons then page title then the form that include all related fields  (based on the page)
+- make sure it's responsive 
+- make sure all text and messages are translatable
+================
+apply design theme from @DESIGN.md in tailwind configs to make it easy to apply it in views and remove any unnecessary classes from master layout   
+==============
+Product module :
+- add new migration file to update the table to :
+	- remove columns stock_qty and price and 
+	- add column fabric (varchar(100))
+	- add column notes (varchar(200))
+- add new migration file to create new the table named product details with proper indexes :
+	- id (primary key)
+	- size (varchar(20))
+	- color (varchar(20))
+	- price (decimal(10,2))
+	- stock_qty (int(10) unsigned)
+	- status (enum('show','hide'))
+	- notes (varchar(200))
+	- product_id (related to products)
+	- timestamps
+	- audits
+- update product model :
+	 - remove stock_qty and price
+	 - add related products details as attribute
+	 
+run migration command to update the database	
+
+==============
+
+Product module :
+- based on views and migration files create seeders for all products tables (except orders tables)
+- run seeder command to seed the database
+
+==============
+
+Customer module : 
+- update current controllers to make products pages work dynamically with products data from database
+
+==============
+Product module :
+- add new migration file to update the table to :
+	- add column price (decimal(10,2))
+- add new migration file to update the table named product details :
+	- remove column price
+- update product model due to recent tables updates
+- update seeders for all products tables (except orders tables) due to recent tables updates
+==============
+Product module :
+- add new migration file to update the categories table to :
+	- add column status (enum('show','hide')) default is show
+- add new migration file to update the collections table to :
+	- add column status (enum('show','hide')) 
+- update related models due to recent tables updates
+- update seeders for categories and collections tables due to recent tables updates
+
+==========
+Product module :
+- create new string Enum named ItemStatus (none - show - hide)
+- Update ItemStatus Enum with function to return translated value based on key 
+- create new string Enum named ProductCategories (Men : men - Women : women - Kids : kids - Accessories : accessories)
+- Update ProductCategories Enum with function to return translated value based on key
+- add the new enums values in translation files
+- create new service named ProductManager
+- ProductManager service should include the following functions :
+	- LoadAllCategories : with optional parameter named status (use ItemStatus Enum) default value is none which means return all unique categories regardless category status otherwise return unique Categories based status
+	- LoadAllSubCategories : with optional parameter named grouping default value is false and another optional parameter named status (use ItemStatus Enum) default value is none which means return all unique subcategories regardless subcategory status otherwise return unique SubCategories based status and group SubCategories by related category
+	- LoadAllCollections : with optional parameter named status (use ItemStatus Enum) default value is none which means return all collections regardless collection status otherwise return collections based status
+	- LoadAllProducts : to load all products and related details from product details with optional parameter named status (use ItemStatus Enum) default value is none which means return all products regardless product status otherwise return products based status
+	- LoadProductsByCollectionID : to load all products with collection_id as required parameter and  optional parameter named filters to filter data by products and product details columns
+	- LoadProductsByCategoryID : to load all products with category_id as required parameter and  optional parameter named filters to filter data by products and product details columns and grouped by subcategory
+	- LoadProductsByCollectionName : to load all products with collection name as required parameter and  optional parameter named filters to filter data by products and product details columns
+	- LoadProductsByCategoryName : to load all products with category name as required parameter and optional parameter named filters to filter data by products and product details columns and grouped by subcategory
+	- LoadProductByID : to load product and product details by product id
+ 
+==========
+Core module :
+	- add new migration file to create colors table s follows 
+		- key (primary key - chars(100) - to store color hex)
+		- labels (json - ex: {"ar":"أزرق", en:"Blue"} - to store color label in Arabic and English)
+		- timestamps
+		- audits
+	- new seeder file to seed colors table
+Product module :
+	- update products_details seeder to store colors as color hex code (from existed colors in colors table) not color label
+	- update ProductManager service due to recent updates (if needs) 
+
+====================
+- since tailwind already configured properly so clean up all views from embedded tailwind and make sure views are working properly
+====================
+Product Module : 
+use @tafseela-laravel/Modules/Product/database/migrations/ in next updates :
+	- add migration file to update cover_image field data type to be varchars(500) in categories table
+	- add migration file to remove subcategory field from categories table
+	- add migration file to create new table name subcategories with proper indexes as follows :
+		- id (primary key)
+		- title (varchar(100))
+		- status(Enum(show/hide))
+		- cover_image (varchars(500))
+		- category_id (related to categories table)
+		- timestamps
+		- audits
+use @tafseela-laravel/Modules/Product/database/seeders/ in next updates :
+	- update categories seeder due to categories table updates
+	- add new seeder file to seed subcategories table
+use @tafseela-laravel/Modules/Product/app/Models/ in next updates :
+	- create new model for subcategories table
+	- update categories model due to categories table updates
+use @tafseela-laravel/Modules/Product/app/Services/ in next updates :
+	- update ProductManager service as follows :
+		- update all functions names that starting 'Load' to start with 'get' instead
+		- update all functions due to recent table updates 
+
+====================
+Product Module : 
+use @tafseela-laravel/Modules/Product/database/migrations/ in next updates :
+	- add migration file to update products table to include :
+		- subcategory_id (related to subcategories)
+use @tafseela-laravel/Modules/Product/database/seeders/ in next updates :
+	- update products seeder due to products table updates
+use @tafseela-laravel/Modules/Product/app/Models/ in next updates :
+	- update products model due to products table updates
+use @tafseela-laravel/Modules/Product/app/Services/ in next updates :
+	- update ProductManager service as follows :
+		- update all functions due to recent table updates 
+
+====================
+Customer Module : 
+use @tafseela-laravel/Modules/Customer in next updates :
+- make categories links dynamic and loaded from categories table
+- change link حسابي to إنضم إلينا based on user authentication status
+- change and to redirect to login page if user not authenticated 
+====================
+Customer Module : 
+use @tafseela-laravel/Modules/Customer in next updates :
+- make categories links dynamic and loaded from categories table
+
+====================
+Core Module : 
+use @tafseela-laravel/Modules/Core to create :
+- new migration file for new table named site_settings to include with proper indexes :
+	- id (primary key)
+	- key (varchar(100) - unique - required)
+	- value (json - required)
+	- timestamps
+	- audits
+- new model for site_settings table with parsed value
+- new seeder for site_settings table to add two records as follows :
+	#1:
+		- key : contacts
+		- value : {'address':'الأسكندرية - مصر','phone':'+20 123 456 7890', 'email':'care@tafseela.net', 'facebook':'#', 'instagram':'#', 'twitter':'#', 'footer_slogan':' متجركم الأول للأزياء العصرية المصممة بدقة لتلائم أسلوب حياتكم. الجودة والفخامة في كل غرزة منذ عام 2020. ' }
+	#2:
+		- key : hero
+		- value : {'image' : 'https://lh3.googleusercontent.com/aida-public/AB6AXuAtKicfpnDGxV6OZ2AcKbavKPy2wiKTHJpXSR_qEVlqnyuzIWeOETtGbC1_xTCE3wiEs37Je1VvyoWrDgJlz4-W0sOonxdwLSRtNxXrYspmmROYfEJ9Bgx31eWI7Aha_atd1OG0Q6EAEIuvh7oHir9DLMvuPUNLiVe2XwNwWYuAOtONslDp2u_F7V9pMFNeviQfyvM92F3CZlvlpUvctZJLIOB_tmP_EKmLrmB26IrTo3Lm4KX8ty7bDv3v09A3LtqGyo_7BJUoin53',
+            'badge' : 'مجموعة خريف وشتاء 2026',
+            'description' : 'اكتشفوا أحدث التصاميم العصرية التي تجمع بين الأصالة والراحة. قطع حصرية صممت لتعكس شخصيتكم الراقية.',
+            'collectionSlug' : 'winter-2024'}
+- run seeder command to seed the new table only
+
+Customer Module : 
+- use @tafseela-laravel/Modules/Customer/views/components/footer.blade.php  to make contact details and social media dynamic and loaded from sites table from record has key 'contacts'
+- use  @tafseela-laravel/Modules/Customer/app/Http/Controllers/HomeController.php to make hero details dynamic and loaded from sites table from record has key 'hero' and if empty load them from hero array
+
+
+==================
+Core Module :
+- create new service to handle site settings named SettingsManager and include CRUD operations functions 
+
+==================
+Customer Module :
+- use @tafseela-frontend\client\tafsela_home_page_arabic_4\code.html to implement statically as-is @tafseela-laravel\Modules\Customer\resources\views\category.blade.php
+
+==================
+Customer Module : 
+- fix @tafseela-laravel\Modules\Customer\resources\views\category.blade.php style to match  @tafseela-frontend\client\tafsela_home_page_arabic_4\code.html specially the aside panel
+
+==================
+Customer Module : 
+-does that @C:\Users\Iron Man\Pictures\Screenshots\Screenshot 2026-05-07 142448.png match with this @tafseela-frontend\client\tafsela_home_page_arabic_4\code.html
+
+==================
+Customer Module : 
+- use @tafseela-laravel\Modules\Customer\resources\views\category.blade.php to extract proper elements to build new component named category-product-card.blade.php 
+
+==================
+Customer Module : 
+- update index function in @tafseela-laravel\Modules\Customer\app\Http\Controllers\StorefrontController.php as follows :
+	- use @tafseela-laravel\Modules\Customer\resources\views\category.blade.php as dynamic view and use @tafseela-laravel\Modules\Customer\resources\views\components\category-product-card.blade.php in it to publish related products dynamically 
+	- update index function to get category slug as route parameter to load category details and related products
+
+==================
+Customer Module : 
+- use @tafseela-laravel\Modules\Product\app\Services\ProductManager.php in index function in @tafseela-laravel\Modules\Customer\app\Http\Controllers\StorefrontController.php 
+
+==================
+Customer Module :
+- update index function in @tafseela-laravel\Modules\Customer\app\Http\Controllers\StorefrontController.php as follows :
+	- load subcategories with number of related Products based on given category
+	- load products related to first subcategory
+	- map products details to be ready to use with use @tafseela-laravel\Modules\Customer\resources\views\components\category-product-card.blade.php
+	- use @tafseela-laravel\Modules\Customer\resources\views\category.blade.php :
+		- load list of subcategories with number of related Products dynamically
+		- use @tafseela-laravel\Modules\Customer\resources\views\components\category-product-card.blade.php in it to publish related products dynamically 
+
+==================
+Customer Module :
+- update index and getSubcategoryDetails functions in @tafseela-laravel\Modules\Customer\app\Http\Controllers\StorefrontController.php as follows :
+	- load subcategories with number of related Products based on given category and ignore any subcategory has no product
+	- make sure any subcategory has no product can not be accessed
+
+==================
+Customer Module :
+- update @tafseela-laravel\Modules\Customer\resources\views\category.blade.php to show Pagination only if number of products is greater than 10
+==================
+Customer Module :
+- update index and getSubcategoryDetails functions in @tafseela-laravel\Modules\Customer\app\Http\Controllers\StorefrontController.php to apply Pagination
+==================
+Customer Module :
+- update index and getSubcategoryDetails functions in @tafseela-laravel\Modules\Customer\app\Http\Controllers\StorefrontController.php to apply filtering by price, size and color
+- update update @tafseela-laravel\Modules\Customer\resources\views\category.blade.php to apply filtering by price, size and color
+==================
+Customer Module :
+-  @tafseela-laravel\Modules\Customer\app\Http\Controllers\StorefrontController.php has been update by remove getSubcategoryDetails function and its route since no need for it due to your last update so 
+	- update subcategory route in @tafseela-laravel\Modules\Customer\resources\views\category.blade.php
+	- update @tafseela-laravel\Modules\Customer\resources\views\category.blade.php to show message in the page if no products to show
+	- update @tafseela-laravel\Modules\Customer\resources\views\category.blade.php to fix price sliders to avoid any overlap between them
+==================
+Customer Module :
+- update @tafseela-laravel\Modules\Customer\resources\views\category.blade.php to add reset filters button in Aside Panel (Filters) 
