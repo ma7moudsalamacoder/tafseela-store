@@ -3,54 +3,70 @@
 namespace Modules\Cart\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Modules\Cart\Http\Requests\CartRequest;
+use Modules\Cart\Http\Resources\CartResource;
+use Modules\Cart\Services\CartService;
 
 class CartController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected CartService $cartService;
+
+    public function __construct(CartService $cartService)
     {
-        return view('cart::index');
+        $this->cartService = $cartService;
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display the current user's cart.
      */
-    public function create()
+    public function index(): CartResource
     {
-        return view('cart::create');
+        $cart = $this->cartService->getCart(auth()->id());
+        return new CartResource($cart);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Add an item to the cart.
      */
-    public function store(Request $request) {}
-
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
+    public function store(CartRequest $request): CartResource
     {
-        return view('cart::show');
+        $cart = $this->cartService->addItem(auth()->id(), $request->validated());
+        return new CartResource($cart);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Update an item's quantity in the cart.
      */
-    public function edit($id)
+    public function update(CartRequest $request, $id): CartResource
     {
-        return view('cart::edit');
+        // $id is ignored here as we use product_id from request, 
+        // but it's kept for route compatibility if needed.
+        $cart = $this->cartService->updateItem(
+            auth()->id(),
+            $request->product_id,
+            $request->product_detail_id,
+            $request->quantity
+        );
+        return new CartResource($cart);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Remove an item from the cart or clear it.
      */
-    public function update(Request $request, $id) {}
+    public function destroy(Request $request, $id): JsonResponse|CartResource
+    {
+        if ($request->has('product_id')) {
+            $cart = $this->cartService->removeItem(
+                auth()->id(),
+                $request->product_id,
+                $request->product_detail_id
+            );
+            return new CartResource($cart);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id) {}
+        $this->cartService->clearCart(auth()->id());
+        return response()->json(['message' => 'Cart cleared successfully']);
+    }
 }

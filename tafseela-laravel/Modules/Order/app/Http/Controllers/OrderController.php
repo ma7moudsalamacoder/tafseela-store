@@ -3,54 +3,49 @@
 namespace Modules\Order\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Modules\Order\Http\Requests\OrderRequest;
+use Modules\Order\Http\Resources\OrderResource;
+use Modules\Order\Services\OrderService;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected OrderService $orderService;
+
+    public function __construct(OrderService $orderService)
     {
-        return view('order::index');
+        $this->orderService = $orderService;
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the user's orders.
      */
-    public function create()
+    public function index(): AnonymousResourceCollection
     {
-        return view('order::create');
+        $orders = $this->orderService->getUserOrders(auth()->id());
+        return OrderResource::collection($orders);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created order from cart.
      */
-    public function store(Request $request) {}
-
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
+    public function store(OrderRequest $request): OrderResource
     {
-        return view('order::show');
+        $order = $this->orderService->placeOrder(auth()->id(), $request->validated());
+        return new OrderResource($order->load('details'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the specified order.
      */
-    public function edit($id)
+    public function show($id): OrderResource
     {
-        return view('order::edit');
+        $order = $this->orderService->getOrder($id, auth()->id());
+
+        if (!$order) {
+            abort(404, 'Order not found.');
+        }
+
+        return new OrderResource($order->load('details'));
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id) {}
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id) {}
 }

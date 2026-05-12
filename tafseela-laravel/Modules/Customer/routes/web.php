@@ -10,7 +10,7 @@ Route::post('/newsletter/subscribe', [NewsletterController::class, 'store'])->na
 
 Route::get('/shop', [StorefrontController::class, 'index'])->name('shop');
 Route::get('/new-arrivals', [StorefrontController::class, 'index'])->name('new-arrivals');
-Route::get('/sale', [StorefrontController::class, 'index'])->name('sale');
+Route::get('/sale', [StorefrontController::class, 'getSale'])->name('sale');
 
 Route::get('/category/{slug}', [StorefrontController::class, 'index'])->name('category');
 Route::get('/product/{slug}', [StorefrontController::class, 'index'])->name('product');

@@ -8,6 +8,9 @@ use Modules\Product\Services\ProductManager;
 use Modules\Product\Models\Category;
 use Modules\Product\Models\Subcategory;
 
+use Modules\Product\Models\Product;
+use Modules\Product\Models\ProductDiscount;
+
 class StorefrontController extends Controller
 {
     public function __construct(
@@ -80,17 +83,126 @@ class StorefrontController extends Controller
 
 
         $formattedProducts = $productsPaginator->getCollection()->map(function ($product) {
+            $discount = $product->active_discount;
             return [
                 'name' => $product->name,
                 'description' => $product->fabric ?? 'وصف المنتج',
                 'image' => $product->image ?? 'https://via.placeholder.com/400x500',
-                'price' => $product->price . ' ج.م',
-                'badge' => null, // Add badge logic if available in your model
+                'price' => $product->discounted_price . ' ج.م',
+                'old_price' => $discount ? $product->price . ' ج.م' : null,
+                'badge' => $discount ? ($discount->type === 'rate' ? $discount->value . '%' : 'خصم') : null,
             ];
         });
 
         return view('customer::category', compact('slug','category', 'subcategories', 'formattedProducts', 'selectedSubcategory', 'productsPaginator', 'sort', 'min_price', 'max_price', 'size', 'color'));
     }
 
+    public function getSale(): View
+    {
+        if (!ProductDiscount::hasActiveDiscounts()) {
+            abort(404);
+        }
 
+        $sort = request()->query('sort_by', 'created_at');
+        if($sort === 'low_price') {
+            $sort_by = 'price';
+            $sort_order = 'asc';
+        } elseif($sort === 'high_price') {
+            $sort_by = 'price';
+            $sort_order = 'desc';
+        } else {
+            $sort_by = 'created_at';
+            $sort_order = 'desc';
+        }
+
+        $categoryId = request()->query('categoryId');
+        $subcategoryId = request()->query('subcategoryId');
+        $min_price = request()->query('min_price');
+        $max_price = request()->query('max_price');
+        $size = request()->query('size');
+        $color = request()->query('color');
+
+        $discountedProductIds = ProductDiscount::active()->pluck('item_id')->unique();
+
+        $productsQuery = Product::whereIn('id', $discountedProductIds)
+            ->whereHas('details', function ($q) {
+                $q->where('stock_qty', '>', 0);
+            });
+
+        // Active Categories for Sale
+        $activeCategories = Category::where('status', 'show')
+            ->whereHas('products', function ($q) use ($discountedProductIds) {
+                $q->whereIn('id', $discountedProductIds);
+            })->withCount(['products' => function ($q) use ($discountedProductIds) {
+                $q->whereIn('id', $discountedProductIds);
+            }])->get();
+
+        if ($categoryId) {
+            $productsQuery->where('category_id', $categoryId);
+        }
+
+        // Subcategories
+        $subcategoriesQuery = Subcategory::whereHas('products', function ($q) use ($discountedProductIds) {
+            $q->whereIn('id', $discountedProductIds);
+        });
+
+        if ($categoryId) {
+            $subcategoriesQuery->where('category_id', $categoryId);
+        }
+
+        $subcategories = $subcategoriesQuery->withCount(['products' => function ($q) use ($discountedProductIds) {
+            $q->whereIn('id', $discountedProductIds);
+        }])->get()->filter(fn($sub) => $sub->products_count > 0);
+
+        if ($subcategoryId) {
+            $productsQuery->where('subcategory_id', $subcategoryId);
+        }
+
+        if ($min_price) {
+            $productsQuery->where('price', '>=', $min_price);
+        }
+        if ($max_price) {
+            $productsQuery->where('price', '<=', $max_price);
+        }
+        if ($size || $color) {
+            $productsQuery->whereHas('details', function ($query) use ($size, $color) {
+                if ($size) {
+                    $query->where('size', $size);
+                }
+                if ($color) {
+                    $query->where('color', $color);
+                }
+            });
+        }
+
+        $totalProducts = (clone $productsQuery)->count();
+        $productsPaginator = $productsQuery->orderBy($sort_by, $sort_order)->simplePaginate(10);
+        
+        $formattedProducts = $productsPaginator->getCollection()->map(function ($product) {
+            $discount = $product->active_discount;
+            return [
+                'name' => $product->name,
+                'description' => $product->fabric ?? 'وصف المنتج',
+                'image' => $product->image ?? 'https://via.placeholder.com/400x500',
+                'price' => $product->discounted_price . ' ج.م',
+                'old_price' => $discount ? $product->price . ' ج.م' : null,
+                'badge' => $discount ? ($discount->type === 'rate' ? $discount->value . '%' : 'خصم') : null,
+            ];
+        });
+
+        return view('customer::sale', compact(
+            'totalProducts',
+            'activeCategories',
+            'subcategories',
+            'formattedProducts',
+            'productsPaginator',
+            'sort',
+            'min_price',
+            'max_price',
+            'size',
+            'color',
+            'categoryId',
+            'subcategoryId'
+        ));
+    }
 }

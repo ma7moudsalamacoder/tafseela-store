@@ -45,17 +45,19 @@
         <ul class="flex items-center gap-12 text-[12px] font-bold uppercase tracking-widest justify-center">
             <li><a class="{{ request()->routeIs('home') ? 'text-neutral-charcoal border-b-2 border-primary pb-1' : 'text-gray-500 hover:text-primary transition-colors pb-1 border-b-2 border-transparent hover:border-primary/30' }}" href="{{ route('home') }}">الرئيسية</a></li>
             <li><a class="{{ request()->routeIs('new-arrivals') ? 'text-neutral-charcoal border-b-2 border-primary pb-1' : 'text-gray-500 hover:text-primary transition-colors pb-1 border-b-2 border-transparent hover:border-primary/30' }}" href="{{ route('new-arrivals') }}">وصلنا حديثاً</a></li>
-            
+
             @foreach($navCategories ?? [] as $navCategory)
                 <li>
-                    <a class="{{ request()->is('category/' . $navCategory->slug) ? 'text-neutral-charcoal border-b-2 border-primary pb-1' : 'text-gray-500 hover:text-primary transition-colors pb-1 border-b-2 border-transparent hover:border-primary/30' }}" 
+                    <a class="{{ request()->is('category/' . $navCategory->slug) ? 'text-neutral-charcoal border-b-2 border-primary pb-1' : 'text-gray-500 hover:text-primary transition-colors pb-1 border-b-2 border-transparent hover:border-primary/30' }}"
                        href="{{ route('category', $navCategory->slug) }}">
                         {{ $navCategory->title }}
                     </a>
                 </li>
             @endforeach
 
+            @if(\Modules\Product\Models\ProductDiscount::hasActiveDiscounts())
             <li><a class="{{ request()->routeIs('sale') ? 'text-neutral-charcoal border-b-2 border-primary pb-1' : 'text-neutral-charcoal/70 hover:text-primary transition-colors pb-1 border-b-2 border-transparent hover:border-primary/30' }}" href="{{ route('sale') }}">التخفيضات</a></li>
+            @endif
         </ul>
     </nav>
 </header>

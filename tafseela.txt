@@ -1,3 +1,7 @@
+==================
+check projct current state and save it in memory to understand the project state to be able to response to my next request properly  
+==================
+
 [Done] : in Identity module create new string Enum named OtpActions to has the following Items :
 - verify_email
 - forget_password
@@ -395,3 +399,12 @@ Customer Module :
 ==================
 Customer Module :
 - update @tafseela-laravel\Modules\Customer\resources\views\category.blade.php to add reset filters button in Aside Panel (Filters) 
+
+==================
+Customer Module :
+- create new view similar to @tafseela-laravel\Modules\Customer\resources\views\category.blade.php and named sale
+- update the new view to have new filter in filters list for active categories and it should be above subcategories filter 
+- the new view should be handled by getSale function in @tafseela-laravel\Modules\Customer\app\Http\Controllers\StorefrontController.php to retrieve only products existing in active products discounts and products has stock_qty greater than 0 
+- make route for new getSale and make it accessble only if actve products discounts has records
+- update nav bar in @tafseela-laravel\Modules\Customer\resources\views\components\header.blade.php to show sale line only if active products discounts has records
+- update index function in @tafseela-laravel\Modules\Customer\app\Http\Controllers\StorefrontController.php to handle badge and old_price properly if only product existing in active products discounts 

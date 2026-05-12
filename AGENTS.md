@@ -1,73 +1,92 @@
 # Tafseela
 
-Laravel 11 e-commerce + nwidart/laravel-modules.
+Laravel 11 e-commerce with nwidart/laravel-modules.
 
 ## Structure
 
-- `tafseela-laravel/` — Main application (Laravel 11 + nwidart/laravel-modules)
-- `tafseela-frontend/` — Static client mockups
+- `tafseela-laravel/` — Main application
+- Docker files (Dockerfile, docker-compose.yml, nginx.conf) are at the **repo root**, not inside laravel dir.
 
-**Modules** (`Modules/{Module}/app/`): Admin, Cart, Core, Customer, Delivery, Identity, Order, Payment, Product, Support
+**Modules**: Admin, Cart, Core, Customer, Delivery, Identity, Order, Payment, Product, Support
 
-## Commands
+## Dev Commands
 
 Run from `tafseela-laravel/`:
 
 ```bash
-# Dev
-composer run dev
+composer run dev          # PHP server + queue + logs + Vite (concurrently)
+php artisan serve         # Run just the PHP server
+npm run dev               # Run just Vite dev server
+npm run build             # Build frontend assets
 
 # Tests
-./vendor/bin/phpunit
+php artisan test          # Run all tests
+./vendor/bin/phpunit --filter=TestClassName    # Run single test class
+./vendor/bin/phpunit --filter=test_method_name # Run single test method
 
-# Code style (Laravel Pint)
-./vendor/bin/pint
+# Code style
+./vendor/bin/pint         # Laravel Pint (fixes style issues)
+./vendor/bin/pint --test  # Check without fixing
 
-# Clear caches
-php artisan view:clear && php artisan cache:clear && php artisan route:clear
+# Database
+php artisan migrate       # Run migrations
+php artisan db:seed       # Seed database
 ```
+
+Clear caches: `php artisan view:clear && php artisan cache:clear && php artisan route:clear`
 
 ## Docker
 
-```bash
-docker compose up -d
-```
+Run from repo root (where docker-compose.yml lives): `docker compose up -d`
 
-Ports: Nginx :8090, MySQL :3307, Mailpit :8025
+Ports: Nginx :8090, MySQL :3307, Mailpit :8025 (web UI), SMTP :1025
 
 ## Namespace Convention (CRITICAL)
 
-Module autoload maps `Modules\{Module}\` to `Modules/{Module}/app/`. Check `composer.json` autoload config.
+Composer autoload maps `Modules\{Module}\` directly to `Modules/{Module}/app/`.
 
 ```php
-// Correct namespaces per composer.json:
+// CORRECT:
 namespace Modules\Identity\Http\Controllers;
-namespace Modules\Identity\Http\Requests;
-namespace Modules\Identity\Services;
 namespace Modules\Identity\Models;
+
+// WRONG (don't include app/ segment):
+namespace Modules\Identity\app\Http\Controllers;
 ```
 
-NOT `Modules\Identity\app\Http\Controllers` - the autoload does NOT include `app/` segment.
+## Module Architecture
 
-## Blade Components
+- Routes: `Modules/{Module}/routes/web.php` (web) and `Modules/{Module}/routes/api.php` (API)
+- RouteServiceProvider loads routes from each module
+- Controllers: `Modules/{Module}/app/Http/Controllers/`
+- Models: `Modules/{Module}/app/Models/`
+- Services: `Modules/{Module}/app/Services/`
+- Migrations: `Modules/{Module}/database/migrations/`
 
-Register anonymous components in ServiceProvider:
-
+Blade components registered in ServiceProvider `registerViews()`:
 ```php
-// In IdentityServiceProvider::registerViews():
 Blade::component('identity::components.auth-input', 'auth-input');
-Blade::component('identity::layouts.auth', 'layouts.auth');
 ```
+Use as `<x-auth-input>`
 
-Use short alias: `<x-auth-input>`, `<x-auth-card>`, `<x-auth-layout>`
+## Key Packages
 
-## Routes
+- `laravel/sanctum` — API authentication
+- `laravel/socialite` — Social login (Google, Facebook configured)
+- `spatie/laravel-permission` — RBAC
+- `spatie/laravel-activitylog` — Activity logging
+- `lorisleiva/laravel-actions` — Action classes for business logic
+- `nwidart/laravel-modules` — Modular structure
 
-Module routes at `Modules/{Module}/routes/web.php` — imported via `RouteServiceProvider`.
+## Defaults
+
+- Default locale: `ar` (Arabic), fallback `ar`, Faker locale `ar_EG`
+- DB: MySQL (connection via database queue and cache store by default)
+- Session/Queue/Cache drivers: `database`
+- App URL: `http://localhost`
 
 ## Git
 
-Conventional: `type(module): description`
-
+Commits: `type(module): description`  
 Types: feat, fix, refactor, docs, chore, test  
 Branches: `feat/{module}/feature-name`

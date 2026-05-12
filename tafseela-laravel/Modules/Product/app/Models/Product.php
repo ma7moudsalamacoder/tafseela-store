@@ -51,4 +51,36 @@ class Product extends Model
     {
         return $this->hasMany(ProductDetail::class);
     }
+
+    public function discounts(): HasMany
+    {
+        return $this->hasMany(ProductDiscount::class, 'item_id');
+    }
+
+    public function getActiveDiscountAttribute()
+    {
+        return $this->discounts()
+            ->where(function ($q) {
+                $q->whereNull('start_date')->orWhere('start_date', '<=', now());
+            })
+            ->where(function ($q) {
+                $q->whereNull('end_date')->orWhere('end_date', '>=', now());
+            })
+            ->first();
+    }
+
+    public function getDiscountedPriceAttribute()
+    {
+        $discount = $this->active_discount;
+
+        if (!$discount) {
+            return $this->price;
+        }
+
+        if ($discount->type === 'rate') {
+            return $this->price * (1 - $discount->value / 100);
+        }
+
+        return max(0, $this->price - $discount->value);
+    }
 }

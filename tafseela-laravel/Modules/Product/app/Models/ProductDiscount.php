@@ -32,4 +32,18 @@ class ProductDiscount extends Model
     {
         return $this->belongsTo(Product::class, 'item_id');
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where(function ($q) {
+            $q->whereNull('start_date')->orWhere('start_date', '<=', now());
+        })->where(function ($q) {
+            $q->whereNull('end_date')->orWhere('end_date', '>=', now());
+        });
+    }
+
+    public static function hasActiveDiscounts(): bool
+    {
+        return self::active()->exists();
+    }
 }
