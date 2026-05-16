@@ -75,6 +75,14 @@
         .added-product .btn-text {
             color: #fff !important;
         }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .drawer-open { overflow: hidden; }
+        .detail-chip-active {
+            background-color: #8C6239 !important;
+            color: #fff !important;
+            border-color: #8C6239 !important;
+        }
     </style>
 </head>
 
@@ -89,6 +97,62 @@
     </main>
 
     <x-footer />
+
+    {{-- Cart Off-Canvas Drawer --}}
+    <div id="cart-drawer-overlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[60] hidden opacity-0 transition-opacity duration-300" onclick="closeCartDrawer()"></div>
+    <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full max-w-[450px] bg-white z-[70] shadow-2xl flex flex-col translate-x-full transition-transform duration-500 ease-in-out">
+        <div class="bg-primary-dark text-white p-6 flex items-center justify-between flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined">shopping_bag</span>
+                <h2 class="text-xl font-bold tracking-tight">حقيبة التسوق</h2>
+                <span id="cart-drawer-count" class="bg-white/20 text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
+            </div>
+            <button onclick="closeCartDrawer()" class="hover:rotate-90 transition-transform duration-300" type="button">
+                <span class="material-symbols-outlined text-3xl">close</span>
+            </button>
+        </div>
+        <div id="cart-drawer-items" class="flex-grow overflow-y-auto p-6 space-y-6 hide-scrollbar">
+            <div class="flex items-center justify-center h-full text-gray-400 text-sm">جاري التحميل...</div>
+        </div>
+        <div id="cart-drawer-footer" class="p-6 border-t border-gray-100 bg-white flex-shrink-0 hidden">
+            <div class="flex justify-between items-center mb-6">
+                <span class="text-gray-500 font-medium">المجموع الفرعي</span>
+                <span id="cart-drawer-total" class="text-xl font-bold text-neutral-charcoal">0 جنيه</span>
+            </div>
+            <p class="text-[11px] text-gray-400 mb-6 text-center">الشحن والضرائب يتم حسابها عند إتمام الدفع</p>
+            <button onclick="checkout()" class="w-full bg-primary text-white py-5 font-extrabold text-sm tracking-[0.2em] hover:bg-primary-dark transition-colors flex items-center justify-center gap-3 shadow-lg" type="button">
+                إتمام الشراء
+                <span class="material-symbols-outlined">arrow_back</span>
+            </button>
+        </div>
+    </aside>
+
+    {{-- Wishlist Off-Canvas Drawer --}}
+    <div id="wishlist-drawer-overlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[60] hidden opacity-0 transition-opacity duration-300" onclick="closeWishlistDrawer()"></div>
+    <aside id="wishlist-drawer" class="fixed top-0 right-0 h-full w-full max-w-[450px] bg-white z-[70] shadow-2xl flex flex-col translate-x-full transition-transform duration-500 ease-in-out">
+        <div class="flex items-center justify-between px-8 py-6 border-b border-gray-100 flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary text-3xl">favorite</span>
+                <h2 class="text-2xl font-extrabold text-neutral-charcoal">المفضلة</h2>
+                <span id="wishlist-drawer-count" class="bg-primary/10 text-primary text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+            </div>
+            <button onclick="closeWishlistDrawer()" class="p-2 hover:bg-gray-50 transition-colors" type="button">
+                <span class="material-symbols-outlined text-gray-400">close</span>
+            </button>
+        </div>
+        <div id="wishlist-drawer-items" class="flex-grow overflow-y-auto p-8 space-y-6 hide-scrollbar">
+            <div class="flex items-center justify-center h-full text-gray-400 text-sm">جاري التحميل...</div>
+        </div>
+        <div id="wishlist-drawer-footer" class="p-8 border-t border-gray-100 flex-shrink-0 space-y-4">
+            <button onclick="addAllWishlistToCart()" class="w-full bg-neutral-charcoal text-white py-5 font-extrabold text-sm tracking-widest uppercase hover:bg-primary transition-colors flex justify-center items-center gap-3" type="button">
+                أضف الكل إلى السلة
+                <span class="material-symbols-outlined text-lg">shopping_cart_checkout</span>
+            </button>
+            <button onclick="closeWishlistDrawer()" class="w-full bg-white border border-gray-200 text-gray-500 py-4 font-bold text-xs tracking-widest uppercase hover:border-primary hover:text-primary transition-all" type="button">
+                متابعة التسوق
+            </button>
+        </div>
+    </aside>
 
     @stack('scripts')
     <script>
@@ -249,8 +313,424 @@
             @endauth
         }
 
+        function openCartDrawer() {
+            var overlay = document.getElementById('cart-drawer-overlay');
+            var drawer = document.getElementById('cart-drawer');
+            overlay.classList.remove('hidden');
+            document.body.classList.add('drawer-open');
+            requestAnimationFrame(function() {
+                overlay.classList.remove('opacity-0');
+                drawer.classList.remove('translate-x-full');
+            });
+            loadCartDrawer();
+        }
+
+        function closeCartDrawer() {
+            var overlay = document.getElementById('cart-drawer-overlay');
+            var drawer = document.getElementById('cart-drawer');
+            overlay.classList.add('opacity-0');
+            drawer.classList.add('translate-x-full');
+            document.body.classList.remove('drawer-open');
+            setTimeout(function() { overlay.classList.add('hidden'); }, 500);
+        }
+
+        function loadCartDrawer() {
+            var container = document.getElementById('cart-drawer-items');
+            var footer = document.getElementById('cart-drawer-footer');
+            container.innerHTML = '<div class="flex items-center justify-center h-full text-gray-400 text-sm">جاري التحميل...</div>';
+            footer.classList.add('hidden');
+
+            fetch('{{ route("cart.index") }}', {
+                headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                var cartData = data.data;
+                if (!cartData || !cartData.items || cartData.items.length === 0) {
+                    container.innerHTML = '<div class="flex flex-col items-center justify-center h-full text-gray-400"><span class="material-symbols-outlined text-5xl mb-4">shopping_bag</span><p class="text-sm">سلة التسوق فارغة</p></div>';
+                    return;
+                }
+                renderCartItems(cartData);
+                footer.classList.remove('hidden');
+            })
+            .catch(function() {
+                container.innerHTML = '<div class="flex items-center justify-center h-full text-gray-400 text-sm">حدث خطأ في تحميل السلة</div>';
+            });
+        }
+
+        function renderCartItems(cartData) {
+            var container = document.getElementById('cart-drawer-items');
+            var lookup = cartData.product_details_lookup || {};
+            var html = '';
+            cartData.items.forEach(function(item) {
+                var details = lookup[item.product_id] || [];
+                var priceDisplay = item.discounted_price && item.discounted_price < item.price
+                    ? '<span class="font-bold text-primary">' + (item.discounted_price * item.quantity).toLocaleString('ar-EG') + ' جنيه</span> <span class="text-[10px] text-gray-300 line-through">' + (item.price * item.quantity).toLocaleString('ar-EG') + ' جنيه</span>'
+                    : '<span class="font-bold text-primary">' + (item.price * item.quantity).toLocaleString('ar-EG') + ' جنيه</span>';
+
+                html += '<div class="flex gap-4 group" data-cart-item data-product-id="' + item.product_id + '" data-detail-id="' + (item.product_detail_id || '') + '">';
+                html += '<div class="w-24 h-32 flex-shrink-0 bg-gray-50 overflow-hidden">';
+                html += '<img src="' + (item.image || 'https://via.placeholder.com/96x128') + '" alt="' + item.product_name + '" class="w-full h-full object-cover">';
+                html += '</div>';
+                html += '<div class="flex-grow flex flex-col justify-between py-1 min-w-0">';
+                html += '<div>';
+                html += '<div class="flex justify-between items-start">';
+                html += '<h3 class="font-bold text-sm text-neutral-charcoal truncate">' + item.product_name + '</h3>';
+                html += '<button onclick="cartRemoveItem(' + item.product_id + ',' + (item.product_detail_id || 'null') + ')" class="text-gray-400 hover:text-red-500 transition-colors flex-shrink-0" type="button">';
+                html += '<span class="material-symbols-outlined text-lg">delete</span></button>';
+                html += '</div>';
+
+                var displayColors = [];
+                var displaySizes = [];
+                var hasMultipleColors = false;
+                var hasMultipleSizes = false;
+
+                if (details.length > 0) {
+                    var colorSeen = {}, sizeSeen = {};
+                    details.forEach(function(d) {
+                        if (d.color && !colorSeen[d.color]) { colorSeen[d.color] = true; displayColors.push(d.color); }
+                        if (d.size && !sizeSeen[d.size]) { sizeSeen[d.size] = true; displaySizes.push(d.size); }
+                    });
+                    hasMultipleColors = displayColors.length > 1;
+                    hasMultipleSizes = displaySizes.length > 1;
+                } else {
+                    if (item.color) displayColors.push(item.color);
+                    if (item.size) displaySizes.push(item.size);
+                }
+
+                if (displayColors.length > 0 || displaySizes.length > 0) {
+                    html += '<div class="mt-3 space-y-2">';
+
+                    if (displayColors.length > 0) {
+                        html += '<div class="flex flex-wrap gap-2">';
+                        displayColors.forEach(function(c) {
+                            var isSelected = c === item.color;
+                            var borderCls = isSelected ? 'ring-2 ring-primary ring-offset-1' : 'border border-gray-300' + (hasMultipleColors ? ' hover:border-primary cursor-pointer' : '');
+                            if (hasMultipleColors) {
+                                var targetD = details.find(function(dd) { return dd.color === c && dd.size === item.size; }) || details.find(function(dd) { return dd.color === c; });
+                                html += '<button onclick="cartChangeDetail(' + item.product_id + ',' + (item.product_detail_id || 'null') + ',' + (targetD ? targetD.id : 'null') + ',' + item.quantity + ')" class="flex flex-col items-center gap-0.5" type="button" title="' + c + '">';
+                            } else {
+                                html += '<span class="flex flex-col items-center gap-0.5">';
+                            }
+                            html += '<span class="block w-6 h-6 rounded-full ' + borderCls + '" style="background-color:' + c + ';"></span>';
+                            html += hasMultipleColors ? '</button>' : '</span>';
+                        });
+                        html += '</div>';
+                    }
+
+                    if (displaySizes.length > 0) {
+                        html += '<div class="flex flex-wrap gap-1.5">';
+                        displaySizes.forEach(function(s) {
+                            var isSelected = s === item.size;
+                            var cls = isSelected ? 'detail-chip-active' : 'border-gray-200' + (hasMultipleSizes ? ' hover:border-primary cursor-pointer' : '');
+                            if (hasMultipleSizes) {
+                                var targetD = details.find(function(dd) { return dd.size === s && dd.color === item.color; }) || details.find(function(dd) { return dd.size === s; });
+                                html += '<button onclick="cartChangeDetail(' + item.product_id + ',' + (item.product_detail_id || 'null') + ',' + (targetD ? targetD.id : 'null') + ',' + item.quantity + ')" class="text-[11px] px-3 py-1 border ' + cls + ' transition-colors rounded" type="button">' + s + '</button>';
+                            } else {
+                                html += '<span class="text-[11px] px-3 py-1 border ' + cls + ' rounded">' + s + '</span>';
+                            }
+                        });
+                        html += '</div>';
+                    }
+
+                    html += '</div>';
+                }
+
+                html += '</div>';
+                html += '<div class="flex justify-between items-center mt-2">';
+                html += '<div class="flex items-center border border-gray-200">';
+                html += '<button onclick="cartUpdateQty(' + item.product_id + ',' + (item.product_detail_id || 'null') + ',' + (item.quantity - 1) + ')" class="px-2 py-1 hover:bg-gray-100 transition-colors" type="button"' + (item.quantity <= 1 ? ' disabled style="opacity:0.4"' : '') + '>';
+                html += '<span class="material-symbols-outlined text-xs">remove</span></button>';
+                html += '<span class="px-3 text-xs font-bold font-sans" data-qty>' + item.quantity + '</span>';
+                html += '<button onclick="cartUpdateQty(' + item.product_id + ',' + (item.product_detail_id || 'null') + ',' + (item.quantity + 1) + ')" class="px-2 py-1 hover:bg-gray-100 transition-colors" type="button">';
+                html += '<span class="material-symbols-outlined text-xs">add</span></button>';
+                html += '</div>';
+                html += '<div>' + priceDisplay + '</div>';
+                html += '</div>';
+                html += '</div></div>';
+            });
+            container.innerHTML = html;
+            document.getElementById('cart-drawer-count').textContent = cartData.count + ' قطعة';
+            document.getElementById('cart-drawer-total').textContent = cartData.total.toLocaleString('ar-EG') + ' جنيه';
+        }
+
+        function cartUpdateQty(productId, detailId, qty) {
+            if (qty < 1) return;
+            fetch('{{ route("cart.update", 0) }}', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    product_id: productId,
+                    product_detail_id: detailId,
+                    quantity: qty,
+                }),
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                renderCartItems(data.data);
+                updateCartCount();
+            })
+            .catch(function() {
+                showToast('حدث خطأ أثناء التحديث', 'error');
+            });
+        }
+
+        function cartRemoveItem(productId, detailId) {
+            fetch('{{ route("cart.destroy", 0) }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                    'X-HTTP-Method-Override': 'DELETE',
+                },
+                body: JSON.stringify({
+                    product_id: productId,
+                    product_detail_id: detailId,
+                }),
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                var cartData = data.data || data;
+                if (cartData.items) {
+                    renderCartItems(cartData);
+                } else {
+                    document.getElementById('cart-drawer-items').innerHTML = '<div class="flex flex-col items-center justify-center h-full text-gray-400"><span class="material-symbols-outlined text-5xl mb-4">shopping_bag</span><p class="text-sm">سلة التسوق فارغة</p></div>';
+                    document.getElementById('cart-drawer-footer').classList.add('hidden');
+                }
+                updateCartCount();
+                showToast('تمت إزالة المنتج من السلة');
+            })
+            .catch(function() {
+                showToast('حدث خطأ أثناء الإزالة', 'error');
+            });
+        }
+
+        function cartChangeDetail(productId, oldDetailId, newDetailId, qty) {
+            if (oldDetailId === newDetailId) return;
+            fetch('{{ route("cart.change-detail") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    product_id: productId,
+                    old_product_detail_id: oldDetailId,
+                    new_product_detail_id: newDetailId,
+                    quantity: qty,
+                }),
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                renderCartItems(data.data);
+                updateCartCount();
+            })
+            .catch(function() {
+                showToast('حدث خطأ أثناء التغيير', 'error');
+            });
+        }
+
+        function openWishlistDrawer() {
+            var overlay = document.getElementById('wishlist-drawer-overlay');
+            var drawer = document.getElementById('wishlist-drawer');
+            overlay.classList.remove('hidden');
+            document.body.classList.add('drawer-open');
+            requestAnimationFrame(function() {
+                overlay.classList.remove('opacity-0');
+                drawer.classList.remove('translate-x-full');
+            });
+            loadWishlistDrawer();
+        }
+
+        function closeWishlistDrawer() {
+            var overlay = document.getElementById('wishlist-drawer-overlay');
+            var drawer = document.getElementById('wishlist-drawer');
+            overlay.classList.add('opacity-0');
+            drawer.classList.add('translate-x-full');
+            document.body.classList.remove('drawer-open');
+            setTimeout(function() { overlay.classList.add('hidden'); }, 500);
+        }
+
+        function loadWishlistDrawer() {
+            var container = document.getElementById('wishlist-drawer-items');
+            container.innerHTML = '<div class="flex items-center justify-center h-full text-gray-400 text-sm">جاري التحميل...</div>';
+
+            fetch('{{ route("customer.wishlist.items") }}', {
+                headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (!data.items || data.items.length === 0) {
+                    container.innerHTML = '<div class="flex flex-col items-center justify-center h-full text-gray-400"><span class="material-symbols-outlined text-5xl mb-4">favorite</span><p class="text-sm">قائمة المفضلة فارغة</p></div>';
+                    document.getElementById('wishlist-drawer-count').textContent = '0';
+                    return;
+                }
+                var html = '';
+                data.items.forEach(function(product) {
+                    var priceHtml = product.discounted_price && product.discounted_price < product.price
+                        ? '<div class="flex flex-col"><span class="font-bold text-primary">' + product.discounted_price.toLocaleString('ar-EG') + ' جنيه</span><span class="text-[10px] text-gray-300 line-through">' + product.price.toLocaleString('ar-EG') + ' جنيه</span></div>'
+                        : '<span class="font-bold text-primary">' + product.price.toLocaleString('ar-EG') + ' جنيه</span>';
+
+                    html += '<div class="flex gap-4 group" data-wishlist-item data-product-id="' + product.id + '">';
+                    html += '<div class="w-24 h-32 flex-shrink-0 overflow-hidden bg-gray-50">';
+                    html += '<img src="' + (product.image || 'https://via.placeholder.com/96x128') + '" alt="' + product.name + '" class="w-full h-full object-cover">';
+                    html += '</div>';
+                    html += '<div class="flex-grow flex flex-col">';
+                    html += '<div class="flex justify-between items-start mb-1">';
+                    html += '<h3 class="font-bold text-sm text-neutral-charcoal hover:text-primary transition-colors cursor-pointer">' + product.name + '</h3>';
+                    html += '<button onclick="wishlistRemoveItem(' + product.id + ', this)" class="text-gray-300 hover:text-red-500 transition-colors" type="button">';
+                    html += '<span class="material-symbols-outlined text-lg">delete</span></button>';
+                    html += '</div>';
+
+                    if (product.details && product.details.length > 0) {
+                        var cats = [...new Set(product.details.map(function(d) { return d.color; }))].filter(Boolean);
+                        html += '<p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-3">' + cats.join(' - ') + '</p>';
+                    }
+
+                    html += '<div class="mt-auto flex items-center justify-between">';
+                    html += priceHtml;
+                    var defaultDetailId = product.details && product.details.length > 0 ? product.details[0].id : null;
+                    html += '<button onclick="wishlistAddToCart(' + product.id + ',' + defaultDetailId + ', this)" class="bg-primary text-white text-[10px] font-bold px-4 py-2 hover:bg-primary-dark transition-colors flex items-center gap-2" type="button">';
+                    html += '<span class="material-symbols-outlined text-sm">shopping_bag</span> أضف للسلة</button>';
+                    html += '</div>';
+                    html += '</div></div>';
+                });
+                container.innerHTML = html;
+                document.getElementById('wishlist-drawer-count').textContent = data.count + ' قطع';
+            })
+            .catch(function() {
+                container.innerHTML = '<div class="flex items-center justify-center h-full text-gray-400 text-sm">حدث خطأ في تحميل المفضلة</div>';
+            });
+        }
+
+        function wishlistRemoveItem(productId, btn) {
+            var iconSpan = btn.querySelector('.material-symbols-outlined');
+            btn.disabled = true;
+            fetch('{{ route("customer.wishlist.toggle") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({ product_id: productId }),
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                var headerBadge = document.getElementById('wishlist-count-badge');
+                if (headerBadge) headerBadge.textContent = data.count;
+                showToast('تمت الإزالة من المفضلة');
+                loadWishlistDrawer();
+            })
+            .catch(function() {
+                showToast('حدث خطأ', 'error');
+                btn.disabled = false;
+            });
+        }
+
+        function wishlistAddToCart(productId, detailId, btn) {
+            btn.disabled = true;
+            var originalHtml = btn.innerHTML;
+            btn.innerHTML = '<span class="material-symbols-outlined text-sm">check</span> جاري...';
+
+            var body = { product_id: productId, quantity: 1 };
+            if (detailId) body.product_detail_id = detailId;
+
+            fetch('{{ route("cart.store") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify(body),
+            })
+            .then(function(r) { return r.json(); })
+            .then(function() {
+                updateCartCount();
+                showToast('تمت إضافة المنتج إلى السلة');
+                btn.innerHTML = '<span class="material-symbols-outlined text-sm">check</span> تم';
+                setTimeout(function() {
+                    btn.innerHTML = originalHtml;
+                    btn.disabled = false;
+                }, 2000);
+            })
+            .catch(function() {
+                showToast('حدث خطأ', 'error');
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+            });
+        }
+
+        function addAllWishlistToCart() {
+            var btn = event.target;
+            btn.disabled = true;
+            var originalText = btn.innerHTML;
+            btn.innerHTML = 'جاري الإضافة... <span class="material-symbols-outlined text-lg">sync</span>';
+
+            fetch('{{ route("customer.wishlist.items") }}', {
+                headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (!data.items || data.items.length === 0) return;
+                var promises = data.items.map(function(product) {
+                    var body = { product_id: product.id, quantity: 1 };
+                    if (product.details && product.details.length > 0) {
+                        body.product_detail_id = product.details[0].id;
+                    }
+                    return fetch('{{ route("cart.store") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json',
+                        },
+                        body: JSON.stringify(body),
+                    });
+                });
+                return Promise.all(promises);
+            })
+            .then(function() {
+                updateCartCount();
+                showToast('تمت إضافة جميع المنتجات إلى السلة');
+                setTimeout(function() { btn.innerHTML = originalText; btn.disabled = false; }, 2000);
+            })
+            .catch(function() {
+                showToast('حدث خطأ', 'error');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            });
+        }
+
+        function checkout() {
+            window.location.href = '{{ route('cart') }}';
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             updateCartCount();
+
+            document.querySelector('[data-cart-toggle]').addEventListener('click', function() {
+                @auth
+                    openCartDrawer();
+                @else
+                    window.location.href = '{{ route('auth.signin') }}';
+                @endauth
+            });
+
+            document.querySelector('[data-wishlist-toggle]').addEventListener('click', function() {
+                @auth
+                    openWishlistDrawer();
+                @else
+                    window.location.href = '{{ route('auth.signin') }}';
+                @endauth
+            });
         });
     </script>
 </body>

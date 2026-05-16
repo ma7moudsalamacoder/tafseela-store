@@ -94,6 +94,41 @@ class CartService
     }
 
     /**
+     * Change the product detail (color/size) for an item in the cart.
+     */
+    public function changeItemDetail(int $userId, int $productId, ?int $oldDetailId, ?int $newDetailId, int $quantity): UserCart
+    {
+        $cart = $this->getCart($userId);
+        $content = $cart->content ?? [];
+
+        $content = array_values(array_filter($content, function ($item) use ($productId, $oldDetailId) {
+            return !($item['product_id'] == $productId && ($item['product_detail_id'] ?? null) == $oldDetailId);
+        }));
+
+        $found = false;
+        foreach ($content as &$item) {
+            if ($item['product_id'] == $productId && ($item['product_detail_id'] ?? null) == $newDetailId) {
+                $item['quantity'] = $quantity;
+                $found = true;
+                break;
+            }
+        }
+
+        if (!$found) {
+            $content[] = [
+                'product_id' => $productId,
+                'product_detail_id' => $newDetailId,
+                'quantity' => $quantity,
+            ];
+        }
+
+        $cart->content = $content;
+        $cart->save();
+
+        return $cart;
+    }
+
+    /**
      * Clear the cart.
      */
     public function clearCart(int $userId): bool

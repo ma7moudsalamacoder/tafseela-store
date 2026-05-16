@@ -28,16 +28,16 @@
                     <span class="material-symbols-outlined text-[24px]">person</span>
                     <span class="text-[9px] font-bold hidden lg:block uppercase tracking-widest text-neutral-charcoal/60">{{ auth()->check() ? 'حسابي' : 'إنضم إلينا' }}</span>
                 </a>
-                <a class="hover:text-primary transition-colors flex flex-col items-center gap-1 relative" href="{{ auth()->check() ? route('wishlist') : route('auth.signin') }}">
+                <button type="button" class="hover:text-primary transition-colors flex flex-col items-center gap-1 relative" data-wishlist-toggle>
                     <span class="material-symbols-outlined text-[24px]">favorite</span>
                     <span class="text-[9px] font-bold hidden lg:block uppercase tracking-widest text-neutral-charcoal/60">المفضلة</span>
                     <span id="wishlist-count-badge" class="absolute -top-1 -right-1 bg-primary text-white text-[8px] w-4 h-4 rounded-full flex items-center justify-center font-bold">{{ $wishlistCount }}</span>
-                </a>
-                <a class="hover:text-primary transition-colors flex flex-col items-center gap-1 relative" href="{{ auth()->check() ? route('cart') : route('auth.signin') }}">
+                </button>
+                <button type="button" class="hover:text-primary transition-colors flex flex-col items-center gap-1 relative" data-cart-toggle>
                     <span class="material-symbols-outlined text-[24px]">shopping_bag</span>
                     <span class="text-[9px] font-bold hidden lg:block uppercase tracking-widest text-neutral-charcoal/60">السلة</span>
                     <span id="cart-count-badge" class="absolute -top-1 -right-1 bg-primary text-white text-[8px] w-4 h-4 rounded-full flex items-center justify-center font-bold">{{ $cartCount }}</span>
-                </a>
+                </button>
             </div>
         </div>
     </div>

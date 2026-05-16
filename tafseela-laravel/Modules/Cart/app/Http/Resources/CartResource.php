@@ -4,24 +4,20 @@ namespace Modules\Cart\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Str;
 use Modules\Product\Models\Product;
 use Modules\Product\Models\ProductDetail;
 
 class CartResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
         $content = $this->content ?? [];
-        
+
         $productIds = collect($content)->pluck('product_id')->unique()->toArray();
         $detailIds = collect($content)->pluck('product_detail_id')->filter()->unique()->toArray();
 
-        $products = Product::whereIn('id', $productIds)->get()->keyBy('id');
+        $products = Product::whereIn('id', $productIds)->with('details')->get()->keyBy('id');
         $details = ProductDetail::whereIn('id', $detailIds)->get()->keyBy('id');
 
         $items = collect($content)->map(function ($item) use ($products, $details) {
@@ -33,13 +29,25 @@ class CartResource extends JsonResource
                 'product_detail_id' => $item['product_detail_id'] ?? null,
                 'quantity' => $item['quantity'],
                 'product_name' => $product?->name,
-                'price' => $product?->price,
+                'price' => $product ? (float) $product->price : 0,
+                'discounted_price' => $product ? (float) $product->discounted_price : 0,
                 'size' => $productDetail?->size,
                 'color' => $productDetail?->color,
                 'subtotal' => $product ? ($product->price * $item['quantity']) : 0,
                 'image' => $product?->image,
+                'slug' => $product ? Str::slug($product->name) : '',
             ];
         });
+
+        $productDetailsLookup = [];
+        foreach ($products as $product) {
+            $productDetailsLookup[$product->id] = $product->details->map(fn($d) => [
+                'id' => $d->id,
+                'size' => $d->size,
+                'color' => $d->color,
+                'stock_qty' => $d->stock_qty,
+            ]);
+        }
 
         $total = $items->sum('subtotal');
         $count = $items->sum('quantity');
@@ -51,6 +59,7 @@ class CartResource extends JsonResource
             'count' => $count,
             'total' => $total,
             'updated_at' => $this->updated_at,
+            'product_details_lookup' => $productDetailsLookup,
         ];
     }
 }

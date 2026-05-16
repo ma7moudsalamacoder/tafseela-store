@@ -27,3 +27,4 @@ Route::get('/category', function () {
 
 Route::post('/cart/quick-add', CartQuickAddController::class)->name('customer.cart.quick-add');
 Route::post('/wishlist/toggle', [\Modules\Customer\Http\Controllers\WishlistController::class, 'toggle'])->name('customer.wishlist.toggle');
+Route::get('/wishlist/items', [\Modules\Customer\Http\Controllers\WishlistController::class, 'items'])->name('customer.wishlist.items');

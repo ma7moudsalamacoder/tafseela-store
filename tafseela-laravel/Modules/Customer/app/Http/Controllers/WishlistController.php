@@ -4,7 +4,9 @@ namespace Modules\Customer\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Modules\Customer\Services\WishlistService;
+use Modules\Product\Models\Product;
 
 class WishlistController extends Controller
 {
@@ -28,5 +30,35 @@ class WishlistController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function items()
+    {
+        $productIds = $this->wishlistService->getProductIds(auth()->id());
+
+        $products = Product::whereIn('id', $productIds)
+            ->with('details')
+            ->get()
+            ->map(function ($product) {
+                return [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'price' => (float) $product->price,
+                    'discounted_price' => (float) $product->discounted_price,
+                    'image' => $product->image,
+                    'slug' => Str::slug($product->name),
+                    'details' => $product->details->map(fn($d) => [
+                        'id' => $d->id,
+                        'size' => $d->size,
+                        'color' => $d->color,
+                        'stock_qty' => $d->stock_qty,
+                    ]),
+                ];
+            });
+
+        return response()->json([
+            'items' => $products,
+            'count' => count($products),
+        ]);
     }
 }
