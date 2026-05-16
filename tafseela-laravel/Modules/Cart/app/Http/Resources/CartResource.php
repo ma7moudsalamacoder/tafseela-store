@@ -42,7 +42,7 @@ class CartResource extends JsonResource
 
         $productDetailsLookup = [];
         foreach ($products as $product) {
-            $productDetailsLookup[$product->id] = $product->details->map(fn($d) => [
+            $productDetailsLookup[$product->id] = $product->details->map(fn ($d) => [
                 'id' => $d->id,
                 'size' => $d->size,
                 'color' => $d->color,

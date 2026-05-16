@@ -13,10 +13,10 @@ class SetDefaultAuthGuard
      */
     public function handle(Request $request, Closure $next)
     {
-        if($request->is('api/*')) {
+        if ($request->is('api/*')) {
             Auth::setDefaultDriver(auth()->guard('web')->check() ? 'web' : 'sanctum');
         }
+
         return $next($request);
     }
 }
-

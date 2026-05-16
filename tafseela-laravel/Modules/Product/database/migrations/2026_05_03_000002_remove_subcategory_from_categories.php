@@ -16,7 +16,7 @@ return new class extends Migration
                 // Drop index first if it exists
                 $table->dropIndex(['category', 'subcategory']);
                 $table->dropColumn('subcategory');
-                
+
                 // Add index for category since the composite index is gone
                 $table->index('category');
             }

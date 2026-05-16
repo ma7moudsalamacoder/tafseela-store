@@ -13,5 +13,3 @@ class AccountLockedEvent
         public int $userId,
     ) {}
 }
-
-

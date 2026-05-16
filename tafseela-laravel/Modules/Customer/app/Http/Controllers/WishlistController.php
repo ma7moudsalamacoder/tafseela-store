@@ -47,7 +47,7 @@ class WishlistController extends Controller
                     'discounted_price' => (float) $product->discounted_price,
                     'image' => $product->cover_image,
                     'slug' => Str::slug($product->name),
-                    'details' => $product->details->map(fn($d) => [
+                    'details' => $product->details->map(fn ($d) => [
                         'id' => $d->id,
                         'size' => $d->size,
                         'color' => $d->color,

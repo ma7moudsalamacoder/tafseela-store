@@ -66,4 +66,3 @@ class LocationRequest extends FormRequest
         ];
     }
 }
-

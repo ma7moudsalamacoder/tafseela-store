@@ -18,9 +18,9 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->string('promo_code')->nullable();
             $table->enum('status', ['pending', 'paid', 'failed', 'cancelled'])->default('pending');
-            $table->decimal('grand_total',10,2)->default(0);
-            $table->decimal('discount',10,2)->default(0);
-            $table->decimal('tax',10,2)->default(0);
+            $table->decimal('grand_total', 10, 2)->default(0);
+            $table->decimal('discount', 10, 2)->default(0);
+            $table->decimal('tax', 10, 2)->default(0);
             $table->foreign('promo_code')
                 ->references('promo_code')
                 ->on('promos')
@@ -37,7 +37,8 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void {
+    public function down(): void
+    {
         Schema::dropIfExists('orders');
     }
 };

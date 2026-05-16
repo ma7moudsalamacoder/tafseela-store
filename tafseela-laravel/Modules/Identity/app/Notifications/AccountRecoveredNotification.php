@@ -27,5 +27,3 @@ class AccountRecoveredNotification extends Notification implements ShouldQueue
             ->line(__('identity::notifications.account_recovered.body'));
     }
 }
-
-

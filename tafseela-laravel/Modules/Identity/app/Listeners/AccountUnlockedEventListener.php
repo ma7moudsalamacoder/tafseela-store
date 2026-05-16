@@ -6,5 +6,3 @@ class AccountUnlockedEventListener
 {
     public function handle($event): void {}
 }
-
-

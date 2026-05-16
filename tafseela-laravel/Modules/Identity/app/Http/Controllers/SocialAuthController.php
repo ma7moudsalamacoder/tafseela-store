@@ -41,7 +41,7 @@ class SocialAuthController extends Controller
 
         $providerId = (string) $socialUser->getId();
         $email = $socialUser->getEmail();
-        $name = $socialUser->getName() ?: $socialUser->getNickname() ?: ucfirst($provider) . ' User';
+        $name = $socialUser->getName() ?: $socialUser->getNickname() ?: ucfirst($provider).' User';
 
         // Facebook may not return email depending on app permissions/review status.
         if (empty($email)) {
@@ -85,4 +85,3 @@ class SocialAuthController extends Controller
         return redirect()->intended('/dashboard');
     }
 }
-

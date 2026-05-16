@@ -5,9 +5,7 @@ namespace Modules\Order\Services;
 use Illuminate\Support\Facades\DB;
 use Modules\Cart\Services\CartService;
 use Modules\Order\Models\Order;
-use Modules\Order\Models\OrderDetail;
 use Modules\Product\Models\Product;
-use Modules\Product\Models\ProductDetail;
 
 class OrderService
 {
@@ -34,13 +32,15 @@ class OrderService
             // Calculate totals and fetch products
             $productIds = collect($content)->pluck('product_id')->unique()->toArray();
             $products = Product::whereIn('id', $productIds)->get()->keyBy('id');
-            
+
             $grandTotal = 0;
             $orderDetailsData = [];
 
             foreach ($content as $item) {
                 $product = $products->get($item['product_id']);
-                if (!$product) continue;
+                if (! $product) {
+                    continue;
+                }
 
                 $price = $product->price;
                 $qty = $item['quantity'];

@@ -20,7 +20,7 @@ class WishlistService
         $products = $wishlist->products ?? [];
 
         if (in_array($productId, $products)) {
-            $products = array_values(array_filter($products, fn($id) => (int) $id !== $productId));
+            $products = array_values(array_filter($products, fn ($id) => (int) $id !== $productId));
             $added = false;
         } else {
             $products[] = $productId;

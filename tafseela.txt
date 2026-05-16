@@ -474,3 +474,26 @@ Customer Module :
 - duplicate @tafseela-laravel/Modules/Customer/resources/views/sale.blade.php and new copy should be named new-arrival.blade.php
 - use same code pattern that used to handle sale process to handle new-arrival with the new view to load new arrival collection
 - use same code pattern that used to handle quick add to cart process from @tafseela-laravel/Modules/Customer/resources/views/components/category-product-card.blade.php to handle same process in @tafseela-laravel/Modules/Customer/resources/views/components/home-product-card.blade.php
+
+==================
+Customer Module :
+- update product card in favorites off-canvas modal when user change color show related product cover image based on product details if available but if not available then use product cover image from products as default
+
+==================
+Customer Module :
+- duplicate @tafseela-laravel/Modules/Customer/resources/views/sale.blade.php and new copy should be named new search.blade.php
+- use same code pattern that used to handle sale process to handle search in @tafseela-laravel/Modules/Customer/resources/views/layouts/client.blade.php with the new view to find any product matches with user keywords searching in categories, collections, products and product details
+
+==================
+Customer Module :
+- refine seach process in case of user keywords is more than one word so consider each word as seprated keyword and find products related to each one then compare between the results of each one and remove the duplicated product from the final result
+- use LIKE to find similar match not only exact match
+
+==================
+Customer Module :
+- to refine seach process consider the following aspects
+	- in arabic dailects describing the same item in similar synonmes for example (بنطال - بنطلون) (تنورة - جيبا) and so on
+	- first word in user keyword most of the time is describing the item
+- create function in settings manager service (in core module) to handle word similar synonmes in arabic dailects
+- so also consider search also by first word similar synonmes in arabic dailects
+-

@@ -13,5 +13,3 @@ class SessionStartedEvent
         public int $userId,
     ) {}
 }
-
-

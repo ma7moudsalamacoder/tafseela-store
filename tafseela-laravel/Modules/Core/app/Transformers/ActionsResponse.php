@@ -11,24 +11,25 @@ use Illuminate\View\View;
 class ActionsResponse extends JsonResource
 {
     protected ?string $message;
+
     protected int $statusCode;
+
     protected ?array $errors;
+
     protected ?array $meta;
+
     protected mixed $view;
+
     protected mixed $route;
 
     /**
      * ActionsResponse constructor.
      *
-     * @param mixed $resource
-     * @param string|null $message
-     * @param int $statusCode
-     * @param array|null $errors
-     * @param array|null $meta
-     * @param mixed $view
-     * @param mixed $route
+     * @param  mixed  $resource
+     * @param  mixed  $view
+     * @param  mixed  $route
      */
-    public function __construct($resource = null, string $message = null, int $statusCode = 200, ?array $errors = null, ?array $meta = null, $view = null, $route = null)
+    public function __construct($resource = null, ?string $message = null, int $statusCode = 200, ?array $errors = null, ?array $meta = null, $view = null, $route = null)
     {
         parent::__construct($resource);
         $this->message = $message;
@@ -39,59 +40,66 @@ class ActionsResponse extends JsonResource
         $this->route = $route;
     }
 
-    public static function success($resource = null, string $message = null, ?array $meta = null, $view = null, $route = null) : static {
+    public static function success($resource = null, ?string $message = null, ?array $meta = null, $view = null, $route = null): static
+    {
         return new static($resource, $message ?? __('success'), 200, null, $meta, $view, $route);
     }
 
-    public static function created($resource = null, string $message = null, ?array $meta = null, $view = null, $route = null) : static {
+    public static function created($resource = null, ?string $message = null, ?array $meta = null, $view = null, $route = null): static
+    {
         return new static($resource, $message ?? __('resource_created_successfully'), 201, null, $meta, $view, $route);
     }
 
-    public static function updated($resource = null, string $message = null, ?array $meta = null, $view = null, $route = null) : static {
+    public static function updated($resource = null, ?string $message = null, ?array $meta = null, $view = null, $route = null): static
+    {
         return new static($resource, $message ?? __('resource_updated_successfully'), 200, null, $meta, $view, $route);
     }
 
-    public static function deleted($resource = null, string $message = null, ?array $meta = null, $view = null, $route = null) : static {
+    public static function deleted($resource = null, ?string $message = null, ?array $meta = null, $view = null, $route = null): static
+    {
         return new static($resource, $message ?? __('resource_deleted_successfully'), 200, null, $meta, $view, $route);
     }
 
-    public static function forbidden(?string $message = null) : static
+    public static function forbidden(?string $message = null): static
     {
         return new static(message: $message ?? __('forbidden'), statusCode: 403,);
     }
 
-    public static function notFound() : static
+    public static function notFound(): static
     {
         return new static(message: __('not found'), statusCode: 404,);
     }
 
-    public function isSuccess() : bool
+    public function isSuccess(): bool
     {
-        return in_array(substr($this->statusCode, 0, 1), [2,3]);
+        return in_array(substr($this->statusCode, 0, 1), [2, 3]);
     }
 
-    public function isFailed() : bool
+    public function isFailed(): bool
     {
         return ! $this->isSuccess();
     }
 
-    public static function failed(?string $message = null, $statusCode = 422, array $errors = []) : static
+    public static function failed(?string $message = null, $statusCode = 422, array $errors = []): static
     {
         return new static(message: $message ?? __('failed'), statusCode: 422, errors: $errors);
     }
 
-    public static function succeeded(?string $message = null, int $statusCode = 200, mixed $resource = null) : static
+    public static function succeeded(?string $message = null, int $statusCode = 200, mixed $resource = null): static
     {
         return new static($resource, message: $message ?? __('succeeded'), statusCode: $statusCode);
     }
 
-    public function getMessage(?string $default = null) : ?string {
+    public function getMessage(?string $default = null): ?string
+    {
         return $this->message ?? $default;
     }
 
-    public function getStatusCode() : int {
+    public function getStatusCode(): int
+    {
         return $this->statusCode;
     }
+
     /**
      * Decide how to respond
      */
@@ -145,17 +153,17 @@ class ActionsResponse extends JsonResource
         $extraMeta = [
             'server_time' => time(),
         ];
+
         return [
-            'status' => $this->errors ? 'error' : (in_array(substr($this->statusCode, 0, 1), [2,3]) ? 'success' : 'warning'),
+            'status' => $this->errors ? 'error' : (in_array(substr($this->statusCode, 0, 1), [2, 3]) ? 'success' : 'warning'),
             'status_code' => $this->statusCode,
             'message' => $this->message,
             'data' => $data,
             'pagination' => $pagination,
             'errors' => $this->errors,
-            'meta' => array_merge_recursive($extraMeta,  $this->meta ?? [] )
+            'meta' => array_merge_recursive($extraMeta, $this->meta ?? []),
         ];
     }
-
 
     public function withResponse($request, $response)
     {

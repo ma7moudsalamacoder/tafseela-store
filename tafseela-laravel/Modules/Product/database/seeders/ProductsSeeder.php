@@ -3,10 +3,10 @@
 namespace Modules\Product\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Product\Models\Collection;
 use Modules\Product\Models\Category;
-use Modules\Product\Models\Subcategory;
+use Modules\Product\Models\Collection;
 use Modules\Product\Models\Product;
+use Modules\Product\Models\Subcategory;
 
 class ProductsSeeder extends Seeder
 {

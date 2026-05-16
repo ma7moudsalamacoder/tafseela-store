@@ -13,5 +13,3 @@ class AccountRecoveredEvent
         public int $userId,
     ) {}
 }
-
-

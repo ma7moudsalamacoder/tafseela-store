@@ -14,10 +14,10 @@ class SystemInjection
     public function handle(Request $request, Closure $next)
     {
         $response = $next($request);
-        if(System::HasResponse())
-        {
+        if (System::HasResponse()) {
             return System::GetResponse()->toResponse($request);
         }
+
         return $response;
     }
 }

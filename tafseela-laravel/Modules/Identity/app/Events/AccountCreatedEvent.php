@@ -15,5 +15,3 @@ class AccountCreatedEvent
         public int $userId,
     ) {}
 }
-
-

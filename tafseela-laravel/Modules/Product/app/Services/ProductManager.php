@@ -6,16 +6,16 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 use Modules\Product\Enums\ItemStatus;
 use Modules\Product\Models\Category;
-use Modules\Product\Models\Subcategory;
 use Modules\Product\Models\Collection as ProductCollection;
 use Modules\Product\Models\Product;
+use Modules\Product\Models\Subcategory;
 
 class ProductManager
 {
     /**
      * Get all unique categories.
      *
-     * @param ItemStatus $status default value is NONE (all)
+     * @param  ItemStatus  $status  default value is NONE (all)
      */
     public function getAllCategories(ItemStatus $status = ItemStatus::NONE): Collection
     {
@@ -38,14 +38,15 @@ class ProductManager
         if ($numOfItems > 0) {
             $query->withCount('products')->take($numOfItems);
         }
+
         return $query->withCount('products')->get();
     }
 
     /**
      * Get all unique subcategories.
      *
-     * @param bool $grouping group subcategories by related category
-     * @param ItemStatus $status subcategory status
+     * @param  bool  $grouping  group subcategories by related category
+     * @param  ItemStatus  $status  subcategory status
      */
     public function getAllSubCategories(bool $grouping = false, ItemStatus $status = ItemStatus::NONE): Collection
     {
@@ -57,8 +58,8 @@ class ProductManager
 
         if ($grouping) {
             return $query->get()
-                ->groupBy(fn($sub) => $sub->category->category)
-                ->map(fn($group) => $group->pluck('title')->unique()->values());
+                ->groupBy(fn ($sub) => $sub->category->category)
+                ->map(fn ($group) => $group->pluck('title')->unique()->values());
         }
 
         return $query->pluck('title')->unique();
@@ -127,7 +128,7 @@ class ProductManager
 
         $this->applyFilters($query, $filters);
 
-        return $query->get()->groupBy(fn($product) => $product->subcategory->title ?? 'general');
+        return $query->get()->groupBy(fn ($product) => $product->subcategory->title ?? 'general');
     }
 
     /**
@@ -136,7 +137,7 @@ class ProductManager
     public function getProductsByCollectionName(string $name, array $filters = []): EloquentCollection
     {
         $query = Product::with(['details', 'category', 'subcategory'])
-            ->whereHas('collection', fn($q) => $q->where('title', $name));
+            ->whereHas('collection', fn ($q) => $q->where('title', $name));
 
         $this->applyFilters($query, $filters);
 
@@ -149,11 +150,11 @@ class ProductManager
     public function getProductsByCategoryName(string $name, array $filters = []): Collection
     {
         $query = Product::with(['details', 'category', 'subcategory'])
-            ->whereHas('category', fn($q) => $q->where('category', $name));
+            ->whereHas('category', fn ($q) => $q->where('category', $name));
 
         $this->applyFilters($query, $filters);
 
-        return $query->get()->groupBy(fn($product) => $product->subcategory->title ?? 'general');
+        return $query->get()->groupBy(fn ($product) => $product->subcategory->title ?? 'general');
     }
 
     /**
@@ -182,18 +183,18 @@ class ProductManager
 
             // Filter by details
             if ($column === 'size') {
-                $query->whereHas('details', fn($q) => $q->where('size', $value));
+                $query->whereHas('details', fn ($q) => $q->where('size', $value));
             }
 
             if ($column === 'color') {
                 if (is_array($value)) {
-                    $query->whereHas('details', fn($q) => $q->whereIn('color', $value));
+                    $query->whereHas('details', fn ($q) => $q->whereIn('color', $value));
                 } else {
-                    $query->whereHas('details', fn($q) => $q->where('color', $value));
+                    $query->whereHas('details', fn ($q) => $q->where('color', $value));
                 }
             }
             if ($column === 'stock_qty') {
-                $query->whereHas('details', fn($q) => $q->where('stock_qty', $value));
+                $query->whereHas('details', fn ($q) => $q->where('stock_qty', $value));
             }
         }
     }

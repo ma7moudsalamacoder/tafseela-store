@@ -8,5 +8,3 @@ class AccountRecoveredEventListener
 {
     public function handle(AccountRecoveredEvent $event): void {}
 }
-
-

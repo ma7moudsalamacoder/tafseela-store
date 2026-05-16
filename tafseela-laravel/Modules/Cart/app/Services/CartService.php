@@ -4,7 +4,6 @@ namespace Modules\Cart\Services;
 
 use Modules\Cart\Models\UserCart;
 use Modules\Product\Models\Product;
-use Modules\Product\Models\ProductDetail;
 
 class CartService
 {
@@ -40,7 +39,7 @@ class CartService
             }
         }
 
-        if (!$found) {
+        if (! $found) {
             $content[] = [
                 'product_id' => $productId,
                 'product_detail_id' => $productDetailId,
@@ -84,7 +83,7 @@ class CartService
         $content = $cart->content ?? [];
 
         $content = array_values(array_filter($content, function ($item) use ($productId, $productDetailId) {
-            return !($item['product_id'] == $productId && ($item['product_detail_id'] ?? null) == $productDetailId);
+            return ! ($item['product_id'] == $productId && ($item['product_detail_id'] ?? null) == $productDetailId);
         }));
 
         $cart->content = $content;
@@ -102,7 +101,7 @@ class CartService
         $content = $cart->content ?? [];
 
         $content = array_values(array_filter($content, function ($item) use ($productId, $oldDetailId) {
-            return !($item['product_id'] == $productId && ($item['product_detail_id'] ?? null) == $oldDetailId);
+            return ! ($item['product_id'] == $productId && ($item['product_detail_id'] ?? null) == $oldDetailId);
         }));
 
         $found = false;
@@ -114,7 +113,7 @@ class CartService
             }
         }
 
-        if (!$found) {
+        if (! $found) {
             $content[] = [
                 'product_id' => $productId,
                 'product_detail_id' => $newDetailId,

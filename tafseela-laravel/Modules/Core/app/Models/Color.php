@@ -10,7 +10,9 @@ class Color extends Model
     use HasAuditions;
 
     protected $primaryKey = 'key';
+
     public $incrementing = false;
+
     protected $keyType = 'string';
 
     protected $fillable = [

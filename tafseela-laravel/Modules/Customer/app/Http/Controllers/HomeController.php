@@ -77,6 +77,7 @@ class HomeController extends Controller
 
         $newArrivals = Product::with('details')->where('status', 'show')->latest()->take(8)->get()->map(function ($prod) use ($wishlistProductIds) {
             $firstDetail = $prod->details->first();
+
             return [
                 'id' => $prod->id,
                 'productDetailId' => $firstDetail?->id,

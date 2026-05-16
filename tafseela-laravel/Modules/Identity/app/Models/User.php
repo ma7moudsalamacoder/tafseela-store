@@ -2,25 +2,22 @@
 
 namespace Modules\Identity\Models;
 
-use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Activitylog\LogOptions;
-
+use Laravel\Sanctum\HasApiTokens;
+use Modules\Cart\Models\UserCart;
 // use Modules\Identity\Database\Factories\UserFactory;
 
-use Modules\Identity\Models\Profile;
-use Modules\Identity\Models\UserLocation;
-use Modules\Order\Models\Order;
-use Modules\Cart\Models\UserCart;
 use Modules\Delivery\Models\DeliveryAgent;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\Order\Models\Order;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends \App\Models\User
 {
-    use Notifiable, HasRoles, HasApiTokens, LogsActivity;
+    use HasApiTokens, HasRoles, LogsActivity, Notifiable;
 
     /**
      * The attributes that are mass-assignable.
@@ -86,4 +83,3 @@ class User extends \App\Models\User
             ->dontSubmitEmptyLogs();
     }
 }
-

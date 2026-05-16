@@ -13,5 +13,3 @@ class AccountVerifiedEvent
         public int $userId,
     ) {}
 }
-
-

@@ -14,10 +14,12 @@
                 <h1 class="text-3xl font-extrabold text-neutral-charcoal tracking-tighter uppercase italic">تفصيلة</h1>
             </a>
         </div>
-        <div class="hidden md:flex flex-grow max-w-xl relative group">
-            <input class="w-full bg-gray-50 border-gray-200 rounded-none py-3 pr-12 pl-4 focus:ring-1 focus:ring-primary focus:border-primary text-right text-xs transition-all placeholder:text-gray-400" placeholder="ابحث عن الملابس، الإكسسوارات..." type="text" />
-            <span class="material-icons-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-neutral-charcoal transition-colors text-xl">search</span>
-        </div>
+        <form class="hidden md:flex flex-grow max-w-xl relative group" action="{{ route('search') }}" method="GET">
+            <input name="q" class="w-full bg-gray-50 border-gray-200 rounded-none py-3 pr-12 pl-4 focus:ring-1 focus:ring-primary focus:border-primary text-right text-xs transition-all placeholder:text-gray-400" placeholder="ابحث عن الملابس، الإكسسوارات..." type="text" value="{{ request('q') }}" />
+            <button type="submit" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-neutral-charcoal transition-colors">
+                <span class="material-icons-outlined text-xl">search</span>
+            </button>
+        </form>
         <div class="flex items-center gap-6 lg:gap-8">
             <button class="text-[11px] font-bold hover:text-primary transition-colors flex items-center gap-1.5 uppercase tracking-widest whitespace-nowrap">
                 <span class="font-sans">English</span>

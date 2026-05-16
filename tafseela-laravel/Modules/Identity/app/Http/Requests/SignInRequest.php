@@ -31,5 +31,3 @@ class SignInRequest extends FormRequest
         ];
     }
 }
-
-

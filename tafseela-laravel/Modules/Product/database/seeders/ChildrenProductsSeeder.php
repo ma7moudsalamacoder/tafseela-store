@@ -4,10 +4,10 @@ namespace Modules\Product\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Modules\Product\Models\Category;
-use Modules\Product\Models\Subcategory;
 use Modules\Product\Models\Collection;
 use Modules\Product\Models\Product;
 use Modules\Product\Models\ProductDetail;
+use Modules\Product\Models\Subcategory;
 
 class ChildrenProductsSeeder extends Seeder
 {
@@ -155,22 +155,22 @@ class ChildrenProductsSeeder extends Seeder
         }
 
         $details = [
-            ['product_name' => 'تيشيرت أطفال برسومات', 'size' => '6', 'color' => '#0000FF', 'stock_qty' => 20, 'notes' => 'تيشيرت عملي للمدرسة.',],
-            ['product_name' => 'تيشيرت أطفال برسومات', 'size' => '8', 'color' => '#008000', 'stock_qty' => 16, 'notes' => 'قماش مريح لليوم الكامل.',],       
-            ['product_name' => 'بنطال أطفال جينز', 'size' => '6', 'color' => '#000080', 'stock_qty' => 12, 'notes' => 'بنطال مرن ومتين للعب.',],        
-            ['product_name' => 'بنطال أطفال جينز', 'size' => '8', 'color' => '#000080', 'stock_qty' => 9, 'notes' => 'يتحمل غسل متكرر دون أن يتلف.',],       
-            ['product_name' => 'فستان أطفال مطبوع', 'size' => '4', 'color' => '#FFC0CB', 'stock_qty' => 14, 'notes' => 'فستان خفيف مناسب للأيام الدافئة.',], 
-            ['product_name' => 'فستان أطفال مطبوع', 'size' => '6', 'color' => '#FFFFFF', 'stock_qty' => 10, 'notes' => 'تصميم مفعم بالحيوية للطفلة.',],      
-            ['product_name' => 'بلوزة أطفال بنقشة زهرية', 'size' => '5', 'color' => '#FFC0CB', 'stock_qty' => 18, 'notes' => 'بلوزة خفيفة ومريحة للأنشطة اليومية.',],
-            ['product_name' => 'بلوزة أطفال بنقشة زهرية', 'size' => '7', 'color' => '#FFFFFF', 'stock_qty' => 13, 'notes' => 'تصميم جذاب مع قماش مرن.',],    
-            ['product_name' => 'جاكيت أطفال دافئ', 'size' => '6', 'color' => '#0000FF', 'stock_qty' => 15, 'notes' => 'جاكيت دافئ مقاوم للماء.',],
-            ['product_name' => 'جاكيت أطفال دافئ', 'size' => '8', 'color' => '#FF0000', 'stock_qty' => 12, 'notes' => 'مناسب للأجواء الباردة.',],
-            ['product_name' => 'سروال أطفال رياضي', 'size' => '6', 'color' => '#808080', 'stock_qty' => 18, 'notes' => 'سروال مريح للرياضة.',],
-            ['product_name' => 'سروال أطفال رياضي', 'size' => '8', 'color' => '#000000', 'stock_qty' => 14, 'notes' => 'خفيف ومرن.',],
-            ['product_name' => 'تنورة أطفال قصيرة', 'size' => '4', 'color' => '#FFC0CB', 'stock_qty' => 16, 'notes' => 'تنورة لطيفة للفتيات.',],
-            ['product_name' => 'تنورة أطفال قصيرة', 'size' => '6', 'color' => '#0000FF', 'stock_qty' => 13, 'notes' => 'تصميم مرح ومريح.',],
-            ['product_name' => 'بلوزة أطفال مطرزة', 'size' => '5', 'color' => '#FFFFFF', 'stock_qty' => 11, 'notes' => 'بلوزة مطرزة أنيقة.',],
-            ['product_name' => 'بلوزة أطفال مطرزة', 'size' => '7', 'color' => '#FFC0CB', 'stock_qty' => 9, 'notes' => 'للمناسبات الخاصة.',],
+            ['product_name' => 'تيشيرت أطفال برسومات', 'size' => '6', 'color' => '#0000FF', 'stock_qty' => 20, 'notes' => 'تيشيرت عملي للمدرسة.'],
+            ['product_name' => 'تيشيرت أطفال برسومات', 'size' => '8', 'color' => '#008000', 'stock_qty' => 16, 'notes' => 'قماش مريح لليوم الكامل.'],
+            ['product_name' => 'بنطال أطفال جينز', 'size' => '6', 'color' => '#000080', 'stock_qty' => 12, 'notes' => 'بنطال مرن ومتين للعب.'],
+            ['product_name' => 'بنطال أطفال جينز', 'size' => '8', 'color' => '#000080', 'stock_qty' => 9, 'notes' => 'يتحمل غسل متكرر دون أن يتلف.'],
+            ['product_name' => 'فستان أطفال مطبوع', 'size' => '4', 'color' => '#FFC0CB', 'stock_qty' => 14, 'notes' => 'فستان خفيف مناسب للأيام الدافئة.'],
+            ['product_name' => 'فستان أطفال مطبوع', 'size' => '6', 'color' => '#FFFFFF', 'stock_qty' => 10, 'notes' => 'تصميم مفعم بالحيوية للطفلة.'],
+            ['product_name' => 'بلوزة أطفال بنقشة زهرية', 'size' => '5', 'color' => '#FFC0CB', 'stock_qty' => 18, 'notes' => 'بلوزة خفيفة ومريحة للأنشطة اليومية.'],
+            ['product_name' => 'بلوزة أطفال بنقشة زهرية', 'size' => '7', 'color' => '#FFFFFF', 'stock_qty' => 13, 'notes' => 'تصميم جذاب مع قماش مرن.'],
+            ['product_name' => 'جاكيت أطفال دافئ', 'size' => '6', 'color' => '#0000FF', 'stock_qty' => 15, 'notes' => 'جاكيت دافئ مقاوم للماء.'],
+            ['product_name' => 'جاكيت أطفال دافئ', 'size' => '8', 'color' => '#FF0000', 'stock_qty' => 12, 'notes' => 'مناسب للأجواء الباردة.'],
+            ['product_name' => 'سروال أطفال رياضي', 'size' => '6', 'color' => '#808080', 'stock_qty' => 18, 'notes' => 'سروال مريح للرياضة.'],
+            ['product_name' => 'سروال أطفال رياضي', 'size' => '8', 'color' => '#000000', 'stock_qty' => 14, 'notes' => 'خفيف ومرن.'],
+            ['product_name' => 'تنورة أطفال قصيرة', 'size' => '4', 'color' => '#FFC0CB', 'stock_qty' => 16, 'notes' => 'تنورة لطيفة للفتيات.'],
+            ['product_name' => 'تنورة أطفال قصيرة', 'size' => '6', 'color' => '#0000FF', 'stock_qty' => 13, 'notes' => 'تصميم مرح ومريح.'],
+            ['product_name' => 'بلوزة أطفال مطرزة', 'size' => '5', 'color' => '#FFFFFF', 'stock_qty' => 11, 'notes' => 'بلوزة مطرزة أنيقة.'],
+            ['product_name' => 'بلوزة أطفال مطرزة', 'size' => '7', 'color' => '#FFC0CB', 'stock_qty' => 9, 'notes' => 'للمناسبات الخاصة.'],
         ];
 
         $variantImages = [

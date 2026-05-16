@@ -5,13 +5,13 @@ namespace Modules\Identity\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Modules\Identity\Services\UserManager;
-use Modules\Identity\Http\Requests\SignUpRequest;
-use Modules\Identity\Http\Requests\SignInRequest;
-use Modules\Identity\Http\Requests\ProfileRequest;
-use Modules\Identity\Http\Requests\LocationRequest;
 use Modules\Cart\Services\CartService;
-use Modules\Identity\Enums\OtpActions;
+use Modules\Identity\Http\Requests\LocationRequest;
+use Modules\Identity\Http\Requests\ProfileRequest;
+use Modules\Identity\Http\Requests\SignInRequest;
+use Modules\Identity\Http\Requests\SignUpRequest;
+use Modules\Identity\Models\User;
+use Modules\Identity\Services\UserManager;
 
 class AuthController extends Controller
 {
@@ -28,7 +28,7 @@ class AuthController extends Controller
     public function signIn(SignInRequest $request)
     {
         if ($this->userManager->signInByEmail($request->email, $request->password)) {
-            $user = \Modules\Identity\Models\User::where('email', $request->email)->first();
+            $user = User::where('email', $request->email)->first();
             Auth::login($user, $request->boolean('remember'));
 
             if ($pendingItem = session()->pull('pending_cart_item')) {
@@ -52,7 +52,7 @@ class AuthController extends Controller
     public function signUp(SignUpRequest $request)
     {
         $data = $this->userManager->signUpByEmail($request->email, $request->password);
-        
+
         // Store in session to track registration progress
         session(['reg_user_id' => $data['user']->id]);
         session(['reg_otp_hash' => $data['hash']]);
@@ -67,17 +67,19 @@ class AuthController extends Controller
 
     public function acceptTerms(Request $request)
     {
-        if (!$request->has('accepted')) {
+        if (! $request->has('accepted')) {
             return back()->withErrors(['accepted' => __('identity::auth.terms_required')]);
         }
-        
+
         return redirect()->route('auth.otp');
     }
 
     public function showOtp()
     {
         $hash = session('reg_otp_hash') ?? session('recovery_otp_hash');
-        if (!$hash) return redirect()->route('auth.signin');
+        if (! $hash) {
+            return redirect()->route('auth.signin');
+        }
 
         return view('identity::auth.otp', ['hash' => $hash]);
     }
@@ -89,12 +91,13 @@ class AuthController extends Controller
 
         if ($this->userManager->verifyOTP($userId, $hash, $request->code)) {
             if (session()->has('reg_user_id')) {
-                $user = \Modules\Identity\Models\User::find($userId);
+                $user = User::find($userId);
                 $user->markEmailAsVerified();
                 Auth::login($user);
+
                 return redirect()->route('auth.profile');
             }
-            
+
             return redirect()->route('auth.reset-password');
         }
 
@@ -109,6 +112,7 @@ class AuthController extends Controller
     public function storeProfile(ProfileRequest $request)
     {
         $this->userManager->addProfile($request->validated());
+
         return redirect()->route('auth.location');
     }
 
@@ -121,10 +125,10 @@ class AuthController extends Controller
     {
         $user = Auth::user();
         $user->locations()->create(array_merge($request->validated(), ['is_default' => true]));
-        
+
         // Cleanup registration session
         session()->forget(['reg_user_id', 'reg_otp_hash']);
-        
+
         return redirect()->route('home');
     }
 
@@ -140,9 +144,10 @@ class AuthController extends Controller
         $data = $this->userManager->requestAccountRecovery($request->email);
 
         if ($data) {
-            $user = \Modules\Identity\Models\User::where('email', $request->email)->first();
+            $user = User::where('email', $request->email)->first();
             session(['recovery_user_id' => $user->id]);
             session(['recovery_otp_hash' => $data['hash']]);
+
             return redirect()->route('auth.otp');
         }
 
@@ -163,6 +168,7 @@ class AuthController extends Controller
         $userId = session('recovery_user_id');
         if ($this->userManager->recoverAccount($userId, $request->password)) {
             session()->forget(['recovery_user_id', 'recovery_otp_hash']);
+
             return redirect()->route('auth.signin')->with('success', __('identity::auth.password_reset_success'));
         }
 
@@ -174,7 +180,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect('/');
     }
 }
-

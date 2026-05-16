@@ -31,5 +31,3 @@ class AccountCreatedNotification extends Notification implements ShouldQueue
             ->action(__('identity::notifications.account_created.action'), url('/verify?hash='.$this->hash));
     }
 }
-
-

@@ -13,7 +13,7 @@ use Modules\Order\Models\Order;
 
 class OrderDelivery extends Model
 {
-    use HasUuids, HasAuditions;
+    use HasAuditions, HasUuids;
 
     protected $fillable = [
         'order_id',

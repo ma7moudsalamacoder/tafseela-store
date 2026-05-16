@@ -8,5 +8,3 @@ class SessionStartedEventListener
 {
     public function handle(SessionStartedEvent $event): void {}
 }
-
-

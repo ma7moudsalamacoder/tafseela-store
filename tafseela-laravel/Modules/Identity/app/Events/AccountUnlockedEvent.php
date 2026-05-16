@@ -13,5 +13,3 @@ class AccountUnlockedEvent
         public int $userId,
     ) {}
 }
-
-

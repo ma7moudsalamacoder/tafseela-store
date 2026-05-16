@@ -15,5 +15,3 @@ class RecoveryRequestedEvent
         public int $userId,
     ) {}
 }
-
-

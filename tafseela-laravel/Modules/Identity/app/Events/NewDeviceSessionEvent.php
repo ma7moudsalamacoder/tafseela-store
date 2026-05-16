@@ -13,5 +13,3 @@ class NewDeviceSessionEvent
         public int $userId,
     ) {}
 }
-
-

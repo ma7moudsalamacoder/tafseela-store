@@ -2,13 +2,12 @@
 
 namespace Modules\Identity\Providers;
 
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Nwidart\Modules\Traits\PathNamespace;
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Http\Request;
-
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
@@ -161,16 +160,16 @@ class IdentityServiceProvider extends ServiceProvider
 
     private function applyThrottling()
     {
-        RateLimiter::for('identity.login', function(Request $request) {
+        RateLimiter::for('identity.login', function (Request $request) {
             return Limit::perMinute(5)->by($request->username.$request->ip());
         });
-        RateLimiter::for('identity.register', function(Request $request) {
+        RateLimiter::for('identity.register', function (Request $request) {
             return Limit::perMinute(5)->by($request->ip());
         });
-        RateLimiter::for('identity.otp', function(Request $request) {
+        RateLimiter::for('identity.otp', function (Request $request) {
             return Limit::perMinute(5)->by($request->hash.$request->ip());
         });
-        RateLimiter::for('identity.change-password', function(Request $request) {
+        RateLimiter::for('identity.change-password', function (Request $request) {
             return Limit::perMinute(5)->by($request->user()->id.$request->ip());
         });
     }

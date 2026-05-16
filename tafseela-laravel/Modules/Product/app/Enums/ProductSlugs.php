@@ -4,13 +4,11 @@ namespace Modules\Product\Enums;
 
 enum ProductSlugs: string
 {
-
-
-    case WOMEN = "حريمي";
-    case MEN = "رجالي";
-    case KIDS = "أطفال";
-    case NEW_ARRIVALS = "وصلنا حديثاً";
-    case SALE = "تخفيضات";
+    case WOMEN = 'حريمي';
+    case MEN = 'رجالي';
+    case KIDS = 'أطفال';
+    case NEW_ARRIVALS = 'وصلنا حديثاً';
+    case SALE = 'تخفيضات';
 
     public static function getBySlug(string $slug): ?self
     {
@@ -23,5 +21,4 @@ enum ProductSlugs: string
             default => null
         };
     }
-
 }

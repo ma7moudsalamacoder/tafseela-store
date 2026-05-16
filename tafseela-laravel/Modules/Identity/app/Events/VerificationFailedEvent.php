@@ -13,5 +13,3 @@ class VerificationFailedEvent
         public int $userId,
     ) {}
 }
-
-

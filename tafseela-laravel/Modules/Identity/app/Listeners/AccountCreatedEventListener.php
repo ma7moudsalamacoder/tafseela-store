@@ -8,5 +8,3 @@ class AccountCreatedEventListener
 {
     public function handle(AccountCreatedEvent $event): void {}
 }
-
-

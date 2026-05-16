@@ -40,7 +40,7 @@ class CartApiTest extends TestCase
                     'user_id',
                     'items',
                     'total',
-                ]
+                ],
             ]);
     }
 

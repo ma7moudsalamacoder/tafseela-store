@@ -6,5 +6,3 @@ class AccountLockedEventListener
 {
     public function handle($event): void {}
 }
-
-

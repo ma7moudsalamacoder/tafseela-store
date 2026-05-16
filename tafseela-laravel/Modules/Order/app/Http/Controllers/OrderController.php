@@ -23,6 +23,7 @@ class OrderController extends Controller
     public function index(): AnonymousResourceCollection
     {
         $orders = $this->orderService->getUserOrders(auth()->id());
+
         return OrderResource::collection($orders);
     }
 
@@ -32,6 +33,7 @@ class OrderController extends Controller
     public function store(OrderRequest $request): OrderResource
     {
         $order = $this->orderService->placeOrder(auth()->id(), $request->validated());
+
         return new OrderResource($order->load('details'));
     }
 
@@ -42,7 +44,7 @@ class OrderController extends Controller
     {
         $order = $this->orderService->getOrder($id, auth()->id());
 
-        if (!$order) {
+        if (! $order) {
             abort(404, 'Order not found.');
         }
 

@@ -15,7 +15,7 @@ class CartQuickAddController extends Controller
             'quantity' => 'integer|min:1',
         ]);
 
-        if (!auth()->check()) {
+        if (! auth()->check()) {
             session()->put('pending_cart_item', [
                 'product_id' => (int) $request->product_id,
                 'quantity' => (int) ($request->quantity ?? 1),

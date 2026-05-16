@@ -10,7 +10,9 @@ class Promo extends Model
     use HasAuditions;
 
     protected $primaryKey = 'promo_code';
+
     public $incrementing = false;
+
     protected $keyType = 'string';
 
     protected $fillable = [

@@ -27,5 +27,3 @@ class AccountVerifiedNotification extends Notification implements ShouldQueue
             ->line(__('identity::notifications.account_verified.body'));
     }
 }
-
-

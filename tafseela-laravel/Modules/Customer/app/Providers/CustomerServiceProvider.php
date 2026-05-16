@@ -2,8 +2,13 @@
 
 namespace Modules\Customer\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
+use Modules\Core\Models\SiteSetting;
+use Modules\Product\Enums\ItemStatus;
+use Modules\Product\Enums\ProductSlugs;
+use Modules\Product\Services\ProductManager;
 use Nwidart\Modules\Traits\PathNamespace;
 
 class CustomerServiceProvider extends ServiceProvider
@@ -11,6 +16,7 @@ class CustomerServiceProvider extends ServiceProvider
     use PathNamespace;
 
     protected string $name = 'Customer';
+
     protected string $nameLower = 'customer';
 
     public function register(): void
@@ -29,19 +35,19 @@ class CustomerServiceProvider extends ServiceProvider
     protected function registerViewComposers(): void
     {
         view()->composer(['customer::components.header', 'customer::components.footer'], function ($view) {
-            $productManager = new \Modules\Product\Services\ProductManager();
-            $categories = $productManager->getAllCategoriesWithDetails(0, \Modules\Product\Enums\ItemStatus::SHOW)->map(function($cat) {
+            $productManager = new ProductManager;
+            $categories = $productManager->getAllCategoriesWithDetails(0, ItemStatus::SHOW)->map(function ($cat) {
                 return (object) [
                     'title' => $cat->category,
-                    'slug'  => strtolower(\Modules\Product\Enums\ProductSlugs::tryFrom($cat->category)?->name ?? \Illuminate\Support\Str::slug($cat->category)),
+                    'slug' => strtolower(ProductSlugs::tryFrom($cat->category)?->name ?? Str::slug($cat->category)),
                 ];
             });
 
-            $contacts = \Modules\Core\Models\SiteSetting::where('key', 'contacts')->first()?->value ?? [];
+            $contacts = SiteSetting::where('key', 'contacts')->first()?->value ?? [];
 
             $view->with([
                 'navCategories' => $categories,
-                'siteContacts'  => (object) $contacts,
+                'siteContacts' => (object) $contacts,
             ]);
         });
     }

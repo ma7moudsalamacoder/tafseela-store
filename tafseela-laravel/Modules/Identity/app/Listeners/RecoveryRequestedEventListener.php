@@ -8,5 +8,3 @@ class RecoveryRequestedEventListener
 {
     public function handle(RecoveryRequestedEvent $event): void {}
 }
-
-

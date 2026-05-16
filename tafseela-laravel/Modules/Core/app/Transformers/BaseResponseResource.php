@@ -10,20 +10,19 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class BaseResponseResource extends JsonResource
 {
     protected ?string $message;
+
     protected int $statusCode;
+
     protected ?array $errors;
+
     protected ?array $meta;
 
     /**
      * BaseResponseResource constructor.
      *
-     * @param mixed $resource
-     * @param string|null $message
-     * @param int $statusCode
-     * @param array|null $errors
-     * @param array|null $meta
+     * @param  mixed  $resource
      */
-    public function __construct($resource = null, string $message = null, int $statusCode = 200, ?array $errors = null, ?array $meta = null)
+    public function __construct($resource = null, ?string $message = null, int $statusCode = 200, ?array $errors = null, ?array $meta = null)
     {
         parent::__construct($resource);
         $this->message = $message;
@@ -68,7 +67,6 @@ class BaseResponseResource extends JsonResource
             'meta' => $this->meta,
         ];
     }
-
 
     public function withResponse($request, $response)
     {

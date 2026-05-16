@@ -8,5 +8,3 @@ enum LockReasons: string
     case UNAUTHORIZED_DEVICE = 'unauthorized_device';
     case UNAUTHORIZED_ACCESS = 'unauthorized_access';
 }
-
-

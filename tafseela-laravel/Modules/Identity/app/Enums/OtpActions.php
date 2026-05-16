@@ -9,4 +9,3 @@ enum OtpActions: string
     case CONFIRM_2FA = 'confirm_2fa';
     case CONFIRM_PAYMENT = 'confirm_payment';
 }
-

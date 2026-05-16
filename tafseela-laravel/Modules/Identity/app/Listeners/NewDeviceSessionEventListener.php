@@ -8,5 +8,3 @@ class NewDeviceSessionEventListener
 {
     public function handle(NewDeviceSessionEvent $event): void {}
 }
-
-

@@ -3,9 +3,9 @@
 namespace Modules\Order\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Cart\Services\CartService;
 use Modules\Identity\Models\User;
 use Modules\Product\Models\Product;
-use Modules\Cart\Services\CartService;
 use Tests\TestCase;
 
 class OrderApiTest extends TestCase

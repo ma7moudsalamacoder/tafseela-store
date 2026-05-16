@@ -27,5 +27,3 @@ class NewDeviceSessionNotification extends Notification implements ShouldQueue
             ->line(__('identity::notifications.new_device_session.body'));
     }
 }
-
-

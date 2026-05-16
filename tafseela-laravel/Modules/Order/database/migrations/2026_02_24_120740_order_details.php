@@ -9,13 +9,14 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void {
+    public function up(): void
+    {
         Schema::create('order_details', function (Blueprint $table) {
             $table->id();
-            $table->string('product',255);
+            $table->string('product', 255);
             $table->integer('qty');
-            $table->decimal('price',10,2)->default(0);
-            $table->decimal('discount',10,2)->default(0);
+            $table->decimal('price', 10, 2)->default(0);
+            $table->decimal('discount', 10, 2)->default(0);
             $table->foreignId('order_id')
                 ->constrained('orders')
                 ->cascadeOnDelete();
@@ -29,7 +30,8 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void {
+    public function down(): void
+    {
         Schema::dropIfExists('order_details');
     }
 };

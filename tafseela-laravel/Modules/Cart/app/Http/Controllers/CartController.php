@@ -24,6 +24,7 @@ class CartController extends Controller
     public function index(): CartResource
     {
         $cart = $this->cartService->getCart(auth()->id());
+
         return new CartResource($cart);
     }
 
@@ -33,6 +34,7 @@ class CartController extends Controller
     public function store(CartRequest $request): CartResource
     {
         $cart = $this->cartService->addItem(auth()->id(), $request->validated());
+
         return new CartResource($cart);
     }
 
@@ -41,7 +43,7 @@ class CartController extends Controller
      */
     public function update(CartRequest $request, $id): CartResource
     {
-        // $id is ignored here as we use product_id from request, 
+        // $id is ignored here as we use product_id from request,
         // but it's kept for route compatibility if needed.
         $cart = $this->cartService->updateItem(
             auth()->id(),
@@ -49,6 +51,7 @@ class CartController extends Controller
             $request->product_detail_id,
             $request->quantity
         );
+
         return new CartResource($cart);
     }
 
@@ -86,10 +89,12 @@ class CartController extends Controller
                 $request->product_id,
                 $request->product_detail_id
             );
+
             return new CartResource($cart);
         }
 
         $this->cartService->clearCart(auth()->id());
+
         return response()->json(['message' => 'Cart cleared successfully']);
     }
 }

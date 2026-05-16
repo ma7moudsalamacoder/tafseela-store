@@ -73,7 +73,7 @@ class Product extends Model
     {
         $discount = $this->active_discount;
 
-        if (!$discount) {
+        if (! $discount) {
             return $this->price;
         }
 
