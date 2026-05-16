@@ -13,6 +13,7 @@ class ProductDetail extends Model
     protected $fillable = [
         'size',
         'color',
+        'cover_image',
         'stock_qty',
         'status',
         'notes',

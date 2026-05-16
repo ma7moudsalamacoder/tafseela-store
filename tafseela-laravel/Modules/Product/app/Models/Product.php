@@ -20,7 +20,7 @@ class Product extends Model
         'price',
         'fabric',
         'notes',
-        'image',
+        'cover_image',
         'status',
     ];
 

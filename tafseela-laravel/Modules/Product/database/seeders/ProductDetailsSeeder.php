@@ -63,12 +63,40 @@ class ProductDetailsSeeder extends Seeder
             ['product_name' => 'جاكيت شتوي مخفض', 'size' => 'L', 'color' => '#808080', 'stock_qty' => 8, 'status' => 'show', 'notes' => 'دافئ ومريح.',],
         ];
 
+        $variantImages = [
+            'https://images.unsplash.com/photo-1603252109303-2751441dd157?w=400',
+            'https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=400',
+            'https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=400',
+            'https://images.unsplash.com/photo-1554568218-0f1715e72254?w=400',
+            'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400',
+            'https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=400',
+            'https://images.unsplash.com/photo-1591369822096-6a6ef6c4e2cd?w=400',
+            'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400',
+            'https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?w=400',
+            'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400',
+            'https://images.unsplash.com/photo-1556306535-0f09a537f0a3?w=400',
+            'https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=400',
+            'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400',
+            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+            'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400',
+            'https://images.unsplash.com/photo-1542272604-787c3835535d?w=400',
+        ];
+
+        $productDetailCount = [];
+
         foreach ($details as $detail) {
             $product = $products[$detail['product_name']] ?? null;
 
             if (! $product) {
                 continue;
             }
+
+            $count = $productDetailCount[$product->id] ?? 0;
+            $productDetailCount[$product->id] = $count + 1;
+
+            $coverImage = $count === 0
+                ? $product->cover_image
+                : $variantImages[$product->id % count($variantImages)];
 
             ProductDetail::create([
                 'product_id' => $product->id,
@@ -77,6 +105,7 @@ class ProductDetailsSeeder extends Seeder
                 'stock_qty' => $detail['stock_qty'],
                 'status' => $detail['status'],
                 'notes' => $detail['notes'],
+                'cover_image' => $coverImage,
             ]);
         }
     }

@@ -368,9 +368,16 @@
                     ? '<span class="font-bold text-primary">' + (item.discounted_price * item.quantity).toLocaleString('ar-EG') + ' جنيه</span> <span class="text-[10px] text-gray-300 line-through">' + (item.price * item.quantity).toLocaleString('ar-EG') + ' جنيه</span>'
                     : '<span class="font-bold text-primary">' + (item.price * item.quantity).toLocaleString('ar-EG') + ' جنيه</span>';
 
+                var detailImg = null;
+                if (item.product_detail_id && lookup[item.product_id]) {
+                    var curDetail = lookup[item.product_id].find(function(d) { return d.id === item.product_detail_id; });
+                    if (curDetail && curDetail.cover_image) detailImg = curDetail.cover_image;
+                }
+                var imgSrc = detailImg || item.cover_image || item.image || 'https://via.placeholder.com/96x128';
+
                 html += '<div class="flex gap-4 group" data-cart-item data-product-id="' + item.product_id + '" data-detail-id="' + (item.product_detail_id || '') + '">';
                 html += '<div class="w-24 h-32 flex-shrink-0 bg-gray-50 overflow-hidden">';
-                html += '<img src="' + (item.image || 'https://via.placeholder.com/96x128') + '" alt="' + item.product_name + '" class="w-full h-full object-cover">';
+                html += '<img src="' + imgSrc + '" alt="' + item.product_name + '" class="w-full h-full object-cover">';
                 html += '</div>';
                 html += '<div class="flex-grow flex flex-col justify-between py-1 min-w-0">';
                 html += '<div>';
@@ -557,6 +564,9 @@
             setTimeout(function() { overlay.classList.add('hidden'); }, 500);
         }
 
+        var wishlistData = null;
+        var wishlistSelectedDetails = {};
+
         function loadWishlistDrawer() {
             var container = document.getElementById('wishlist-drawer-items');
             container.innerHTML = '<div class="flex items-center justify-center h-full text-gray-400 text-sm">جاري التحميل...</div>';
@@ -566,38 +576,98 @@
             })
             .then(function(r) { return r.json(); })
             .then(function(data) {
+                wishlistData = data;
                 if (!data.items || data.items.length === 0) {
                     container.innerHTML = '<div class="flex flex-col items-center justify-center h-full text-gray-400"><span class="material-symbols-outlined text-5xl mb-4">favorite</span><p class="text-sm">قائمة المفضلة فارغة</p></div>';
                     document.getElementById('wishlist-drawer-count').textContent = '0';
                     return;
                 }
+
+                data.items.forEach(function(p) {
+                    if (!wishlistSelectedDetails[p.id]) {
+                        var first = p.details && p.details.length > 0 ? p.details[0] : null;
+                        wishlistSelectedDetails[p.id] = first ? first.id : null;
+                    }
+                });
+
                 var html = '';
                 data.items.forEach(function(product) {
+                    var details = product.details || [];
+                    var selectedId = wishlistSelectedDetails[product.id];
+                    var selectedDetail = details.find(function(d) { return d.id === selectedId; }) || details[0] || null;
+
+                    var imgSrc = (selectedDetail && selectedDetail.cover_image) || product.image || 'https://via.placeholder.com/96x128';
+
                     var priceHtml = product.discounted_price && product.discounted_price < product.price
                         ? '<div class="flex flex-col"><span class="font-bold text-primary">' + product.discounted_price.toLocaleString('ar-EG') + ' جنيه</span><span class="text-[10px] text-gray-300 line-through">' + product.price.toLocaleString('ar-EG') + ' جنيه</span></div>'
                         : '<span class="font-bold text-primary">' + product.price.toLocaleString('ar-EG') + ' جنيه</span>';
 
                     html += '<div class="flex gap-4 group" data-wishlist-item data-product-id="' + product.id + '">';
                     html += '<div class="w-24 h-32 flex-shrink-0 overflow-hidden bg-gray-50">';
-                    html += '<img src="' + (product.image || 'https://via.placeholder.com/96x128') + '" alt="' + product.name + '" class="w-full h-full object-cover">';
+                    html += '<img id="wishlist-img-' + product.id + '" src="' + imgSrc + '" alt="' + product.name + '" class="w-full h-full object-cover">';
                     html += '</div>';
-                    html += '<div class="flex-grow flex flex-col">';
+                    html += '<div class="flex-grow flex flex-col min-w-0">';
                     html += '<div class="flex justify-between items-start mb-1">';
-                    html += '<h3 class="font-bold text-sm text-neutral-charcoal hover:text-primary transition-colors cursor-pointer">' + product.name + '</h3>';
-                    html += '<button onclick="wishlistRemoveItem(' + product.id + ', this)" class="text-gray-300 hover:text-red-500 transition-colors" type="button">';
+                    html += '<h3 class="font-bold text-sm text-neutral-charcoal hover:text-primary transition-colors cursor-pointer truncate">' + product.name + '</h3>';
+                    html += '<button onclick="wishlistRemoveItem(' + product.id + ', this)" class="text-gray-300 hover:text-red-500 transition-colors flex-shrink-0" type="button">';
                     html += '<span class="material-symbols-outlined text-lg">delete</span></button>';
                     html += '</div>';
 
-                    if (product.details && product.details.length > 0) {
-                        var cats = [...new Set(product.details.map(function(d) { return d.color; }))].filter(Boolean);
-                        html += '<p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-3">' + cats.join(' - ') + '</p>';
+                    if (details.length > 0) {
+                        var colors = [], sizes = [];
+                        var cSeen = {}, sSeen = {};
+                        details.forEach(function(d) {
+                            if (d.color && !cSeen[d.color]) { cSeen[d.color] = true; colors.push(d); }
+                            if (d.size && !sSeen[d.size]) { sSeen[d.size] = true; sizes.push(d); }
+                        });
+
+                        var hasMultiColors = colors.length > 1;
+                        var hasMultiSizes = sizes.length > 1;
+
+                        html += '<div class="mt-2 space-y-1.5">';
+
+                        if (colors.length > 0) {
+                            html += '<div class="flex flex-wrap gap-1.5">';
+                            colors.forEach(function(cd) {
+                                var isSel = selectedDetail && selectedDetail.id === cd.id;
+                                var borderCls = isSel ? 'ring-2 ring-primary ring-offset-1' : 'border border-gray-300';
+                                if (hasMultiColors) {
+                                    html += '<button data-detail-id="' + cd.id + '" onclick="wishlistSelectDetail(' + product.id + ',' + cd.id + ')" class="flex flex-col items-center gap-0.5" type="button" title="' + cd.color + '">';
+                                } else {
+                                    html += '<span class="flex flex-col items-center gap-0.5">';
+                                }
+                                html += '<span class="block w-5 h-5 rounded-full ' + borderCls + '" style="background-color:' + cd.color + ';"></span>';
+                                html += hasMultiColors ? '</button>' : '</span>';
+                            });
+                            html += '</div>';
+                        }
+
+                        if (sizes.length > 0) {
+                            html += '<div class="flex flex-wrap gap-1">';
+                            sizes.forEach(function(sd) {
+                                var isSel = selectedDetail && selectedDetail.id === sd.id;
+                                var cls = isSel ? 'detail-chip-active' : 'border-gray-200';
+                                if (hasMultiSizes) {
+                                    html += '<button data-detail-id="' + sd.id + '" onclick="wishlistSelectDetail(' + product.id + ',' + sd.id + ')" class="text-[10px] px-2 py-0.5 border ' + cls + ' transition-colors rounded" type="button">' + sd.size + '</button>';
+                                } else {
+                                    html += '<span class="text-[10px] px-2 py-0.5 border ' + cls + ' rounded">' + sd.size + '</span>';
+                                }
+                            });
+                            html += '</div>';
+                        }
+
+                        if (selectedDetail && typeof selectedDetail.stock_qty !== 'undefined') {
+                            var stockLabel = selectedDetail.stock_qty > 0 ? '<span class="text-green-600 font-bold">المخزون: ' + selectedDetail.stock_qty + '</span>' : '<span class="text-red-500 font-bold">غير متوفر</span>';
+                            html += '<div class="text-[10px]" data-wishlist-stock>' + stockLabel + '</div>';
+                        }
+
+                        html += '</div>';
                     }
 
-                    html += '<div class="mt-auto flex items-center justify-between">';
+                    html += '<div class="mt-auto flex items-center justify-between pt-1">';
                     html += priceHtml;
-                    var defaultDetailId = product.details && product.details.length > 0 ? product.details[0].id : null;
-                    html += '<button onclick="wishlistAddToCart(' + product.id + ',' + defaultDetailId + ', this)" class="bg-primary text-white text-[10px] font-bold px-4 py-2 hover:bg-primary-dark transition-colors flex items-center gap-2" type="button">';
-                    html += '<span class="material-symbols-outlined text-sm">shopping_bag</span> أضف للسلة</button>';
+                    html += '<button data-wishlist-add-cart onclick="wishlistAddToCart(' + product.id + ', ' + (selectedDetail ? selectedDetail.id : null) + ', this)" class="bg-primary text-white text-[10px] font-bold px-3 py-1.5 hover:bg-primary-dark transition-colors flex items-center gap-1.5" type="button">';
+                    html += '<span class="material-symbols-outlined text-xs">shopping_bag</span> أضف للسلة</button>';
                     html += '</div>';
                     html += '</div></div>';
                 });
@@ -609,9 +679,55 @@
             });
         }
 
+        function wishlistSelectDetail(productId, detailId) {
+            wishlistSelectedDetails[productId] = detailId;
+
+            if (!wishlistData || !wishlistData.items) return;
+
+            var product = wishlistData.items.find(function(p) { return p.id === productId; });
+            if (!product) return;
+
+            var detail = (product.details || []).find(function(d) { return d.id === detailId; });
+            var newSrc = (detail && detail.cover_image) || product.image || 'https://via.placeholder.com/96x128';
+            var img = document.getElementById('wishlist-img-' + productId);
+            if (img) img.src = newSrc;
+
+            var addBtn = document.querySelector('[data-wishlist-item][data-product-id="' + productId + '"] [data-wishlist-add-cart]');
+            if (addBtn) {
+                addBtn.setAttribute('onclick', 'wishlistAddToCart(' + productId + ',' + detailId + ', this)');
+            }
+
+            var item = document.querySelector('[data-wishlist-item][data-product-id="' + productId + '"]');
+            if (!item) return;
+
+            item.querySelectorAll('[data-detail-id]').forEach(function(chip) {
+                var did = parseInt(chip.getAttribute('data-detail-id'));
+                var isSelected = did === detailId;
+
+                var colorSpan = chip.querySelector('.rounded-full');
+                if (colorSpan) {
+                    chip.className = 'flex flex-col items-center gap-0.5';
+                    colorSpan.className = isSelected
+                        ? 'block w-5 h-5 rounded-full ring-2 ring-primary ring-offset-1'
+                        : 'block w-5 h-5 rounded-full border border-gray-300';
+                } else if (chip.tagName === 'BUTTON') {
+                    chip.className = isSelected
+                        ? 'text-[10px] px-2 py-0.5 border detail-chip-active transition-colors rounded'
+                        : 'text-[10px] px-2 py-0.5 border border-gray-200 transition-colors rounded';
+                }
+            });
+
+            var stockEl = item.querySelector('[data-wishlist-stock]');
+            if (stockEl && detail && typeof detail.stock_qty !== 'undefined') {
+                stockEl.innerHTML = detail.stock_qty > 0
+                    ? '<span class="text-green-600 font-bold">المخزون: ' + detail.stock_qty + '</span>'
+                    : '<span class="text-red-500 font-bold">غير متوفر</span>';
+            }
+        }
+
         function wishlistRemoveItem(productId, btn) {
-            var iconSpan = btn.querySelector('.material-symbols-outlined');
             btn.disabled = true;
+            delete wishlistSelectedDetails[productId];
             fetch('{{ route("customer.wishlist.toggle") }}', {
                 method: 'POST',
                 headers: {
@@ -674,29 +790,31 @@
             var originalText = btn.innerHTML;
             btn.innerHTML = 'جاري الإضافة... <span class="material-symbols-outlined text-lg">sync</span>';
 
-            fetch('{{ route("customer.wishlist.items") }}', {
-                headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-            })
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-                if (!data.items || data.items.length === 0) return;
-                var promises = data.items.map(function(product) {
-                    var body = { product_id: product.id, quantity: 1 };
-                    if (product.details && product.details.length > 0) {
-                        body.product_detail_id = product.details[0].id;
-                    }
-                    return fetch('{{ route("cart.store") }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'Accept': 'application/json',
-                        },
-                        body: JSON.stringify(body),
-                    });
+            var data = wishlistData;
+            if (!data || !data.items || data.items.length === 0) {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                return;
+            }
+            var promises = data.items.map(function(product) {
+                var selectedId = wishlistSelectedDetails[product.id];
+                var body = { product_id: product.id, quantity: 1 };
+                if (selectedId) {
+                    body.product_detail_id = selectedId;
+                } else if (product.details && product.details.length > 0) {
+                    body.product_detail_id = product.details[0].id;
+                }
+                return fetch('{{ route("cart.store") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify(body),
                 });
-                return Promise.all(promises);
-            })
+            });
+            Promise.all(promises)
             .then(function() {
                 updateCartCount();
                 showToast('تمت إضافة جميع المنتجات إلى السلة');

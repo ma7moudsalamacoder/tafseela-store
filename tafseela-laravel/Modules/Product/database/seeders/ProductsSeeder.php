@@ -61,7 +61,7 @@ class ProductsSeeder extends Seeder
                 'price' => 850,
                 'fabric' => 'كتان فائق الجودة',
                 'notes' => 'قميص مريح وناعم مع لمسة فاخرة.',
-                'image' => 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400',
+                'cover_image' => 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400',
                 'status' => 'show',
             ],
             [
@@ -73,7 +73,7 @@ class ProductsSeeder extends Seeder
                 'price' => 750,
                 'fabric' => 'قطن 100%',
                 'notes' => 'قميص رسمي مثالي للمناسبات المهنية.',
-                'image' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+                'cover_image' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
                 'status' => 'show',
             ],
             [
@@ -85,7 +85,7 @@ class ProductsSeeder extends Seeder
                 'price' => 550,
                 'fabric' => 'قطن مع نسبة إيلاستين',
                 'notes' => 'قميص بولو مريح للاستخدام اليومي.',
-                'image' => 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400',
+                'cover_image' => 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400',
                 'status' => 'show',
             ],
             [
@@ -97,7 +97,7 @@ class ProductsSeeder extends Seeder
                 'price' => 1200,
                 'fabric' => 'قطن مع نسبة إيلاستين',
                 'notes' => 'بنطال يومي مريح يناسب الاطلالات كاجوال.',
-                'image' => 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=400',
+                'cover_image' => 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=400',
                 'status' => 'show',
             ],
             [
@@ -109,7 +109,7 @@ class ProductsSeeder extends Seeder
                 'price' => 1650,
                 'fabric' => 'صوف مخلوط',
                 'notes' => 'جاكيت أنيق للأجواء الباردة.',
-                'image' => 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400',
+                'cover_image' => 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400',
                 'status' => 'show',
             ],
             [
@@ -121,7 +121,7 @@ class ProductsSeeder extends Seeder
                 'price' => 2200,
                 'fabric' => 'حرير طبيعي',
                 'notes' => 'فستان أنيق للمناسبات الخاصة.',
-                'image' => 'https://images.unsplash.com/photo-1539008835270-386616781283?w=400',
+                'cover_image' => 'https://images.unsplash.com/photo-1539008835270-386616781283?w=400',
                 'status' => 'show',
             ],
             [
@@ -133,7 +133,7 @@ class ProductsSeeder extends Seeder
                 'price' => 2850,
                 'fabric' => 'جلد فاخر مع معادن مطلية',
                 'notes' => 'حقيبة يد أنيقة وعملية.',
-                'image' => 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400',
+                'cover_image' => 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400',
                 'status' => 'show',
             ],
         ];

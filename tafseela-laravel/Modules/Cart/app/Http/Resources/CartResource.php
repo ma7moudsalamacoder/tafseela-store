@@ -34,7 +34,8 @@ class CartResource extends JsonResource
                 'size' => $productDetail?->size,
                 'color' => $productDetail?->color,
                 'subtotal' => $product ? ($product->price * $item['quantity']) : 0,
-                'image' => $product?->image,
+                'image' => $product?->cover_image,
+                'cover_image' => $productDetail?->cover_image,
                 'slug' => $product ? Str::slug($product->name) : '',
             ];
         });
@@ -45,6 +46,7 @@ class CartResource extends JsonResource
                 'id' => $d->id,
                 'size' => $d->size,
                 'color' => $d->color,
+                'cover_image' => $d->cover_image,
                 'stock_qty' => $d->stock_qty,
             ]);
         }

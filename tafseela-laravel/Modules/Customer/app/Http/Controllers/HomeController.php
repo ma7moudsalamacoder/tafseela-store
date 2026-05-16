@@ -73,10 +73,16 @@ class HomeController extends Controller
             ];
         }
 
-        $newArrivals = Product::where('status', 'show')->latest()->take(8)->get()->map(function ($prod) {
+        $wishlistProductIds = auth()->check() ? $this->wishlistService->getProductIds(auth()->id()) : [];
+
+        $newArrivals = Product::with('details')->where('status', 'show')->latest()->take(8)->get()->map(function ($prod) use ($wishlistProductIds) {
+            $firstDetail = $prod->details->first();
             return [
+                'id' => $prod->id,
+                'productDetailId' => $firstDetail?->id,
+                'isInWishlist' => in_array($prod->id, $wishlistProductIds),
                 'slug' => Str::slug($prod->name),
-                'image' => $prod->image ?? 'https://lh3.googleusercontent.com/aida-public/AB6AXuAa8rxsCtnHO1uoqPKohyj3olgrRNYd84CD7ibbTxlOhJunn23RMdUvhV50rilc6g5xsGQ_Bz3Y6_Xi3llenb_loo06rLbJj2A5MY-DoJt46VO0LHC-q4_C_TuacMR1u3F4JMj1Ljr3TR_Js_TN_DGjG6a96fJulUh_UttCtpU5wRgwu7HoF0JwqHBOu_Qz_pKne5ROiSCvA5oWyansb_9tY7WE5Mz3MOeEqJBIlamFRHh5OYXaonC9MQawVhOYhPZoq8Au59PQYaLn',
+                'image' => $prod->cover_image ?? 'https://lh3.googleusercontent.com/aida-public/AB6AXuAa8rxsCtnHO1uoqPKohyj3olgrRNYd84CD7ibbTxlOhJunn23RMdUvhV50rilc6g5xsGQ_Bz3Y6_Xi3llenb_loo06rLbJj2A5MY-DoJt46VO0LHC-q4_C_TuacMR1u3F4JMj1Ljr3TR_Js_TN_DGjG6a96fJulUh_UttCtpU5wRgwu7HoF0JwqHBOu_Qz_pKne5ROiSCvA5oWyansb_9tY7WE5Mz3MOeEqJBIlamFRHh5OYXaonC9MQawVhOYhPZoq8Au59PQYaLn',
                 'alt' => $prod->name,
                 'badge' => 'جديد',
                 'name' => $prod->name,
@@ -89,6 +95,9 @@ class HomeController extends Controller
         if ($newArrivals->isEmpty()) {
             $newArrivals = [
                 [
+                    'id' => 1,
+                    'productDetailId' => null,
+                    'isInWishlist' => false,
                     'slug' => 'linen-shirt',
                     'image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuAa8rxsCtnHO1uoqPKohyj3olgrRNYd84CD7ibbTxlOhJunn23RMdUvhV50rilc6g5xsGQ_Bz3Y6_Xi3llenb_loo06rLbJj2A5MY-DoJt46VO0LHC-q4_C_TuacMR1u3F4JMj1Ljr3TR_Js_TN_DGjG6a96fJulUh_UttCtpU5wRgwu7HoF0JwqHBOu_Qz_pKne5ROiSCvA5oWyansb_9tY7WE5Mz3MOeEqJBIlamFRHh5OYXaonC9MQawVhOYhPZoq8Au59PQYaLn',
                     'alt' => 'Casual linen shirt',
@@ -99,6 +108,9 @@ class HomeController extends Controller
                     'original_price' => '1,200 جنيه',
                 ],
                 [
+                    'id' => 2,
+                    'productDetailId' => null,
+                    'isInWishlist' => false,
                     'slug' => 'silk-dress',
                     'image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuA1e3t8dR8xZ2WI1MVX0Gqk8raZ9GUv7YaPyACYE4NdFCZyv_jRej1HZ5hgwDvEGUFNjpp2Ggb2i-KJJvdSIVIPB4D7hndDuZjPmWrs5yXhgpJoQ5F3CwhVdwoxRJfJV9ejc9XdgoYJUOXakvpAYgx_BQwT2GVe40SawcCY_aWVkn8K9Yr8WY5S8935KjXxxCLo06IcJ1wmOMevC9pQSreWx96ISzPU_PDNuRGJLtfxsKR_jK_CwTKOgO7wN2URxaWF29Qq02zL6uoB',
                     'alt' => 'Floral silk maxi dress',
@@ -109,6 +121,9 @@ class HomeController extends Controller
                     'original_price' => null,
                 ],
                 [
+                    'id' => 3,
+                    'productDetailId' => null,
+                    'isInWishlist' => false,
                     'slug' => 'denim-jacket',
                     'image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuDuqwrlfWKG6vFStSzVmd0f2X4f_P-ExhbD-4U2atWtuMsdC3ucmUuQ4gdvfeSIKUq3KCqQ1rZJJKzditbqLMvAvo0xv_6p14wD_gt3jr7oC7Qvl-_Ov5ptoM57Cv4ZuB7msBqwVPN1niFmaSEMj9d5MbyHQqB0FGmBVSgWUC8fl7Z3LjeeIdjYtquM_ehZQsFC9BQY9juJFJu8oRg3ibAPuEYm_30mdxrFj3mOvbd7ziu8oe3e7SqYItiSw0wM0Sq2ilUG9UPWctWe',
                     'alt' => 'Denim jacket',
@@ -119,6 +134,9 @@ class HomeController extends Controller
                     'original_price' => '750 جنيه',
                 ],
                 [
+                    'id' => 4,
+                    'productDetailId' => null,
+                    'isInWishlist' => false,
                     'slug' => 'formal-trousers',
                     'image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuDfMNJWS58aYPNNEez7zZBK5oYciY9gRf1GmsCiGl5SzDQjlijSF7npj2Mt4NvlkEPwpwhWpFmI7xkaz5-A16AUn3QOJq0vdNIyeOmDH8gyNS5jxRDEjW4aYPqGjFzkGzpH_TVCvOzCXirQkdZh9p42PP65T5aKazbGhn-0H8vn4zOGs6qOHiF7ASAXUd22n5J9ViCrJgx0ASgEWABTEchYdsy1T8PuXZjOWvjQJcpXXRLC7J7EyBtUkgOKd7YQ_qoisaPjpRaZMtSu',
                     'alt' => 'Classic formal trousers',

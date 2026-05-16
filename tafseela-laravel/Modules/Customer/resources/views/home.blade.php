@@ -45,7 +45,7 @@
 
     <x-collection-section label="الإضافات الأخيرة" title="وصلنا حديثاً" :viewAllUrl="route('new-arrivals')">
         @foreach($newArrivals as $product)
-            <x-home-product-card :image="$product['image']" :alt="$product['alt']" :badge="$product['badge'] ?? null" :name="$product['name']" :category="$product['category']" :price="$product['price']" :originalPrice="$product['original_price'] ?? null" :href="route('product', $product['slug'])" />
+            <x-home-product-card :image="$product['image']" :alt="$product['alt']" :badge="$product['badge'] ?? null" :name="$product['name']" :category="$product['category']" :price="$product['price']" :originalPrice="$product['original_price'] ?? null" :href="route('product', $product['slug'])" :productId="$product['id']" :productDetailId="$product['productDetailId']" :isInWishlist="$product['isInWishlist']" />
         @endforeach
     </x-collection-section>
 

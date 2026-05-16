@@ -10,8 +10,8 @@ Route::get('/', HomeController::class)->name('home');
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'store'])->name('newsletter.subscribe');
 
 Route::get('/shop', [StorefrontController::class, 'index'])->name('shop');
-Route::get('/new-arrivals', [StorefrontController::class, 'index'])->name('new-arrivals');
 Route::get('/sale', [StorefrontController::class, 'getSale'])->name('sale');
+Route::get('/new-arrivals', [StorefrontController::class, 'getNewArrival'])->name('new-arrivals');
 
 Route::get('/category/{slug}', [StorefrontController::class, 'index'])->name('category');
 Route::get('/product/{slug}', [StorefrontController::class, 'index'])->name('product');

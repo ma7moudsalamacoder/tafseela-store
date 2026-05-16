@@ -56,7 +56,7 @@ class ChildrenProductsSeeder extends Seeder
                 'price' => 450,
                 'fabric' => 'قطن ناعم',
                 'notes' => 'تيشيرت أطفال مريح برسومات مرحة.',
-                'image' => 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400',
+                'cover_image' => 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400',
                 'status' => 'show',
             ],
             [
@@ -68,7 +68,7 @@ class ChildrenProductsSeeder extends Seeder
                 'price' => 620,
                 'fabric' => 'دينم مرن',
                 'notes' => 'بنطال جينز عملي ومتين للعب اليومي.',
-                'image' => 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400',
+                'cover_image' => 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400',
                 'status' => 'show',
             ],
             [
@@ -80,7 +80,7 @@ class ChildrenProductsSeeder extends Seeder
                 'price' => 540,
                 'fabric' => 'قماش قطني خفيف',
                 'notes' => 'فستان طفولي ملون بمطبوعات جذابة.',
-                'image' => 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=400',
+                'cover_image' => 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=400',
                 'status' => 'show',
             ],
             [
@@ -92,7 +92,7 @@ class ChildrenProductsSeeder extends Seeder
                 'price' => 360,
                 'fabric' => 'قطن مع لمسة إيلاستين',
                 'notes' => 'بلوزة ناعمة بنقشة زهرية مناسبة للنزهات.',
-                'image' => 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=400',
+                'cover_image' => 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=400',
                 'status' => 'show',
             ],
             [
@@ -104,7 +104,7 @@ class ChildrenProductsSeeder extends Seeder
                 'price' => 780,
                 'fabric' => 'نايلون مقاوم للماء',
                 'notes' => 'جاكيت دافئ للأطفال في الشتاء.',
-                'image' => 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400',
+                'cover_image' => 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400',
                 'status' => 'show',
             ],
             [
@@ -116,7 +116,7 @@ class ChildrenProductsSeeder extends Seeder
                 'price' => 420,
                 'fabric' => 'قطن مع إيلاستين',
                 'notes' => 'سروال رياضي مريح للعب.',
-                'image' => 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=400',
+                'cover_image' => 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=400',
                 'status' => 'show',
             ],
             [
@@ -128,7 +128,7 @@ class ChildrenProductsSeeder extends Seeder
                 'price' => 380,
                 'fabric' => 'قطن خفيف',
                 'notes' => 'تنورة قصيرة لطيفة للفتيات.',
-                'image' => 'https://images.unsplash.com/photo-1583496661160-fb5886a6aaaa?w=400',
+                'cover_image' => 'https://images.unsplash.com/photo-1583496661160-fb5886a6aaaa?w=400',
                 'status' => 'show',
             ],
             [
@@ -140,7 +140,7 @@ class ChildrenProductsSeeder extends Seeder
                 'price' => 490,
                 'fabric' => 'قطن ناعم',
                 'notes' => 'بلوزة مطرزة أنيقة للمناسبات.',
-                'image' => 'https://images.unsplash.com/photo-1551163943-3f6a855d1153?w=400',
+                'cover_image' => 'https://images.unsplash.com/photo-1551163943-3f6a855d1153?w=400',
                 'status' => 'show',
             ],
         ];
@@ -173,12 +173,32 @@ class ChildrenProductsSeeder extends Seeder
             ['product_name' => 'بلوزة أطفال مطرزة', 'size' => '7', 'color' => '#FFC0CB', 'stock_qty' => 9, 'notes' => 'للمناسبات الخاصة.',],
         ];
 
+        $variantImages = [
+            'https://images.unsplash.com/photo-1603252109303-2751441dd157?w=400',
+            'https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=400',
+            'https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=400',
+            'https://images.unsplash.com/photo-1554568218-0f1715e72254?w=400',
+            'https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=400',
+            'https://images.unsplash.com/photo-1591369822096-6a6ef6c4e2cd?w=400',
+            'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400',
+            'https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?w=400',
+        ];
+
+        $productDetailCount = [];
+
         foreach ($details as $detailData) {
             $product = $createdProducts[$detailData['product_name']] ?? Product::firstWhere('name', $detailData['product_name']);
 
             if (! $product) {
                 continue;
             }
+
+            $count = $productDetailCount[$product->id] ?? 0;
+            $productDetailCount[$product->id] = $count + 1;
+
+            $coverImage = $count === 0
+                ? $product->cover_image
+                : $variantImages[$product->id % count($variantImages)];
 
             ProductDetail::updateOrCreate(
                 [
@@ -190,6 +210,7 @@ class ChildrenProductsSeeder extends Seeder
                     'stock_qty' => $detailData['stock_qty'],
                     'status' => 'show',
                     'notes' => $detailData['notes'],
+                    'cover_image' => $coverImage,
                 ]
             );
         }

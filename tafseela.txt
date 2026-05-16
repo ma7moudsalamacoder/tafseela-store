@@ -425,3 +425,52 @@ Customer Module :
 - when user adding same product with same details existed in cart the quantity should be updated automatically otherwise add it as new item in cart
 - after product added to cart then header component @tafseela-laravel/Modules/Customer/resources/views/components/header.blade.php in client layout @tafseela-laravel/Modules/Customer/resources/views/layouts/client.blade.php cartCount prop should be updated automatically based on cart items quantity
 - make sure eveything working by ajax to enhance user experince
+==================
+Customer Module :
+- update quick add to cart to use first related product details as default product details for each product with default size
+
+==================
+Customer Module :
+- create new migration file named user_wishlist to handle user favorite products as follows :
+	- id (primary key)
+	- user_id (related to user - unique)
+	- products (json) to array of products as product_id
+	- timestamps
+	- audits
+- handle add to favorites process with same way of add to cart process
+- use add to favorites button to add and remove product from user wishlist
+
+==================
+Customer Module :
+- use @tafseela-frontend/client/tafsela_home_page_arabic_3/code.html extract cart off-canvas modal and add to @tafseela-laravel/Modules/Customer/resources/views/layouts/client.blade.php
+- update product card in cart off-canvas modal to allow user to change product available color and size along side with quantity
+- remove show cart button from cart off-canvas modal
+- make cart off-canvas modal open by click on cart button in @tafseela-laravel/Modules/Customer/resources/views/components/header.blade.php
+- use @tafseela-frontend/client/tafsela_home_page_arabic_2/code.html extract favorites off-canvas modal and add to @tafseela-laravel/Modules/Customer/resources/views/layouts/client.blade.php
+- make favorites off-canvas modal open by click on favorites button in @tafseela-laravel/Modules/Customer/resources/views/components/header.blade.php
+- make sure eveything working by ajax to enhance user experince
+==================
+Customer Module :
+- update product card in cart off-canvas modal to unify the ways of showing size and color even for products that don't have options
+
+==================
+Product Module :
+- create new migration file to update product_details to add new field named cover_image with type varchar(1000)
+- create new migration file to update products to update field named cover_image with type varchar(1000)
+- update related models, controllers and seeders
+
+Customer Module :
+- due to updates products, product_details so update related controllers, views , components and layout (if needed)
+- update product card in cart off-canvas modal to show product cover image based on product details if available but if not available then use product cover image from products as default
+- update product card in cart off-canvas modal when user change color show related product cover image based on product details if available but if not available then use product cover image from products as default
+
+After all of that run command php artisan Core:install --fresh
+
+==================
+Customer Module :
+- update product card in favorites off-canvas modal to show product available color, size and stock
+- update product card in favorites off-canvas modal to show product cover image based on product details if available but if not available then use product cover image from products as default
+- update product card in favorites off-canvas modal when user change color show related product cover image based on product details if available but if not available then use product cover image from products as default
+- duplicate @tafseela-laravel/Modules/Customer/resources/views/sale.blade.php and new copy should be named new-arrival.blade.php
+- use same code pattern that used to handle sale process to handle new-arrival with the new view to load new arrival collection
+- use same code pattern that used to handle quick add to cart process from @tafseela-laravel/Modules/Customer/resources/views/components/category-product-card.blade.php to handle same process in @tafseela-laravel/Modules/Customer/resources/views/components/home-product-card.blade.php
