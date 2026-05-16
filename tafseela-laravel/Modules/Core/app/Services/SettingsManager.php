@@ -9,10 +9,6 @@ class SettingsManager
 {
     /**
      * Get a setting value by key.
-     *
-     * @param  string  $key
-     * @param  mixed|null  $default
-     * @return mixed
      */
     public function get(string $key, mixed $default = null): mixed
     {
@@ -23,10 +19,6 @@ class SettingsManager
 
     /**
      * Create or update a setting.
-     *
-     * @param  string  $key
-     * @param  mixed  $value
-     * @return SiteSetting
      */
     public function set(string $key, mixed $value): SiteSetting
     {
@@ -38,8 +30,6 @@ class SettingsManager
 
     /**
      * Get all site settings.
-     *
-     * @return Collection
      */
     public function all(): Collection
     {
@@ -48,9 +38,6 @@ class SettingsManager
 
     /**
      * Delete a setting by key.
-     *
-     * @param  string  $key
-     * @return bool
      */
     public function delete(string $key): bool
     {
@@ -65,9 +52,6 @@ class SettingsManager
 
     /**
      * Check if a setting exists.
-     *
-     * @param  string  $key
-     * @return bool
      */
     public function has(string $key): bool
     {
@@ -78,12 +62,42 @@ class SettingsManager
      * Bulk update settings.
      *
      * @param  array<string, mixed>  $settings
-     * @return void
      */
     public function bulkSet(array $settings): void
     {
         foreach ($settings as $key => $value) {
             $this->set($key, $value);
         }
+    }
+
+    /**
+     * Get the Arabic dialect synonym map.
+     *
+     * @param  string|null  $word  If provided, returns synonyms only for that word.
+     * @return array<string, list<string>>|list<string>
+     */
+    public function getSynonyms(?string $word = null): array
+    {
+        $map = config('core.synonyms', []);
+
+        if ($word === null) {
+            return $map;
+        }
+
+        return $map[$word] ?? [];
+    }
+
+    /**
+     * Expand a word with its Arabic dialect synonyms.
+     *
+     * Returns the original word plus all known synonyms, deduplicated.
+     *
+     * @return list<string>
+     */
+    public function expandWithSynonyms(string $word): array
+    {
+        $synonyms = $this->getSynonyms($word);
+
+        return array_values(array_unique([$word, ...$synonyms]));
     }
 }
