@@ -408,3 +408,20 @@ Customer Module :
 - make route for new getSale and make it accessble only if actve products discounts has records
 - update nav bar in @tafseela-laravel\Modules\Customer\resources\views\components\header.blade.php to show sale line only if active products discounts has records
 - update index function in @tafseela-laravel\Modules\Customer\app\Http\Controllers\StorefrontController.php to handle badge and old_price properly if only product existing in active products discounts 
+
+
+==================
+Customer Module :
+- update @tafseela-laravel/Modules/Customer/resources/views/components/category-product-card.blade.php to make shopping_bag button able to run cart api that store current product in current user cart this api exist in tafseela-laravel/Modules/Cart/app/Http/Controllers/CartController.php if user authenticated otherwise redirect user to login page and after user login then add the product to cart then redirect to the prev page before login
+
+==================
+Customer Module :
+- your approche is not professional since page keep refreshing after each action thats why from the begining i asked to use cart api to make action handle by ajax to give good user experince
+- so update what you have done to achive my request
+
+==================
+Customer Module :
+- update @tafseela-laravel/Modules/Customer/resources/views/components/category-product-card.blade.php to show comfirmation flash notification at top right of the page to confirm product added to cart
+- when user adding same product with same details existed in cart the quantity should be updated automatically otherwise add it as new item in cart
+- after product added to cart then header component @tafseela-laravel/Modules/Customer/resources/views/components/header.blade.php in client layout @tafseela-laravel/Modules/Customer/resources/views/layouts/client.blade.php cartCount prop should be updated automatically based on cart items quantity
+- make sure eveything working by ajax to enhance user experince
