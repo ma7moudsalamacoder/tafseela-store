@@ -42,11 +42,13 @@ class CartResource extends JsonResource
         });
 
         $total = $items->sum('subtotal');
+        $count = $items->sum('quantity');
 
         return [
             'id' => $this->id,
             'user_id' => $this->user_id,
             'items' => $items,
+            'count' => $count,
             'total' => $total,
             'updated_at' => $this->updated_at,
         ];

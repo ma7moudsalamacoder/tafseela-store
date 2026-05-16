@@ -4,48 +4,66 @@ namespace Modules\Customer\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Str;
+use Modules\Cart\Services\CartService;
 use Modules\Core\Services\SettingsManager;
+use Modules\Customer\Services\WishlistService;
 use Modules\Product\Enums\ItemStatus;
 use Modules\Product\Enums\ProductSlugs;
-use Modules\Product\Models\Category;
 use Modules\Product\Models\Product;
 use Modules\Product\Services\ProductManager;
 
 class HomeController extends Controller
 {
     protected $productManager;
+
     protected $settingsManager;
-    public function __construct()
+
+    protected $cartService;
+
+    protected $wishlistService;
+
+    public function __construct(CartService $cartService, WishlistService $wishlistService)
     {
-        $this->productManager = new ProductManager();
-        $this->settingsManager = new SettingsManager();
+        $this->productManager = new ProductManager;
+        $this->settingsManager = new SettingsManager;
+        $this->cartService = $cartService;
+        $this->wishlistService = $wishlistService;
     }
+
+    private function getCartCount(): int
+    {
+        if (! auth()->check()) {
+            return 0;
+        }
+        $cart = $this->cartService->getCart(auth()->id());
+        $content = $cart->content ?? [];
+
+        return array_sum(array_column($content, 'quantity'));
+    }
+
     public function __invoke(): View
     {
-
-        $cartCount = 0;
-        $wishlistCount = 0;
-
+        $cartCount = $this->getCartCount();
+        $wishlistCount = auth()->check() ? $this->wishlistService->getCount(auth()->id()) : 0;
 
         $hero = $this->settingsManager->get('hero');
 
-        if (!$hero) {
+        if (! $hero) {
             $hero = [
                 'image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuAtKicfpnDGxV6OZ2AcKbavKPy2wiKTHJpXSR_qEVlqnyuzIWeOETtGbC1_xTCE3wiEs37Je1VvyoWrDgJlz4-W0sOonxdwLSRtNxXrYspmmROYfEJ9Bgx31eWI7Aha_atd1OG0Q6EAEIuvh7oHir9DLMvuPUNLiVe2XwNwWYuAOtONslDp2u_F7V9pMFNeviQfyvM92F3CZlvlpUvctZJLIOB_tmP_EKmLrmB26IrTo3Lm4KX8ty7bDv3v09A3LtqGyo_7BJUoin53',
                 'badge' => 'مجموعة خريف وشتاء 2024',
                 'description' => 'اكتشفوا أحدث التصاميم العصرية التي تجمع بين الأصالة والراحة. قطع حصرية صممت لتعكس شخصيتكم الراقية.',
-                'collectionSlug' => 'winter-2024'
+                'collectionSlug' => 'winter-2024',
             ];
         }
 
-        $categories = $this->productManager->getAllCategoriesWithDetails(0,ItemStatus::SHOW)->each(function($cat) {
+        $categories = $this->productManager->getAllCategoriesWithDetails(0, ItemStatus::SHOW)->each(function ($cat) {
             $cat->slug = strtolower(ProductSlugs::tryFrom($cat->category)?->name ?? Str::slug($cat->category));
             $cat->image = $cat->cover_image ?? 'https://lh3.googleusercontent.com/aida-public/AB6AXuD55sDnuTNCU7sBX1jr1StVjbWmYFeqZK4Gy_tpA6izp9D-hK7bZkpmRo2dZOfQP4KUjqpRKi86MyDd0QDfy__R8OTaSxS68fA5-b4xtYTrdutWDPR6bZd8wYTbfVUCphyByZDz-Yl8MPS2HTrOes1u1KdzS8s8D_vR6nKfySirpmhbBVYMuxKNadWMwau8YSMjRKphq53QPJM6UIRQCB20U0jc1Df1gdbsol42-LzV68izutNhL6PJza4Gw7gj4yAqMsIRyxw_z2I0';
             $cat->alt = $cat->category;
             $cat->title = $cat->category;
-            $cat->count = $cat->products()->count() . ' منتج';
+            $cat->count = $cat->products()->count().' منتج';
         });
-
 
         if ($categories->isEmpty()) {
             $categories = [
@@ -55,16 +73,16 @@ class HomeController extends Controller
             ];
         }
 
-        $newArrivals = Product::where('status', 'show')->latest()->take(8)->get()->map(function($prod) {
+        $newArrivals = Product::where('status', 'show')->latest()->take(8)->get()->map(function ($prod) {
             return [
-                'slug'           => Str::slug($prod->name),
-                'image'          => $prod->image ?? 'https://lh3.googleusercontent.com/aida-public/AB6AXuAa8rxsCtnHO1uoqPKohyj3olgrRNYd84CD7ibbTxlOhJunn23RMdUvhV50rilc6g5xsGQ_Bz3Y6_Xi3llenb_loo06rLbJj2A5MY-DoJt46VO0LHC-q4_C_TuacMR1u3F4JMj1Ljr3TR_Js_TN_DGjG6a96fJulUh_UttCtpU5wRgwu7HoF0JwqHBOu_Qz_pKne5ROiSCvA5oWyansb_9tY7WE5Mz3MOeEqJBIlamFRHh5OYXaonC9MQawVhOYhPZoq8Au59PQYaLn',
-                'alt'            => $prod->name,
-                'badge'          => 'جديد',
-                'name'           => $prod->name,
-                'category'       => $prod->category?->title ?? 'غير مصنف',
-                'price'          => number_format($prod->price, 2) . ' ج.م',
-                'original_price' => null
+                'slug' => Str::slug($prod->name),
+                'image' => $prod->image ?? 'https://lh3.googleusercontent.com/aida-public/AB6AXuAa8rxsCtnHO1uoqPKohyj3olgrRNYd84CD7ibbTxlOhJunn23RMdUvhV50rilc6g5xsGQ_Bz3Y6_Xi3llenb_loo06rLbJj2A5MY-DoJt46VO0LHC-q4_C_TuacMR1u3F4JMj1Ljr3TR_Js_TN_DGjG6a96fJulUh_UttCtpU5wRgwu7HoF0JwqHBOu_Qz_pKne5ROiSCvA5oWyansb_9tY7WE5Mz3MOeEqJBIlamFRHh5OYXaonC9MQawVhOYhPZoq8Au59PQYaLn',
+                'alt' => $prod->name,
+                'badge' => 'جديد',
+                'name' => $prod->name,
+                'category' => $prod->category?->title ?? 'غير مصنف',
+                'price' => number_format($prod->price, 2).' ج.م',
+                'original_price' => null,
             ];
         });
 
@@ -78,7 +96,7 @@ class HomeController extends Controller
                     'name' => 'قميص كتان كاجوال',
                     'category' => 'رجالي - أزرق فاتح',
                     'price' => '850 جنيه',
-                    'original_price' => '1,200 جنيه'
+                    'original_price' => '1,200 جنيه',
                 ],
                 [
                     'slug' => 'silk-dress',
@@ -88,7 +106,7 @@ class HomeController extends Controller
                     'name' => 'فستان مشجر حرير',
                     'category' => 'حريمي - صيفي',
                     'price' => '1,450 جنيه',
-                    'original_price' => null
+                    'original_price' => null,
                 ],
                 [
                     'slug' => 'denim-jacket',
@@ -98,7 +116,7 @@ class HomeController extends Controller
                     'name' => 'جاكيت جينز عصري',
                     'category' => 'أطفال - كحلي',
                     'price' => '600 جنيه',
-                    'original_price' => '750 جنيه'
+                    'original_price' => '750 جنيه',
                 ],
                 [
                     'slug' => 'formal-trousers',
@@ -108,7 +126,7 @@ class HomeController extends Controller
                     'name' => 'بنطلون كلاسيك رمادي',
                     'category' => 'رجالي - رسمي',
                     'price' => '950 جنيه',
-                    'original_price' => null
+                    'original_price' => null,
                 ],
             ];
         }

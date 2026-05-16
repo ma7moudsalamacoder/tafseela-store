@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Customer\Http\Controllers\CartQuickAddController;
 use Modules\Customer\Http\Controllers\HomeController;
 use Modules\Customer\Http\Controllers\NewsletterController;
 use Modules\Customer\Http\Controllers\StorefrontController;
@@ -23,3 +24,6 @@ Route::get('/account', [StorefrontController::class, 'index'])->name('account');
 Route::get('/category', function () {
     return view('customer::category');
 });
+
+Route::post('/cart/quick-add', CartQuickAddController::class)->name('customer.cart.quick-add');
+Route::post('/wishlist/toggle', [\Modules\Customer\Http\Controllers\WishlistController::class, 'toggle'])->name('customer.wishlist.toggle');

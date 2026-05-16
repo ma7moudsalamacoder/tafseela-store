@@ -10,6 +10,7 @@ use Modules\Identity\Http\Requests\SignUpRequest;
 use Modules\Identity\Http\Requests\SignInRequest;
 use Modules\Identity\Http\Requests\ProfileRequest;
 use Modules\Identity\Http\Requests\LocationRequest;
+use Modules\Cart\Services\CartService;
 use Modules\Identity\Enums\OtpActions;
 
 class AuthController extends Controller
@@ -29,6 +30,11 @@ class AuthController extends Controller
         if ($this->userManager->signInByEmail($request->email, $request->password)) {
             $user = \Modules\Identity\Models\User::where('email', $request->email)->first();
             Auth::login($user, $request->boolean('remember'));
+
+            if ($pendingItem = session()->pull('pending_cart_item')) {
+                app(CartService::class)->addItem(auth()->id(), $pendingItem);
+            }
+
             return redirect()->intended(route('home'));
         }
 

@@ -140,7 +140,7 @@
                                 <p class="text-center col-span-full text-gray-500">لا توجد منتجات لعرضها.</p>
                             @else
                                 @foreach ($formattedProducts as $product)
-                                    <x-customer::category-product-card :product="$product" />
+                                    <x-customer::category-product-card :product="$product" :productDetailId="$product['default_product_detail_id']" :isInWishlist="$product['is_in_wishlist']" />
                                 @endforeach
                             @endif
                         </div>

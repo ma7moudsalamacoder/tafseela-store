@@ -5,41 +5,51 @@ Laravel 11 e-commerce with nwidart/laravel-modules.
 ## Structure
 
 - `tafseela-laravel/` — Main application
-- Docker files (Dockerfile, docker-compose.yml, nginx.conf) are at the **repo root**, not inside laravel dir.
+- Docker files (Dockerfile, docker-compose.yml, nginx.conf) at **repo root**, not inside laravel dir.
+- `tafseela-frontend/` — Design reference / static landing pages (not the app)
 
-**Modules**: Admin, Cart, Core, Customer, Delivery, Identity, Order, Payment, Product, Support
+**Modules** (10, all enabled): Admin, Cart, Core, Customer, Delivery, Identity, Order, Payment, Product, Support
 
 ## Dev Commands
 
 Run from `tafseela-laravel/`:
 
 ```bash
-composer run dev          # PHP server + queue + logs + Vite (concurrently)
-php artisan serve         # Run just the PHP server
-npm run dev               # Run just Vite dev server
-npm run build             # Build frontend assets
+composer run dev          # PHP server + queue (--tries=1) + pail logs + Vite (concurrently)
+php artisan serve         # PHP server only
+npm run build             # Build frontend (Vite)
+npm run dev               # Vite dev server
 
-# Tests
-php artisan test          # Run all tests
-./vendor/bin/phpunit --filter=TestClassName    # Run single test class
-./vendor/bin/phpunit --filter=test_method_name # Run single test method
+# Module migrations (these exist alongside root migrations)
+php artisan module:migrate       # Migrate all modules
+php artisan module:migrate -m Order  # Migrate a specific module
+php artisan module:seed          # Seed all modules
+
+# Tests — root tests auto-discovered; module tests are NOT in phpunit.xml
+php artisan test                          # tests/Unit + tests/Feature only
+./vendor/bin/phpunit Modules/Order/tests  # Run a module's tests directly
+./vendor/bin/phpunit --filter=OrderApiTest
 
 # Code style
-./vendor/bin/pint         # Laravel Pint (fixes style issues)
-./vendor/bin/pint --test  # Check without fixing
+./vendor/bin/pint         # Fixes (no pint.json — uses Laravel defaults)
+./vendor/bin/pint --test  # Check only
 
-# Database
-php artisan migrate       # Run migrations
-php artisan db:seed       # Seed database
+# Clear caches
+php artisan view:clear && php artisan cache:clear && php artisan route:clear
 ```
-
-Clear caches: `php artisan view:clear && php artisan cache:clear && php artisan route:clear`
 
 ## Docker
 
-Run from repo root (where docker-compose.yml lives): `docker compose up -d`
+From repo root: `docker compose up -d`
 
-Ports: Nginx :8090, MySQL :3307, Mailpit :8025 (web UI), SMTP :1025
+| Service | Internal | Host Port |
+|---------|----------|-----------|
+| Nginx | :80 | :8090 |
+| MySQL 8.4 | :3306 | :3307 |
+| Mailpit UI | :8025 | :8025 |
+| Mailpit SMTP | :1025 | :1025 |
+
+Composer/npm/artisan run inside the container: `docker compose exec app <command>`
 
 ## Namespace Convention (CRITICAL)
 
@@ -50,43 +60,61 @@ Composer autoload maps `Modules\{Module}\` directly to `Modules/{Module}/app/`.
 namespace Modules\Identity\Http\Controllers;
 namespace Modules\Identity\Models;
 
-// WRONG (don't include app/ segment):
+// WRONG (no app/ segment):
 namespace Modules\Identity\app\Http\Controllers;
 ```
 
 ## Module Architecture
 
-- Routes: `Modules/{Module}/routes/web.php` (web) and `Modules/{Module}/routes/api.php` (API)
-- RouteServiceProvider loads routes from each module
-- Controllers: `Modules/{Module}/app/Http/Controllers/`
-- Models: `Modules/{Module}/app/Models/`
-- Services: `Modules/{Module}/app/Services/`
-- Migrations: `Modules/{Module}/database/migrations/`
-
-Blade components registered in ServiceProvider `registerViews()`:
-```php
-Blade::component('identity::components.auth-input', 'auth-input');
 ```
-Use as `<x-auth-input>`
+Modules/{Module}/
+├── app/
+│   ├── Http/Controllers/
+│   ├── Models/
+│   ├── Providers/    {Module}ServiceProvider, RouteServiceProvider, EventServiceProvider
+│   └── Services/
+├── routes/           web.php, api.php
+├── database/
+│   ├── migrations/
+│   ├── factories/
+│   └── seeders/
+├── resources/views/
+└── tests/            NOT auto-discovered — run directly via phpunit path
+```
+
+Blade components: Identity and Customer modules use explicit `Blade::component()` in their ServiceProvider; the other 8 use `Blade::componentNamespace()` auto-discovery (via generated `registerViews()`).
+
+API routes follow pattern `/api/v1/{resource}` (e.g., `/api/v1/orders`) with `auth:sanctum` middleware. Customer module has NO api.php — storefront is web-only.
 
 ## Key Packages
 
-- `laravel/sanctum` — API authentication
-- `laravel/socialite` — Social login (Google, Facebook configured)
+- `laravel/sanctum` — API tokens
+- `laravel/socialite` — Google & Facebook OAuth (credentials in `.env`)
 - `spatie/laravel-permission` — RBAC
 - `spatie/laravel-activitylog` — Activity logging
 - `lorisleiva/laravel-actions` — Action classes for business logic
-- `nwidart/laravel-modules` — Modular structure
+- `nwidart/laravel-modules` — Module system (v12)
 
-## Defaults
+## Defaults & Environment Quirks
 
-- Default locale: `ar` (Arabic), fallback `ar`, Faker locale `ar_EG`
-- DB: MySQL (connection via database queue and cache store by default)
-- Session/Queue/Cache drivers: `database`
-- App URL: `http://localhost`
+- **Locale**: Config defaults `ar`/`ar`/`ar_EG` (actual `.env` matches). `.env.example` has `en/en/en_US`.
+- **DB**: MySQL (`.env`). Queue, cache, session all use `database` driver (MySQL tables).
+- **Session**: `SESSION_DRIVER=database` (not file/cookie)
+- **App URL**: `http://localhost`
+- **pnpm-workspace.yaml** present but `composer run dev` uses `npm run dev`. `pnpm-workspace.yaml` blocks esbuild builds.
+- **No CI** workflows exist (no `.github/` directory).
 
-## Git
+## Testing Notes
 
-Commits: `type(module): description`  
-Types: feat, fix, refactor, docs, chore, test  
-Branches: `feat/{module}/feature-name`
+- `phpunit.xml` disables `DB_CONNECTION=sqlite` (commented out) — tests hit MySQL by default
+- Test env: `QUEUE_CONNECTION=sync`, `CACHE_STORE=array`, `SESSION_DRIVER=array`, `MAIL_MAILER=array`
+- Module tests (`Modules/{Module}/tests/`) extend `Tests\TestCase` but need explicit phpunit path to run
+- **Only Cart and Order modules have tests** (one Feature test each)
+- Identity module applies rate limiting (5/min) on login, register, OTP, change-password routes
+- Cross-module imports in tests are normal (e.g., Cart test imports `Modules\Identity\Models\User`)
+
+## Frontend Stack
+
+- Tailwind CSS 3, Vite 6 (`laravel-vite-plugin`), PostCSS
+- Font Awesome Free (`@fortawesome/fontawesome-free`)
+- Design system: `DESIGN.md` (Mediterranean Luxury theme)
