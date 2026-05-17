@@ -6,15 +6,16 @@
     'category'      => '',
     'price'         => '',
     'originalPrice' => null,
-    'href'          => '#',
     'productId'     => null,
     'productDetailId' => null,
     'isInWishlist'  => false,
 ])
 
+@php $detailUrl = route('product-detail', $productId); @endphp
+
 <div class="min-w-[300px] lg:min-w-[350px] group snap-start product-card-shadow">
     <div class="relative aspect-[4/5] overflow-hidden bg-gray-50 mb-6">
-        <a href="{{ $href }}">
+        <a href="{{ $detailUrl }}">
             <img alt="{{ $alt }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="{{ $image }}" />
         </a>
 
@@ -36,7 +37,7 @@
     </div>
     <div class="px-2">
         <h4 class="font-bold text-lg mb-1 hover:text-primary transition-colors cursor-pointer tracking-tight">
-            <a href="{{ $href }}">{{ $name }}</a>
+            <a href="{{ $detailUrl }}">{{ $name }}</a>
         </h4>
         <p class="text-gray-400 text-[10px] mb-3 font-bold uppercase tracking-widest">{{ $category }}</p>
         <div class="flex items-center gap-4">

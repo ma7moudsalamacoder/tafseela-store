@@ -769,4 +769,73 @@ class StorefrontController extends Controller
             'wishlistCount'
         ));
     }
+
+    public function getProductDetails(int $id): View
+    {
+        $product = Product::with(['details', 'category', 'collection'])->findOrFail($id);
+
+        $discount = $product->active_discount;
+        $firstDetail = $product->details->first();
+
+        $wishlistProductIds = $this->getWishlistProductIds();
+        $isInWishlist = in_array($product->id, $wishlistProductIds);
+
+        $productData = [
+            'id' => $product->id,
+            'name' => $product->name,
+            'description' => $product->notes ?? $product->fabric ?? 'وصف المنتج',
+            'image' => $product->cover_image ?? 'https://via.placeholder.com/400x500',
+            'price' => $product->discounted_price.' ج.م',
+            'old_price' => $discount ? $product->price.' ج.م' : null,
+            'badge' => $discount ? ($discount->type === 'rate' ? $discount->value.'%' : 'خصم') : null,
+            'details' => $product->details->map(fn ($d) => [
+                'id' => $d->id,
+                'size' => $d->size,
+                'color' => $d->color,
+                'stock_qty' => $d->stock_qty,
+                'cover_image' => $d->cover_image,
+            ]),
+            'category' => $product->category?->category,
+            'category_slug' => $product->category ? strtolower($product->category->category) : null,
+            'collection' => $product->collection?->title,
+            'tags' => $product->tags ?? [],
+            'fabric' => $product->fabric,
+            'is_in_wishlist' => $isInWishlist,
+        ];
+
+        $relatedQuery = Product::with('details')
+            ->where('id', '!=', $product->id)
+            ->where('status', 'show')
+            ->whereHas('details', fn ($q) => $q->where('stock_qty', '>', 0));
+
+        $relatedQuery->where(function ($q) use ($product) {
+            if (! empty($product->tags)) {
+                foreach ((array) $product->tags as $tag) {
+                    $q->orWhereJsonContains('tags', $tag);
+                }
+            }
+            if ($product->collection_id) {
+                $q->orWhere('collection_id', $product->collection_id);
+            }
+            if ($product->category_id) {
+                $q->orWhere('category_id', $product->category_id);
+            }
+        });
+
+        $relatedProducts = $relatedQuery->inRandomOrder()->take(10)->get()->map(fn ($p) => [
+            'id' => $p->id,
+            'name' => $p->name,
+            'image' => $p->cover_image ?? 'https://via.placeholder.com/400x500',
+            'price' => $p->discounted_price.' ج.م',
+            'old_price' => $p->active_discount ? $p->price.' ج.م' : null,
+            'badge' => $p->active_discount ? ($p->active_discount->type === 'rate' ? $p->active_discount->value.'%' : 'خصم') : null,
+            'default_product_detail_id' => $p->details->first()?->id,
+            'is_in_wishlist' => in_array($p->id, $wishlistProductIds),
+        ]);
+
+        $cartCount = $this->getCartCount();
+        $wishlistCount = auth()->check() ? count($wishlistProductIds) : 0;
+
+        return view('customer::product-detail', compact('productData', 'relatedProducts', 'cartCount', 'wishlistCount', 'isInWishlist'));
+    }
 }

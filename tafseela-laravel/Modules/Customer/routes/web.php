@@ -16,6 +16,7 @@ Route::get('/new-arrivals', [StorefrontController::class, 'getNewArrival'])->nam
 Route::get('/search', [StorefrontController::class, 'getSearch'])->name('search');
 
 Route::get('/category/{slug}', [StorefrontController::class, 'index'])->name('category');
+Route::get('/product/{id}', [StorefrontController::class, 'getProductDetails'])->name('product-detail')->where('id', '[0-9]+');
 Route::get('/product/{slug}', [StorefrontController::class, 'index'])->name('product');
 Route::get('/collection/{slug}', [StorefrontController::class, 'getCollection'])->name('collection');
 

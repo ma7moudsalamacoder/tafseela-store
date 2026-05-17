@@ -496,4 +496,56 @@ Customer Module :
 	- first word in user keyword most of the time is describing the item
 - create function in settings manager service (in core module) to handle word similar synonmes in arabic dailects
 - so also consider search also by first word similar synonmes in arabic dailects
--
+==================
+Customer Module :
+- duplicate @tafseela-laravel/Modules/Customer/resources/views/sale.blade.php and new copy should be named new collection.blade.php
+- use same code pattern that used to handle category process to handle displaying products related to certain collection
+==================
+Product Module :
+- create new migration file to update collections to add new field named slug with type varchar(200)-unique
+- update related models, controllers and seeders
+==================
+Customer Module :
+- update getCollection function in @tafseela-laravel/Modules/Customer/app/Http/Controllers/StorefrontController.php to exclude collection slug new-arrivals because it has it own function to load
+==================
+Customer Module :
+- update @tafseela-laravel/Modules/Customer/resources/views/home.blade.php to add new section to display collections list below new-arrival section
+- update invoke function in @tafseela-laravel/Modules/Customer/app/Http/Controllers/HomeController.php to load list of collections with status show and exclude collection slug new-arrivals
+==================
+Customer Module :
+- duplicate @tafseela-laravel/Modules/Customer/resources/views/sale.blade.php and new copy should be named new shop.blade.php
+- use same code pattern that used to handle category process to handle displaying all products
+=================
+Customer Module :
+- use @tafseela-frontend/client/tafsela_home_page_arabic_5/code.html to build product-detail.blade.php
+- update in @tafseela-laravel/Modules/Customer/app/Http/Controllers/StorefrontController.php to include getProductDetails function to :
+	- load product details by given product id as parameter
+	- load top 10 products user might like based on selected product tags, collection, or category
+
+=================
+Customer Module :
+- update @tafseela-laravel/Modules/Customer/resources/views/components/category-product-card.blade.php and @tafseela-laravel/Modules/Customer/resources/views/components/home-product-card.blade.php to use product details route to access to product details page
+=================
+Customer Module :
+- since @tafseela-laravel/Modules/Customer/resources/views/product-detail.blade.php is a mess because of you choosing ignore some important elements so it needs to be updated genuis :
+	- the product only has one image (why showing many images)
+	- display top 10 products as slider as already shown in @tafseela-frontend/client/tafsela_home_page_arabic_5/code.html
+=================
+Customer Module :
+- update @tafseela-laravel/Modules/Customer/resources/views/product-detail.blade.php as follows :
+	- add productfabric below product description
+	- allow user to select color and size
+	- when user change color show related product cover image based on product details if available but if not available then use product cover image from products as default
+	- apply same code pattern of handle add to cart and add to favorites used in @tafseela-laravel/Modules/Customer/resources/views/components/category-product-card.blade.php to add to cart and add to favorites buttons
+	- remove العناية بالمنتج tab
+=================
+Customer Module :
+- update @tafseela-laravel/Modules/Customer/resources/views/product-detail.blade.php as follows :
+	- add avaliable stock below product fabric
+	- remove any action when mosue over product image
+	- select first color and first size by default
+
+=================
+Customer Module :
+- update @tafseela-laravel/Modules/Customer/resources/views/product-detail.blade.php as follows :
+	- make avaliable stock change when user change color

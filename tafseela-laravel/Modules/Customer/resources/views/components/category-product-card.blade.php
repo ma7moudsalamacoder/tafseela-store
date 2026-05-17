@@ -2,7 +2,9 @@
 
 <div {{ $attributes->merge(['class' => 'group product-card-shadow']) }}>
     <div class="relative aspect-[4/5] overflow-hidden bg-gray-50 mb-6">
-        <img alt="{{ $product['name'] }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="{{ $product['image'] }}">
+        <a href="{{ route('product-detail', $product['id']) }}">
+            <img alt="{{ $product['name'] }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="{{ $product['image'] }}">
+        </a>
 
         <div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
@@ -23,7 +25,9 @@
     </div>
 
     <div class="space-y-1">
-        <h4 class="font-bold text-base hover:text-[#8B5E3C] transition-colors cursor-pointer tracking-tight font-display">{{ $product['name'] }}</h4>
+        <h4 class="font-bold text-base hover:text-[#8B5E3C] transition-colors cursor-pointer tracking-tight font-display">
+            <a href="{{ route('product-detail', $product['id']) }}">{{ $product['name'] }}</a>
+        </h4>
         <p class="text-gray-400 text-[9px] font-bold uppercase tracking-widest">{{ $product['description'] }}</p>
         <div class="flex items-center gap-3 pt-2">
             <span class="font-bold text-lg text-[#8B5E3C]">{{ $product['price'] }}</span>
