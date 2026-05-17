@@ -49,6 +49,19 @@
         @endforeach
     </x-collection-section>
 
+    <section class="py-24 lg:py-32 container mx-auto px-4 lg:px-12">
+        <div class="flex flex-col items-center mb-16 text-center">
+            <span class="text-primary font-bold text-[10px] tracking-[0.4em] uppercase mb-4">مجموعاتنا</span>
+            <h3 class="text-4xl font-extrabold mb-6 text-neutral-charcoal dark:text-white">تسوق حسب المجموعة</h3>
+            <div class="w-20 h-0.5 bg-primary"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+            @foreach($collections as $collection)
+                <x-category-card :href="route('collection', $collection->slug)" :image="$collection->image" :alt="$collection->title" :title="$collection->title" :count="$collection->count" />
+            @endforeach
+        </div>
+    </section>
+
     <section class="py-32 bg-neutral-beige dark:bg-gray-900 overflow-hidden relative">
         <div class="container mx-auto px-4 max-w-4xl text-center relative z-10">
             <div class="inline-block p-4 bg-primary/20 rounded-full mb-8">

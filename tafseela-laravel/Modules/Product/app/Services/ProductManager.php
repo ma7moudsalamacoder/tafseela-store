@@ -94,6 +94,20 @@ class ProductManager
     }
 
     /**
+     * Get collection by Slug.
+     */
+    public function getCollectionBySlug(string $slug, ItemStatus $status = ItemStatus::NONE): ?ProductCollection
+    {
+        $query = ProductCollection::query();
+
+        if ($status !== ItemStatus::NONE) {
+            $query->where('status', $status->value);
+        }
+
+        return $query->where('slug', $slug)->first();
+    }
+
+    /**
      * Get all products and related details (including colors).
      */
     public function getAllProducts(ItemStatus $status = ItemStatus::NONE): EloquentCollection
@@ -138,6 +152,19 @@ class ProductManager
     {
         $query = Product::with(['details', 'category', 'subcategory'])
             ->whereHas('collection', fn ($q) => $q->where('title', $name));
+
+        $this->applyFilters($query, $filters);
+
+        return $query->get();
+    }
+
+    /**
+     * Get products by collection slug.
+     */
+    public function getProductsByCollectionSlug(string $slug, array $filters = []): EloquentCollection
+    {
+        $query = Product::with(['details', 'category', 'subcategory'])
+            ->whereHas('collection', fn ($q) => $q->where('slug', $slug));
 
         $this->applyFilters($query, $filters);
 

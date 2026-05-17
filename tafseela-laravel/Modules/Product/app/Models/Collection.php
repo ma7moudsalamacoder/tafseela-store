@@ -12,6 +12,7 @@ class Collection extends Model
 
     protected $fillable = [
         'title',
+        'slug',
         'cover_image',
         'status',
     ];

@@ -25,14 +25,14 @@ class ChildrenProductsSeeder extends Seeder
         }
 
         $collections = [
-            ['title' => 'أطفال - جديد', 'cover_image' => null],
-            ['title' => 'أطفال - كاجوال', 'cover_image' => null],
+            ['title' => 'أطفال - جديد', 'slug' => 'kids-new', 'cover_image' => null],
+            ['title' => 'أطفال - كاجوال', 'slug' => 'kids-casual', 'cover_image' => null],
         ];
 
         foreach ($collections as $collectionData) {
             Collection::firstOrCreate(
                 ['title' => $collectionData['title']],
-                ['cover_image' => $collectionData['cover_image']]
+                ['slug' => $collectionData['slug'], 'cover_image' => $collectionData['cover_image']]
             );
         }
 

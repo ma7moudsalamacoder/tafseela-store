@@ -8,7 +8,17 @@ Laravel 11 e-commerce with nwidart/laravel-modules.
 - Docker files (Dockerfile, docker-compose.yml, nginx.conf) at **repo root**, not inside laravel dir.
 - `tafseela-frontend/` — Design reference / static landing pages (not the app)
 
-**Modules** (10, all enabled): Admin, Cart, Core, Customer, Delivery, Identity, Order, Payment, Product, Support
+**Modules** (10, all enabled):
+- **Identity** — auth, users, RBAC, OAuth (Google/Facebook), OTP — also hosts cross-cutting migrations (users, cache, jobs, permissions, activity_log)
+- **Product** — categories, collections, products, discounts
+- **Cart** — user carts and cart items
+- **Order** — orders and order details
+- **Payment** — payment records
+- **Delivery** — shipping, delivery companies, agents
+- **Customer** — customer preferences, wishlists
+- **Core** — shared utilities (countries, cities, site settings, colors)
+- **Admin** — admin panel (components + views, no models/migrations)
+- **Support** — support tickets/categories/messages
 
 ## Dev Commands
 
@@ -20,7 +30,7 @@ php artisan serve         # PHP server only
 npm run build             # Build frontend (Vite)
 npm run dev               # Vite dev server
 
-# Module migrations (these exist alongside root migrations)
+# Module migrations (root database/migrations/ is empty — all migrations are in modules)
 php artisan module:migrate       # Migrate all modules
 php artisan module:migrate -m Order  # Migrate a specific module
 php artisan module:seed          # Seed all modules
@@ -109,8 +119,8 @@ API routes follow pattern `/api/v1/{resource}` (e.g., `/api/v1/orders`) with `au
 - `phpunit.xml` disables `DB_CONNECTION=sqlite` (commented out) — tests hit MySQL by default
 - Test env: `QUEUE_CONNECTION=sync`, `CACHE_STORE=array`, `SESSION_DRIVER=array`, `MAIL_MAILER=array`
 - Module tests (`Modules/{Module}/tests/`) extend `Tests\TestCase` but need explicit phpunit path to run
-- **Only Cart and Order modules have tests** (one Feature test each)
-- Identity module applies rate limiting (5/min) on login, register, OTP, change-password routes
+- **Only Cart and Order modules have tests** (one test file each: 5 and 4 test methods)
+- Identity module defines rate limiters (5/min) for login, register, OTP, change-password but throttle middleware is NOT wired to routes
 - Cross-module imports in tests are normal (e.g., Cart test imports `Modules\Identity\Models\User`)
 
 ## Frontend Stack

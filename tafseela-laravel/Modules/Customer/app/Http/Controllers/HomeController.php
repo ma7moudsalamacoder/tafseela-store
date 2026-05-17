@@ -9,6 +9,7 @@ use Modules\Core\Services\SettingsManager;
 use Modules\Customer\Services\WishlistService;
 use Modules\Product\Enums\ItemStatus;
 use Modules\Product\Enums\ProductSlugs;
+use Modules\Product\Models\Collection as ProductCollection;
 use Modules\Product\Models\Product;
 use Modules\Product\Services\ProductManager;
 
@@ -150,6 +151,14 @@ class HomeController extends Controller
             ];
         }
 
-        return view('customer::home', compact('cartCount', 'wishlistCount', 'hero', 'categories', 'newArrivals'));
+        $collections = $this->productManager->getAllCollections(ItemStatus::SHOW)
+            ->reject(fn ($c) => $c->slug === 'new-arrivals')
+            ->values()
+            ->each(function ($collection) {
+                $collection->count = $collection->products()->count() . ' منتج';
+                $collection->image = $collection->cover_image ?? 'https://via.placeholder.com/400x500';
+            });
+
+        return view('customer::home', compact('cartCount', 'wishlistCount', 'hero', 'categories', 'newArrivals', 'collections'));
     }
 }
